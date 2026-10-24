@@ -1,5 +1,5 @@
-import { PageStub } from "@/components/page-stub";
+import { CoachChat } from "@/components/coach/CoachChat";
 
 export default function Page() {
-  return <PageStub screen={5} title="AI Coach" />;
+  return <CoachChat />;
 }
