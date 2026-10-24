@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>RebirthAI SDD</title>
+<style>
+  @page {
+    size: Letter;
+    margin: 0.85in 0.9in 0.85in 0.9in;
+    @bottom-center { content: "RebirthAI SDD  ·  Page " counter(page); font: 9pt "Segoe UI", Arial, sans-serif; color: #6b7280; }
+  }
+  @page :first { @bottom-center { content: none; } }
+
+  :root {
+    --ink: #1f2937;
+    --muted: #4b5563;
+    --accent: #7a2e3a;      /* deep wine */
+    --accent-soft: #f6eef0;
+    --rule: #d1d5db;
+    --head-bg: #ede4e6;
+  }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: "Segoe UI", Calibri, Arial, sans-serif;
+    font-size: 10.5pt; line-height: 1.45; color: var(--ink); background: #fff; margin: 0;
+  }
+  h1, h2, h3 { color: var(--accent); font-weight: 600; break-after: avoid; }
+  h1 { font-size: 17pt; margin: 26pt 0 8pt; padding-bottom: 4pt; border-bottom: 1.5pt solid var(--accent); }
+  h2 { font-size: 13pt; margin: 16pt 0 6pt; }
+  h3 { font-size: 11pt; margin: 12pt 0 4pt; color: var(--ink); }
+  p { margin: 0 0 7pt; }
+  ul { margin: 0 0 8pt; padding-left: 18pt; }
+  li { margin-bottom: 3pt; }
+  a { color: var(--accent); }
+  .new-page { break-before: page; }
+  .avoid { break-inside: avoid; }
+
+  /* cover */
+  .cover { height: 9.1in; display: flex; flex-direction: column; justify-content: center; }
+  .cover .title { font-size: 40pt; font-weight: 700; letter-spacing: 2pt; color: var(--accent); margin: 0; }
+  .cover .subtitle { font-size: 17pt; margin: 6pt 0 2pt; }
+  .cover .course { font-size: 12pt; color: var(--muted); margin-bottom: 22pt; }
+  .cover table { width: 100%; }
+  .cover .note { margin-top: 18pt; font-size: 10pt; color: var(--muted); border-left: 3pt solid var(--accent); padding: 6pt 10pt; background: var(--accent-soft); }
+
+  table { border-collapse: collapse; width: 100%; margin: 4pt 0 10pt; font-size: 9.5pt; }
+  th, td { border: 0.75pt solid var(--rule); padding: 5pt 7pt; vertical-align: top; text-align: left; }
+  th { background: var(--head-bg); font-weight: 600; }
+  tr { break-inside: avoid; }
+  td.k { width: 26%; font-weight: 600; }
+
+  .story { border: 0.75pt solid var(--rule); border-left: 3pt solid var(--accent); padding: 6pt 10pt; margin: 0 0 8pt; break-inside: avoid; }
+  .story .id { font-weight: 700; color: var(--accent); }
+  .story p { margin: 3pt 0; }
+  .lbl { font-weight: 600; }
+  .rule { margin: 0 0 6pt; break-inside: avoid; }
+  .rule b { color: var(--accent); }
+  .tag { display: inline-block; font-size: 8pt; font-weight: 600; padding: 0 4pt; border-radius: 3pt; background: #fef3c7; color: #92400e; border: 0.5pt solid #f59e0b; vertical-align: 1pt; }
+
+  figure { margin: 8pt 0 12pt; break-inside: avoid; text-align: center; }
+  figure svg { width: 100%; height: auto; }
+  figcaption { font-size: 9pt; color: var(--muted); font-style: italic; margin-top: 4pt; }
+  .status { margin-top: 14pt; font-size: 9.5pt; color: var(--muted); border-top: 0.75pt solid var(--rule); padding-top: 6pt; }
+  code { font-family: Consolas, "Courier New", monospace; font-size: 9pt; background: #f3f4f6; padding: 0 2pt; border-radius: 2pt; }
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<section class="cover">
+  <p class="title">REBIRTH AI</p>
+  <p class="subtitle">Software Design Document (SDD)</p>
+  <p class="course">Hackathon Project &mdash; AI-Guided Testimony Platform</p>
+  <table>
+    <tr><td class="k">Prepared By</td><td>[Author / Team Names]</td></tr>
+    <tr><td class="k">Date</td><td>October 2026</td></tr>
+    <tr><td class="k">Document Version</td><td>v0.1 (Draft)</td></tr>
+    <tr><td class="k">Project Repository / URL</td><td><a href="https://github.com/ghbrando/rebirthai">https://github.com/ghbrando/rebirthai</a></td></tr>
+  </table>
+  <p class="note">This SDD defines the minimum viable product for RebirthAI and is intended to drive implementation planning, GitHub Issues, and agentic development. Items marked <span class="tag">ASSUMPTION</span> were filled in by the drafter where the project brief was silent and should be confirmed or corrected by the team.</p>
+</section>
+
+<!-- ============ 1 ============ -->
+<h1 class="new-page">1 Problem &amp; Users</h1>
+<h2>1.1 Problem Description</h2>
+<p>Personal testimonies are often shared in person: two people meet at church, on campus, at work, or over coffee, the conversation turns personal, and one of them tells the story of how their life changed. These moments can be deeply meaningful, but they are fleeting. When the conversation ends, the listener has nothing to return to, and details that resonated in the moment fade. The person who shared has no polished, lasting version of their story to hand over, and must rely on retelling it from memory each time.</p>
+<p>The writing itself is a second barrier. Many people find it difficult to put their testimony into words. They are unsure where to begin, which moments matter most, how much to share about painful seasons, or how to structure the story so it moves from life before, through the turning point, to life after. A blank page offers no prompting, and generic writing tools do not know what questions to ask to draw out the specific, concrete memories that make a testimony impactful.</p>
+<p>Existing places to store a story &mdash; notes apps, social media posts, church websites &mdash; are not designed for this purpose. Content is buried in feeds, is not tied to the person in a lasting way, and is not reachable from the moment of meeting someone.</p>
+<p>The core problem is therefore the lack of a <b>guided way to craft a testimony</b> and a <b>frictionless way to hand it to someone at the moment of connection</b>, so that both the person sharing and the person listening can return to it later.</p>
+
+<h2>1.2 Target Users &amp; Stakeholders</h2>
+<table>
+  <tr><th style="width:28%">User / Stakeholder</th><th>Relationship to the Problem</th></tr>
+  <tr><td class="k">Testimony Author</td><td>Primary user. Writes their testimony with help from the AI coach, adds photos and video, saves it to their RebirthAI profile, and attaches it to their contact information so it travels with them.</td></tr>
+  <tr><td class="k">Testimony Recipient</td><td>Someone the author meets and shares contact information with. Needs to open the testimony from the saved contact with no account, app install, or friction, and to find it again weeks later.</td></tr>
+  <tr><td class="k">Community Viewer</td><td>A person who discovers testimonies by browsing RebirthAI profiles, similar to browsing LinkedIn profiles. Primarily a post-MVP audience.</td></tr>
+  <tr><td class="k">Church / Ministry Leaders</td><td>Stakeholders who may encourage members to use RebirthAI for outreach and discipleship. They care about respectful handling of faith content and about members' privacy and safety.</td></tr>
+  <tr><td class="k">Hackathon Team &amp; Judges</td><td>Build and evaluate the project. Need a reliable end-to-end demo: write with AI, add media, publish, share contact, and open the testimony on a second phone.</td></tr>
+  <tr><td class="k">Platform Operator</td><td>Responsible for hosting, AI costs, content reports, and data protection as the product moves beyond a prototype.</td></tr>
+</table>
+
+<!-- ============ 2 ============ -->
+<h1>2 Proposed Solution &amp; Scope</h1>
+<h2>2.1 Proposed Solution</h2>
+<p>RebirthAI is a mobile-first web platform where a person builds their testimony in conversation with an AI coach, enriches it with photos and video, and saves it to a public RebirthAI profile. Like a LinkedIn profile, a RebirthAI profile is a personal page that represents the author &mdash; but centered on their story rather than their résumé.</p>
+<p>The AI coach interviews the author one question at a time, moving through the classic testimony arc: life before, the turning point, and life after. It follows up to draw out concrete memories, key seasons, scripture or moments that mattered, and the change the author has seen. When the author is ready, the coach assembles a draft from the author's own answers, which the author edits directly or refines with targeted AI suggestions.</p>
+<p>The main selling point is what happens after the testimony is finished. RebirthAI generates a <b>contact card (vCard, <code>.vcf</code>)</b> that includes a permanent link to the author's testimony and offers to add that link to the author's own contact information. From then on, whenever the author shares their contact &mdash; by showing a RebirthAI QR code, texting their contact card, or other native contact sharing &mdash; the recipient's phone saves a contact that routes straight to the testimony. One tap on the link in the recipient's Contacts app opens the story.</p>
+<p>The intended value is not to replace personal relationships, church community, or discipleship. RebirthAI extends a real conversation: it helps the author tell their story well, and it makes sure the story is still there after the two people part ways.</p>
+
+<h2>2.2 Minimum Viable Product (MVP) Scope</h2>
+<ul>
+  <li>Account sign-up and sign-in using an email magic link or Google.</li>
+  <li>Author profile with display name, unique handle, photo, short bio, and optional church or community.</li>
+  <li>AI Testimony Coach: a streaming chat that asks guided questions through the before / turning point / after structure and can be resumed later.</li>
+  <li>Draft generation from the conversation, and an editor where the author edits text and requests targeted AI suggestions that they accept or reject.</li>
+  <li>Image and short-video upload, placed inline in the testimony with captions and alt text.</li>
+  <li>Preview, publish, and unpublish, with Public or Unlisted (link-only) visibility.</li>
+  <li>Public testimony page at a permanent, handle-based URL that loads quickly on phones and shows a rich link preview when shared.</li>
+  <li>Contact card generation: a vCard 3.0 <code>.vcf</code> download containing the author's chosen contact fields and testimony URL, a QR code that encodes the vCard, and a step-by-step guide for adding the link to the author's own contact card on iPhone and Android.</li>
+  <li>Direct sharing of the testimony link through copy-link and the device share sheet.</li>
+  <li>Author ability to edit, unpublish, or permanently delete the testimony and its media.</li>
+</ul>
+
+<h2>2.3 Out of Scope / Non-Goals</h2>
+<ul>
+  <li>Native iOS or Android apps, and writing directly to the phone's Contacts database. The MVP uses standard <code>.vcf</code> files and QR codes instead.</li>
+  <li>Social features such as a feed, followers or connections, comments, likes, and direct messaging. These are the long-term &ldquo;LinkedIn-like&rdquo; layer and come after the MVP.</li>
+  <li>Accounts for recipients, including a saved library of testimonies they have received (see OQ-01).</li>
+  <li>AI-generated images, video, or voice, and AI narration of the testimony.</li>
+  <li>The AI writing a testimony from nothing or inventing details. The AI interviews, organizes, and suggests; the author's real story is the source.</li>
+  <li>Pastoral counseling, theological instruction, or crisis counseling by the AI.</li>
+  <li>Video transcoding or adaptive streaming. The MVP plays uploaded files directly, within size limits.</li>
+  <li>Translation and multi-language support.</li>
+  <li>Church or organization accounts, admin dashboards, and analytics.</li>
+  <li>Payments or monetization.</li>
+</ul>
+
+<!-- ============ 3 ============ -->
+<h1>3 User Stories &amp; Acceptance Criteria</h1>
+<p>The following stories define the major behavior required for the MVP. Stable identifiers are used so that these stories can be traced into the UI/UX design, implementation plan, GitHub Issues, tests, and agentic development workflow.</p>
+
+<h2>3.1 Author &mdash; Account &amp; Profile</h2>
+<div class="story"><span class="id">US-01 &mdash; Sign Up and Sign In</span>
+  <p><span class="lbl">User Story:</span> As an author, I can create an account and sign in with an email link or Google so that my testimony is saved to me.</p>
+  <p><span class="lbl">Pass/Fail Check:</span> Pass if a new user completes sign-up and reaches profile setup, a returning user reaches their dashboard, and a signed-out visitor to any author page is redirected to sign-in.</p></div>
+<div class="story"><span class="id">US-02 &mdash; Create Profile</span>
+  <p><span class="lbl">User Story:</span> As an author, I can set my display name, unique handle, photo, and short bio so that my testimony page represents me.</p>
+  <p><span class="lbl">Pass/Fail Check:</span> Pass if saved profile details appear on the profile preview, a handle already in use is rejected with a clear message, and handles are limited to 3&ndash;30 lowercase letters, numbers, or underscores.</p></div>
+
+<h2>3.2 Author &mdash; Crafting the Testimony</h2>
+<div class="story"><span class="id">US-03 &mdash; Guided Testimony Session</span>
+  <p><span class="lbl">User Story:</span> As an author, I can chat with an AI coach that asks me questions one at a time so that I remember and articulate the parts of my story that matter most.</p>
+  <p><span class="lbl">Pass/Fail Check:</span> Pass if the coach opens with a welcome and a first question, asks one question per turn, covers the before, turning point, and after sections before offering a draft, and begins streaming each reply within about two seconds.</p></div>
+<div class="story"><span class="id">US-04 &mdash; Resume a Session</span>
+  <p><span class="lbl">User Story:</span> As an author, I can leave the conversation and come back later so that I can work on my testimony over several sittings.</p>
+  <p><span class="lbl">Pass/Fail Check:</span> Pass if, after a page reload or signing out and back in, the full conversation history appears and the coach continues from the last unfinished topic.</p></div>
+<div class="story"><span class="id">US-05 &mdash; Generate a Draft</span>
+  <p><span class="lbl">User Story:</span> As an author, I can ask the coach to turn our conversation into a draft so that I do not start from a blank page.</p>
+  <p><span class="lbl">Pass/Fail Check:</span> Pass if the draft is organized into sections and every person, place, event, and quote in it comes from the author's answers; fail if a review of five test sessions finds any invented detail.</p></div>
+<div class="story"><span class="id">US-06 &mdash; Edit and Refine with AI</span>
+  <p><span class="lbl">User Story:</span> As an author, I can edit my draft directly and ask the coach for targeted help, such as &ldquo;make this shorter&rdquo; or &ldquo;what's missing?&rdquo;, so that the final story is impactful and still in my voice.</p>
+  <p><span class="lbl">Pass/Fail Check:</span> Pass if manual edits are saved automatically and AI changes appear as suggestions the author accepts or rejects; fail if the AI ever overwrites the author's text without approval.</p></div>
+<div class="story"><span class="id">US-07 &mdash; Add Photos and Videos</span>
+  <p><span class="lbl">User Story:</span> As an author, I can upload images and short videos and place them in my testimony so that my story is more personal and impactful.</p>
+  <p><span class="lbl">Pass/Fail Check:</span> Pass if JPG, PNG, or WebP images up to 10 MB and MP4 or MOV videos up to 100 MB upload with a progress indicator, appear where the author placed them, and display on iOS Safari and Android Chrome; oversized or unsupported files are rejected with a clear message.</p></div>
+
+<h2>3.3 Author &mdash; Publishing &amp; Sharing</h2>
+<div class="story"><span class="id">US-08 &mdash; Preview and Publish</span>
+  <p><span class="lbl">User Story:</span> As an author, I can preview my testimony exactly as a recipient will see it and then publish it to my RebirthAI profile.</p>
+  <p><span class="lbl">Pass/Fail Check:</span> Pass if the preview matches the public page, the published testimony is visible to a signed-out browser at the author's URL, and unpublishing shows a &ldquo;not available&rdquo; page on the next load.</p></div>
+<div class="story"><span class="id">US-09 &mdash; Add Testimony to My Contact Info</span>
+  <p><span class="lbl">User Story:</span> As an author, right after publishing I am offered the option to add my testimony to my contact info so that everyone I share my contact with can reach my story.</p>
+  <p><span class="lbl">Pass/Fail Check:</span> Pass if the downloaded <code>.vcf</code> opens in iPhone and Android Contacts showing the author's name, chosen phone/email, and testimony URL, and if, by following the in-app guide, the URL ends up on the author's own contact card.</p></div>
+<div class="story"><span class="id">US-10 &mdash; Share by QR Code in Person</span>
+  <p><span class="lbl">User Story:</span> As an author meeting someone, I can show a QR code that the other person scans to save my contact, including my testimony link.</p>
+  <p><span class="lbl">Pass/Fail Check:</span> Pass if scanning the QR code with the default camera app on an iPhone and an Android phone offers to add a contact, and the saved contact includes the testimony URL.</p></div>
+<div class="story"><span class="id">US-11 &mdash; Share a Link</span>
+  <p><span class="lbl">User Story:</span> As an author, I can copy my testimony link or send it through my phone's share sheet.</p>
+  <p><span class="lbl">Pass/Fail Check:</span> Pass if the share sheet opens on mobile, copy-link works on desktop, and the link shows a preview with the author's name, testimony title, and image in iMessage and WhatsApp.</p></div>
+<div class="story"><span class="id">US-12 &mdash; Manage or Delete My Testimony</span>
+  <p><span class="lbl">User Story:</span> As an author, I can unpublish or permanently delete my testimony and its media so that I stay in control of my story.</p>
+  <p><span class="lbl">Pass/Fail Check:</span> Pass if deletion removes the testimony record, conversation, and stored media files, and the public URL then shows a not-found page.</p></div>
+
+<h2>3.4 Recipient</h2>
+<div class="story"><span class="id">US-13 &mdash; Open a Testimony from a Contact</span>
+  <p><span class="lbl">User Story:</span> As a recipient, I can tap the link in a saved contact and read or watch the testimony without creating an account or installing an app.</p>
+  <p><span class="lbl">Pass/Fail Check:</span> Pass if tapping the URL in iPhone or Android Contacts opens the public page in the default browser with no sign-in prompt, and the text content loads within 2.5 seconds on a mid-range phone over a typical 4G connection.</p></div>
+<div class="story"><span class="id">US-14 &mdash; Return Later</span>
+  <p><span class="lbl">User Story:</span> As a recipient, I can come back to the same contact link weeks later and see the author's current testimony.</p>
+  <p><span class="lbl">Pass/Fail Check:</span> Pass if, after the author edits and republishes, the link saved earlier shows the updated version, and the link keeps working if the author changes their handle.</p></div>
+<div class="story"><span class="id">US-15 &mdash; Save the Author's Contact from the Page</span>
+  <p><span class="lbl">User Story:</span> As a recipient who opened a shared link, I can save the author's contact card from the testimony page if the author allows it.</p>
+  <p><span class="lbl">Pass/Fail Check:</span> Pass if a &ldquo;Save contact&rdquo; button downloads the author's <code>.vcf</code> when the author has enabled it, and the button is hidden when they have not.</p></div>
+
+<!-- ============ 4 ============ -->
+<h1>4 Requirements, Constraints &amp; Design Rules</h1>
+<p>The following requirements and design rules apply across individual user stories and should be treated as persistent constraints during implementation.</p>
+<p class="rule"><b>RC-01 &mdash; Authentication:</b> All author functionality requires Supabase Authentication. Every route that reads private data or changes data must verify the session on the server; hiding UI elements is not a form of protection.</p>
+<p class="rule"><b>RC-02 &mdash; Ownership &amp; Row-Level Security:</b> Postgres Row-Level Security (RLS) policies ensure authors can read and write only their own profile, conversations, drafts, and media. Anonymous visitors may read only published testimonies and the public profile fields those pages display.</p>
+<p class="rule"><b>RC-03 &mdash; Permanent Testimony URLs:</b> A URL saved into someone's phone contacts can never be updated remotely. The testimony URL is therefore keyed to the author's handle, always shows the current published version, and stays valid forever. If an author changes their handle, the old handle permanently redirects to the new one, and a released handle is never reassigned to another user.</p>
+<p class="rule"><b>RC-04 &mdash; Author Voice &amp; Truthfulness:</b> The AI coach asks questions, organizes, and suggests wording, but must not invent events, people, places, quotes, or outcomes. Drafts may use only details from the author's conversation, AI edits are always presented as suggestions, and the author is the final editor. This is enforced through the system prompt and checked during testing (US-05, US-06).</p>
+<p class="rule"><b>RC-05 &mdash; Care with Sensitive Disclosures:</b> Testimonies often involve addiction, abuse, grief, self-harm, or crime. The coach responds with care, never pressures for details, and lets the author skip any question. If the author indicates current danger or thoughts of suicide, the coach pauses the writing flow and shows crisis resources (such as the 988 Suicide &amp; Crisis Lifeline in the U.S.) before continuing.</p>
+<p class="rule"><b>RC-06 &mdash; Private by Default:</b> Conversations and drafts are always private; only the published testimony is public. Draft media lives in a private storage bucket and is served through short-lived signed URLs until it is published. Unlisted testimonies are marked <code>noindex</code> so search engines skip them. Location (GPS) data is stripped from uploaded images.</p>
+<p class="rule"><b>RC-07 &mdash; Secrets &amp; Credentials:</b> The Anthropic API key and the Supabase service-role key exist only as server-side environment variables on Vercel. They must never reach the browser or be committed to the repository.</p>
+<p class="rule"><b>RC-08 &mdash; AI Responsiveness &amp; Cost Control:</b> Coach replies stream to the screen, with a target of the first words appearing within about two seconds. Each user is rate-limited (for example, 60 coach messages per hour), the system prompt uses prompt caching, and a monthly spend limit is set in the Anthropic Console to protect the hackathon budget.</p>
+<p class="rule"><b>RC-09 &mdash; Media Handling:</b> Only allow-listed file types are accepted: images up to 10 MB, and videos up to 100 MB and about 3 minutes. The browser uploads files directly to Supabase Storage using signed, resumable uploads, so large videos never pass through Vercel functions, whose request sizes are limited.</p>
+<p class="rule"><b>RC-10 &mdash; vCard Compatibility:</b> Contact cards follow vCard 3.0 (RFC 2426), which iPhone and Android both import reliably. Cards are UTF-8 and use the fields <code>FN</code>, <code>N</code>, <code>TEL</code>, <code>EMAIL</code>, <code>URL</code>, and <code>NOTE</code>, and are served as <code>text/vcard</code> with a <code>.vcf</code> filename. The QR code encodes the vCard text itself, without an embedded photo, so it stays small enough to scan quickly and saves the contact even if the scanning phone is offline.</p>
+<p class="rule"><b>RC-11 &mdash; Mobile-First &amp; Accessible:</b> All pages work on the current and previous major versions of iOS Safari and Android Chrome, as well as desktop browsers. Text meets WCAG 2.1 AA contrast, every image prompts for alt text, video has visible controls and never autoplays with sound, and all controls work from the keyboard.</p>
+<p class="rule"><b>RC-12 &mdash; Contact Information Is Opt-In:</b> Phone and email appear on the vCard and public page only when the author explicitly chooses to include them. RebirthAI never adds contact details by default.</p>
+<p class="rule"><b>RC-13 &mdash; Content Reporting:</b> Every public testimony page has a &ldquo;Report&rdquo; link, and submitted reports are stored for operator review.</p>
+<p class="rule"><b>RC-14 &mdash; Supported Clients:</b> The MVP is a responsive web app that can be installed as a PWA. Native apps are not required.</p>
+
+<!-- ============ 5 ============ -->
+<h1>5 Platform &amp; Architecture</h1>
+<h2>5.1 System Components &amp; Technology Choices</h2>
+<p>RebirthAI uses a single Next.js application deployed on Vercel, backed by Supabase for identity, data, and file storage, and by the Anthropic Claude API for the testimony coach. One TypeScript codebase serves the author's screens, the public testimony pages, and the server routes. All privileged work &mdash; AI calls, vCard generation, and signed upload URLs &mdash; happens in server routes, so no secrets reach the browser. This keeps the stack small enough for a hackathon team while still enforcing the privacy and ownership rules above.</p>
+<table>
+  <tr><th style="width:17%">Technology</th><th style="width:31%">Rationale</th><th style="width:36%">Usage</th><th style="width:16%">Residency</th></tr>
+  <tr><td class="k">Next.js (App Router, TypeScript)</td><td>Full-stack React framework: one repo for the UI and the API, server-rendered pages, and built-in streaming. The fastest path to a working demo.</td><td>Author screens; public testimony pages rendered on the server so link previews work; route handlers for the coach, vCards, and uploads.</td><td>Vercel.</td></tr>
+  <tr><td class="k">Vercel</td><td>Zero-configuration deploys, preview URLs for every pull request, and encrypted environment variables.</td><td>Hosts the app and its serverless and edge functions, and stores server-side secrets.</td><td>Vercel cloud.</td></tr>
+  <tr><td class="k">Supabase Auth</td><td>Managed email magic links and Google sign-in, integrated directly with Postgres RLS.</td><td>Authenticates authors; the user's identity drives every RLS policy.</td><td>Supabase cloud.</td></tr>
+  <tr><td class="k">Supabase Postgres</td><td>A relational model fits profiles, testimonies, conversations, and media, and RLS gives database-level ownership enforcement.</td><td>Stores profiles, testimonies (draft and published copies), coach messages, media metadata, handle redirects, and reports.</td><td>Supabase cloud.</td></tr>
+  <tr><td class="k">Supabase Storage</td><td>S3-compatible storage with private and public buckets, signed URLs, resumable uploads, and CDN delivery.</td><td>Holds author photos, testimony images, and videos. Browsers upload directly using signed URLs.</td><td>Supabase cloud / CDN.</td></tr>
+  <tr><td class="k">Anthropic Claude API (<code>claude-opus-5-5</code>)</td><td>Strong long-form writing and empathetic conversation, and it reliably follows instructions such as &ldquo;use only the author's details.&rdquo; Supports streaming and prompt caching.</td><td>Runs the coach interview, draft generation, and targeted refinement suggestions. Called only from the server.</td><td>Anthropic.</td></tr>
+  <tr><td class="k">Tailwind CSS + shadcn/ui</td><td>Fast, consistent, accessible UI components with no custom design system to build.</td><td>Styles every screen.</td><td>Client bundle.</td></tr>
+  <tr><td class="k">TipTap editor</td><td>Extensible rich-text editor that supports custom image and video blocks and a suggestion/accept workflow.</td><td>Testimony editor (US-06, US-07).</td><td>Client bundle.</td></tr>
+  <tr><td class="k"><code>qrcode</code> (npm) + vCard builder</td><td>Small, dependency-light libraries for generating QR codes and vCard text.</td><td>Produces the <code>.vcf</code> file and the QR code (US-09, US-10).</td><td>Vercel functions.</td></tr>
+  <tr><td class="k">Vercel OG (<code>@vercel/og</code>)</td><td>Generates link-preview images on the fly.</td><td>Creates the image shown when a testimony link is shared in iMessage or WhatsApp (US-11).</td><td>Vercel edge.</td></tr>
+</table>
+
+<h2 class="avoid">5.2 Architecture Diagram &amp; Explanation</h2>
+<figure>
+<svg viewBox="0 0 720 430" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#374151"/></marker>
+    <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7a2e3a"/></marker>
+  </defs>
+
+  <!-- Author device -->
+  <rect x="10" y="50" width="150" height="86" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="85" y="78" text-anchor="middle" font-size="13" font-weight="600" fill="#1e3a8a">Author</text>
+  <text x="85" y="96" text-anchor="middle" font-size="11" fill="#1e3a8a">Phone / laptop browser</text>
+  <text x="85" y="112" text-anchor="middle" font-size="11" fill="#1e3a8a">(PWA)</text>
+
+  <!-- Recipient device -->
+  <rect x="10" y="290" width="150" height="100" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="85" y="316" text-anchor="middle" font-size="13" font-weight="600" fill="#14532d">Recipient</text>
+  <text x="85" y="334" text-anchor="middle" font-size="11" fill="#14532d">Contacts app</text>
+  <text x="85" y="350" text-anchor="middle" font-size="11" fill="#14532d">+ default browser</text>
+  <text x="85" y="368" text-anchor="middle" font-size="10" fill="#14532d">(no account needed)</text>
+
+  <!-- Vercel / Next.js -->
+  <rect x="215" y="30" width="250" height="380" rx="12" fill="#f9fafb" stroke="#111827" stroke-width="1.5"/>
+  <text x="340" y="52" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">Vercel &middot; Next.js app</text>
+  <rect x="235" y="68" width="210" height="44" rx="7" fill="#fff" stroke="#6b7280"/>
+  <text x="340" y="88" text-anchor="middle" font-size="11.5" font-weight="600">Author UI</text>
+  <text x="340" y="103" text-anchor="middle" font-size="10" fill="#4b5563">profile · coach chat · editor · share</text>
+  <rect x="235" y="128" width="210" height="44" rx="7" fill="#fff" stroke="#6b7280"/>
+  <text x="340" y="148" text-anchor="middle" font-size="11.5" font-weight="600">/api/coach</text>
+  <text x="340" y="163" text-anchor="middle" font-size="10" fill="#4b5563">AI interview · draft · suggestions</text>
+  <rect x="235" y="188" width="210" height="44" rx="7" fill="#fff" stroke="#6b7280"/>
+  <text x="340" y="208" text-anchor="middle" font-size="11.5" font-weight="600">/api/upload-url</text>
+  <text x="340" y="223" text-anchor="middle" font-size="10" fill="#4b5563">issues signed media upload URLs</text>
+  <rect x="235" y="248" width="210" height="44" rx="7" fill="#fff" stroke="#6b7280"/>
+  <text x="340" y="268" text-anchor="middle" font-size="11.5" font-weight="600">/api/vcard/[handle]</text>
+  <text x="340" y="283" text-anchor="middle" font-size="10" fill="#4b5563">.vcf file + QR code</text>
+  <rect x="235" y="320" width="210" height="70" rx="7" fill="#f6eef0" stroke="#7a2e3a" stroke-width="1.5"/>
+  <text x="340" y="342" text-anchor="middle" font-size="11.5" font-weight="600" fill="#7a2e3a">Public testimony page</text>
+  <text x="340" y="358" text-anchor="middle" font-size="10.5" fill="#7a2e3a">rebirthai.app/@handle</text>
+  <text x="340" y="374" text-anchor="middle" font-size="10" fill="#7a2e3a">server-rendered · link preview</text>
+
+  <!-- Supabase -->
+  <rect x="525" y="30" width="185" height="230" rx="12" fill="#ecfdf5" stroke="#047857" stroke-width="1.5"/>
+  <text x="617" y="52" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Supabase</text>
+  <rect x="545" y="66" width="145" height="46" rx="7" fill="#fff" stroke="#047857"/>
+  <text x="617" y="86" text-anchor="middle" font-size="11.5" font-weight="600">Auth</text>
+  <text x="617" y="101" text-anchor="middle" font-size="10" fill="#4b5563">magic link · Google</text>
+  <rect x="545" y="126" width="145" height="46" rx="7" fill="#fff" stroke="#047857"/>
+  <text x="617" y="146" text-anchor="middle" font-size="11.5" font-weight="600">Postgres + RLS</text>
+  <text x="617" y="161" text-anchor="middle" font-size="10" fill="#4b5563">profiles · testimonies · chat</text>
+  <rect x="545" y="186" width="145" height="58" rx="7" fill="#fff" stroke="#047857"/>
+  <text x="617" y="206" text-anchor="middle" font-size="11.5" font-weight="600">Storage + CDN</text>
+  <text x="617" y="221" text-anchor="middle" font-size="10" fill="#4b5563">photos · videos</text>
+  <text x="617" y="235" text-anchor="middle" font-size="10" fill="#4b5563">private / public buckets</text>
+
+  <!-- Claude -->
+  <rect x="525" y="300" width="185" height="70" rx="12" fill="#fff7ed" stroke="#c2410c" stroke-width="1.5"/>
+  <text x="617" y="326" text-anchor="middle" font-size="13" font-weight="700" fill="#9a3412">Anthropic Claude API</text>
+  <text x="617" y="344" text-anchor="middle" font-size="10.5" fill="#9a3412">claude-opus-5-5</text>
+  <text x="617" y="359" text-anchor="middle" font-size="10" fill="#9a3412">streaming Messages API</text>
+
+  <!-- arrows -->
+  <line x1="160" y1="90" x2="233" y2="90" stroke="#374151" stroke-width="1.3" marker-end="url(#ar)" marker-start="url(#ar)"/>
+  <text x="196" y="83" text-anchor="middle" font-size="9.5" fill="#374151">HTTPS</text>
+
+  <path d="M85,50 L85,14 L716,14 L716,215 L692,215" fill="none" stroke="#374151" stroke-width="1.3" stroke-dasharray="5 3" marker-end="url(#ar)"/>
+  <text x="400" y="10" text-anchor="middle" font-size="9.5" fill="#374151">direct media upload with signed, resumable URL (bypasses Vercel)</text>
+
+  <line x1="445" y1="150" x2="523" y2="150" stroke="#374151" stroke-width="1.3" marker-end="url(#ar)" marker-start="url(#ar)"/>
+  <text x="476" y="133" text-anchor="middle" font-size="9" fill="#374151">Supabase</text>
+  <text x="476" y="144" text-anchor="middle" font-size="9" fill="#374151">SDK (RLS)</text>
+
+  <path d="M445,165 L508,165 L508,330 L523,330" fill="none" stroke="#c2410c" stroke-width="1.3" marker-end="url(#ar)"/>
+  <text x="516" y="290" font-size="9" fill="#9a3412" transform="rotate(-90 516 290)">server-only API key</text>
+
+  <path d="M160,120 C190,120 190,270 233,270" fill="none" stroke="#374151" stroke-width="1.3" marker-start="url(#ar)"/>
+  <text x="170" y="210" font-size="9.5" fill="#374151">.vcf / QR</text>
+
+  <line x1="85" y1="136" x2="85" y2="288" stroke="#7a2e3a" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#arw)"/>
+  <text x="92" y="222" font-size="9.5" fill="#7a2e3a" font-weight="600">QR scan /</text>
+  <text x="92" y="235" font-size="9.5" fill="#7a2e3a" font-weight="600">shared contact</text>
+
+  <line x1="160" y1="355" x2="233" y2="355" stroke="#16a34a" stroke-width="1.5" marker-end="url(#ar)"/>
+  <text x="196" y="348" text-anchor="middle" font-size="9.5" fill="#14532d">taps URL</text>
+
+  <path d="M445,370 L478,370 L478,250 L543,250" fill="none" stroke="#047857" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#ar)"/>
+  <text x="485" y="404" font-size="9" fill="#065f46">reads published data + media</text>
+</svg>
+<figcaption>Figure 1: RebirthAI architecture and the coach, contact-sharing, and recipient flows.</figcaption>
+</figure>
+
+<p>Figure 1 shows the RebirthAI architecture. The author uses a browser on a phone or laptop; the app can be installed as a PWA but needs no app store. The Next.js app on Vercel serves the author's screens and exposes a few server routes. Supabase provides authentication, the Postgres database protected by Row-Level Security, and file storage with a CDN.</p>
+<p><b>Coach flow.</b> When the author sends a message, the browser calls <code>/api/coach</code>. The route verifies the session, loads the conversation from Postgres, and calls the Claude API with a cached system prompt that defines the interview structure and the truthfulness and care rules (RC-04, RC-05). The reply streams back to the browser and is saved to Postgres when it finishes. Draft generation and refinement suggestions use the same route with different instructions.</p>
+<p><b>Media flow.</b> To upload a photo or video, the browser asks <code>/api/upload-url</code> for a signed upload URL, then sends the file straight to Supabase Storage. Large videos never pass through Vercel functions (RC-09). Draft media stays in a private bucket and moves to public delivery only when the testimony is published.</p>
+<p><b>Publish &amp; contact flow.</b> Publishing copies the draft into a separate published snapshot, so later edits do not go live until the author republishes. <code>/api/vcard/[handle]</code> builds a vCard 3.0 file containing the author's opted-in contact fields and the permanent testimony URL (RC-03, RC-10, RC-12), and returns it as a <code>.vcf</code> download and a QR code.</p>
+<p><b>Recipient flow.</b> The recipient scans the QR code or receives the contact card, and their phone saves the contact. Tapping the URL opens <code>rebirthai.app/@handle</code>, which is rendered on the server with the published testimony and served media. It needs no account and gives rich link previews.</p>
+
+<h2>5.3 Core Data Model</h2>
+<table>
+  <tr><th style="width:20%">Table</th><th>Key Fields</th><th style="width:30%">Notes</th></tr>
+  <tr><td class="k">profiles</td><td>id, user_id, handle, display_name, bio, photo_path, church, contact_phone, contact_email, share_contact (bool)</td><td>One per user. Contact fields are opt-in (RC-12).</td></tr>
+  <tr><td class="k">testimonies</td><td>id, profile_id, title, draft_content (JSON), published_content (JSON), status, visibility, published_at, updated_at</td><td>One per profile in the MVP. Keeping separate draft and published copies lets the author edit without changing what's live.</td></tr>
+  <tr><td class="k">coach_messages</td><td>id, testimony_id, role (user/assistant), content, section, created_at</td><td>Always private. Supports resuming a session (US-04).</td></tr>
+  <tr><td class="k">media</td><td>id, testimony_id, kind (image/video), storage_path, mime, bytes, alt_text, caption</td><td>Removed with the testimony on delete (US-12).</td></tr>
+  <tr><td class="k">handle_redirects</td><td>old_handle (unique), profile_id</td><td>Keeps old handles working permanently (RC-03).</td></tr>
+  <tr><td class="k">reports</td><td>id, testimony_id, reason, created_at, status</td><td>Content reports (RC-13).</td></tr>
+</table>
+
+<!-- ============ 6 ============ -->
+<h1 class="new-page">6 UI/UX Design</h1>
+<h2>6.1 Application / Experience Flow</h2>
+<p>RebirthAI has two experiences. Authors sign in and move through a linear path: profile setup, the coach conversation, editing, previewing, publishing, and finally adding the testimony to their contact info and sharing it. Recipients never sign in. Their experience begins in their phone's camera or Contacts app and ends on the public testimony page. Making &ldquo;Add to my contact info&rdquo; the step right after publishing puts the product's main selling point directly in the author's path instead of hiding it in settings.</p>
+<p>Figure 2 shows the screen flow. Blue nodes are author screens that require sign-in, green nodes are the recipient's path, and gray nodes are steps that happen outside RebirthAI on the phone itself. The numbered screens give a direct bridge from these user stories to a UI prototype and to implementation planning.</p>
+
+<figure>
+<svg viewBox="0 0 720 480" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#374151"/></marker>
+  </defs>
+  <style>
+    .au rect { fill:#dbeafe; stroke:#2563eb; stroke-width:1.4; }
+    .au text { fill:#1e3a8a; }
+    .rc rect { fill:#dcfce7; stroke:#16a34a; stroke-width:1.4; }
+    .rc text { fill:#14532d; }
+    .ex rect { fill:#f3f4f6; stroke:#6b7280; stroke-width:1.4; stroke-dasharray:4 3; }
+    .ex text { fill:#374151; }
+    .n { font-size:11px; font-weight:700; }
+    .t { font-size:11px; font-weight:600; }
+    .s { font-size:9.5px; }
+    .lab { font-size:9px; fill:#4b5563; }
+    .ln { stroke:#374151; stroke-width:1.3; fill:none; }
+  </style>
+
+  <text x="10" y="18" font-size="12" font-weight="700" fill="#1e3a8a">AUTHOR (signed in)</text>
+
+  <!-- Row 1 -->
+  <g class="au"><rect x="15" y="30" width="125" height="50" rx="8"/><text x="77" y="50" text-anchor="middle" class="t">1 · Landing</text><text x="77" y="66" text-anchor="middle" class="s">what RebirthAI does</text></g>
+  <g class="au"><rect x="160" y="30" width="125" height="50" rx="8"/><text x="222" y="50" text-anchor="middle" class="t">2 · Sign In</text><text x="222" y="66" text-anchor="middle" class="s">email link · Google</text></g>
+  <g class="au"><rect x="305" y="30" width="125" height="50" rx="8"/><text x="367" y="50" text-anchor="middle" class="t">3 · Profile Setup</text><text x="367" y="66" text-anchor="middle" class="s">name · handle · photo</text></g>
+  <g class="au"><rect x="450" y="30" width="125" height="50" rx="8"/><text x="512" y="50" text-anchor="middle" class="t">4 · Dashboard</text><text x="512" y="66" text-anchor="middle" class="s">status · continue</text></g>
+  <g class="au"><rect x="595" y="30" width="115" height="50" rx="8"/><text x="652" y="50" text-anchor="middle" class="t">11 · Settings</text><text x="652" y="66" text-anchor="middle" class="s">profile · delete</text></g>
+
+  <line x1="140" y1="55" x2="158" y2="55" class="ln" marker-end="url(#a2)"/>
+  <line x1="285" y1="55" x2="303" y2="55" class="ln" marker-end="url(#a2)"/>
+  <line x1="430" y1="55" x2="448" y2="55" class="ln" marker-end="url(#a2)"/>
+  <line x1="575" y1="55" x2="593" y2="55" class="ln" marker-end="url(#a2)"/>
+  <text x="367" y="94" text-anchor="middle" class="lab">first sign-in only</text>
+
+  <!-- Row 2 (right to left) -->
+  <g class="au"><rect x="450" y="130" width="125" height="50" rx="8"/><text x="512" y="150" text-anchor="middle" class="t">5 · AI Coach</text><text x="512" y="166" text-anchor="middle" class="s">one question at a time</text></g>
+  <g class="au"><rect x="305" y="130" width="125" height="50" rx="8"/><text x="367" y="150" text-anchor="middle" class="t">6 · Editor</text><text x="367" y="166" text-anchor="middle" class="s">text · photos · video</text></g>
+  <g class="au"><rect x="160" y="130" width="125" height="50" rx="8"/><text x="222" y="150" text-anchor="middle" class="t">7 · Preview</text><text x="222" y="166" text-anchor="middle" class="s">as recipients see it</text></g>
+  <g class="au"><rect x="15" y="130" width="125" height="50" rx="8"/><text x="77" y="150" text-anchor="middle" class="t">8 · Publish</text><text x="77" y="166" text-anchor="middle" class="s">public · unlisted</text></g>
+
+  <line x1="512" y1="80" x2="512" y2="128" class="ln" marker-end="url(#a2)"/>
+  <text x="518" y="108" class="lab">start / resume</text>
+  <line x1="448" y1="148" x2="432" y2="148" class="ln" marker-end="url(#a2)"/>
+  <line x1="432" y1="162" x2="448" y2="162" class="ln" marker-end="url(#a2)"/>
+  <text x="440" y="198" text-anchor="middle" class="lab">draft ⇄ refine</text>
+  <line x1="303" y1="155" x2="287" y2="155" class="ln" marker-end="url(#a2)"/>
+  <line x1="158" y1="155" x2="142" y2="155" class="ln" marker-end="url(#a2)"/>
+
+  <!-- Row 3 -->
+  <g class="au"><rect x="15" y="230" width="125" height="56" rx="8" style="stroke-width:2.4"/><text x="77" y="250" text-anchor="middle" class="t">9 · Add to My</text><text x="77" y="264" text-anchor="middle" class="t">Contact Info</text><text x="77" y="278" text-anchor="middle" class="s">.vcf · iOS/Android guide</text></g>
+  <g class="au"><rect x="160" y="230" width="125" height="56" rx="8"/><text x="222" y="252" text-anchor="middle" class="t">10 · Share</text><text x="222" y="268" text-anchor="middle" class="s">QR code · link</text><text x="222" y="281" text-anchor="middle" class="s">share sheet</text></g>
+  <line x1="77" y1="180" x2="77" y2="228" class="ln" marker-end="url(#a2)"/>
+  <text x="84" y="208" class="lab">offered right after publish</text>
+  <line x1="140" y1="258" x2="158" y2="258" class="ln" marker-end="url(#a2)"/>
+  <path d="M512,80 L512,92 L600,92 L600,300 L222,300 L222,288" class="ln" stroke-dasharray="3 3" marker-end="url(#a2)"/>
+  <text x="606" y="200" class="lab" transform="rotate(90 606 200)">returning author</text>
+
+  <!-- divider -->
+  <line x1="10" y1="325" x2="710" y2="325" stroke="#9ca3af" stroke-width="1" stroke-dasharray="6 4"/>
+  <text x="10" y="345" font-size="12" font-weight="700" fill="#14532d">RECIPIENT (no account)</text>
+
+  <!-- Row 4 -->
+  <g class="ex"><rect x="160" y="370" width="125" height="56" rx="8"/><text x="222" y="390" text-anchor="middle" class="t">12 · Camera / Contacts</text><text x="222" y="405" text-anchor="middle" class="s">scan QR → contact saved</text><text x="222" y="418" text-anchor="middle" class="s">(phone's own app)</text></g>
+  <g class="rc"><rect x="305" y="370" width="125" height="56" rx="8"/><text x="367" y="392" text-anchor="middle" class="t">13 · Testimony Page</text><text x="367" y="407" text-anchor="middle" class="s">/@handle · story + media</text></g>
+  <g class="rc"><rect x="450" y="370" width="125" height="56" rx="8"/><text x="512" y="392" text-anchor="middle" class="t">14 · Save Contact</text><text x="512" y="407" text-anchor="middle" class="s">.vcf (if author allows)</text></g>
+
+  <line x1="222" y1="286" x2="222" y2="368" class="ln" stroke="#7a2e3a" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#a2)"/>
+  <text x="230" y="352" class="lab" fill="#7a2e3a" style="fill:#7a2e3a;font-weight:600">QR / shared contact / link</text>
+  <line x1="285" y1="398" x2="303" y2="398" class="ln" marker-end="url(#a2)"/>
+  <text x="294" y="440" text-anchor="middle" class="lab">tap URL</text>
+  <line x1="430" y1="398" x2="448" y2="398" class="ln" marker-end="url(#a2)"/>
+  <path d="M222,182 C222,215 367,215 367,368" class="ln" stroke="#9ca3af" stroke-dasharray="2 3"/>
+  <text x="330" y="245" class="lab">same rendering</text>
+
+  <!-- legend -->
+  <g transform="translate(600,440)">
+    <rect x="0" y="0" width="12" height="10" fill="#dbeafe" stroke="#2563eb"/><text x="16" y="9" class="lab">author</text>
+    <rect x="60" y="0" width="12" height="10" fill="#dcfce7" stroke="#16a34a"/><text x="76" y="9" class="lab">recipient</text>
+    <rect x="0" y="16" width="12" height="10" fill="#f3f4f6" stroke="#6b7280" stroke-dasharray="3 2"/><text x="16" y="25" class="lab">outside app (phone)</text>
+  </g>
+</svg>
+<figcaption>Figure 2: RebirthAI screen flow for authors and recipients.</figcaption>
+</figure>
+
+<h2>6.2 Interactive UI/UX Prototype</h2>
+<p>No interactive prototype exists yet. A Figma (or similar) prototype covering screens 1&ndash;14 should be produced next and linked here. When the prototype and this SDD disagree, the written SDD is authoritative.</p>
+<p><b>Prototype link:</b> TBD</p>
+
+<h2>6.3 Design Alignment &amp; Refinement</h2>
+<p>The following refinements were made while checking the initial flow against the user stories and constraints. They are proposals from this draft and should be confirmed or revised by the team during design review.</p>
+<table>
+  <tr><th style="width:36%">Design Refinement</th><th style="width:44%">Why It Was Changed</th><th style="width:20%">Related Story / Requirement</th></tr>
+  <tr><td>The coach asks one question per turn instead of presenting a long form or questionnaire.</td><td>Testimonies are personal and sometimes painful; a conversation feels safer and draws out detail that a form misses.</td><td>US-03, RC-05</td></tr>
+  <tr><td>AI edits appear as accept/reject suggestions instead of being applied automatically.</td><td>Keeps the author in control of their own voice and makes invented details easy to catch.</td><td>US-06, RC-04</td></tr>
+  <tr><td>&ldquo;Add to my contact info&rdquo; is the step immediately after publishing, not a setting.</td><td>It is the product's main differentiator; if it is hidden, most authors will never use it.</td><td>US-09</td></tr>
+  <tr><td>The QR code encodes the full contact card instead of a bare link.</td><td>One scan saves the author as a contact and the testimony link together, which is the in-person moment the product is built for.</td><td>US-10, RC-10</td></tr>
+  <tr><td>The public page leads with photo, name, and a one-line headline, then the story, with videos tap-to-play.</td><td>The first screen should feel personal and load fast on a phone; autoplaying video wastes data and is inaccessible.</td><td>US-13, RC-11</td></tr>
+  <tr><td>Before publishing, the preview reminds authors to consider whether they've named other people.</td><td>Testimonies often involve family members or others who have not consented to being named publicly.</td><td>US-08, RISK-03</td></tr>
+</table>
+
+<!-- ============ 7 ============ -->
+<h1>7 Key Design Decisions &amp; Open Questions</h1>
+<h2>7.1 Key Design Decisions</h2>
+<p class="rule"><b>DD-01 &mdash; Mobile-First Web App Instead of Native Apps:</b> A responsive web app (installable as a PWA) avoids app-store review during the hackathon, works on every phone, and, most importantly, means recipients need nothing installed. Native apps are deferred.</p>
+<p class="rule"><b>DD-02 &mdash; Handle-Based Permanent URL:</b> The testimony is reached at <code>/@handle</code> rather than a per-version ID. Because URLs saved in contacts can never be updated, the link must always resolve to the author's current published testimony (RC-03).</p>
+<p class="rule"><b>DD-03 &mdash; vCard File + QR Code Instead of Writing to Device Contacts:</b> Browsers cannot edit a phone's Contacts. <code>.vcf</code> files and vCard QR codes are universally supported, so RebirthAI generates them and guides the author through adding the link to their own card. Direct contact integration is a reason to build native apps later.</p>
+<p class="rule"><b>DD-04 &mdash; Interview-Then-Draft, Not &ldquo;Write It for Me&rdquo;:</b> The AI interviews the author first and drafts only from their answers. This produces more authentic testimonies and is how RC-04 is enforced in practice.</p>
+<p class="rule"><b>DD-05 &mdash; Separate Draft and Published Copies:</b> Authors can keep refining without changing what recipients see, and republishing is an explicit action.</p>
+<p class="rule"><b>DD-06 &mdash; Next.js + Supabase as One Small Stack:</b> One TypeScript codebase on Vercel and one managed backend minimize setup time and moving parts for a hackathon team, while RLS still gives real database-level privacy.</p>
+<p class="rule"><b>DD-07 &mdash; Server-Side, Streaming AI Calls:</b> All Claude API calls go through <code>/api/coach</code> so the API key stays on the server, rate limits and safety rules are applied in one place, and replies stream for a responsive chat.</p>
+<p class="rule"><b>DD-08 &mdash; One Testimony per Profile in the MVP</b> <span class="tag">ASSUMPTION</span><b>:</b> This keeps the URL, contact card, and editor simple. The data model allows multiple testimonies later (OQ-02).</p>
+
+<h2>7.2 Open Questions, Assumptions &amp; Risks</h2>
+<table>
+  <tr><th style="width:26%">ID / Topic</th><th>Open Question, Assumption, or Risk</th></tr>
+  <tr><td class="k">OQ-01 &mdash; Who Keeps the Testimony?</td><td>The brief says the person who gives the testimony wants a way to keep it. The MVP covers both sides: authors keep it on their profile, and recipients keep it through the saved contact. Should recipients also get accounts and a saved library of testimonies they have received?</td></tr>
+  <tr><td class="k">OQ-02 &mdash; Multiple Testimonies</td><td>Should a profile hold several stories, such as a salvation testimony plus later chapters? If so, which one does the contact link show?</td></tr>
+  <tr><td class="k">OQ-03 &mdash; Faith Framing <span class="tag">ASSUMPTION</span></td><td>This draft assumes Christian testimonies (&ldquo;rebirth&rdquo;), with the coach able to ask about scripture and faith moments if the author wants. Should the coach also support other faiths, or non-faith life-change stories?</td></tr>
+  <tr><td class="k">OQ-04 &mdash; Discovery</td><td>Should public profiles be browsable inside RebirthAI (the LinkedIn-style layer) and indexed by search engines? The MVP assumes public pages are indexable, unlisted pages are not, and there is no in-app browsing.</td></tr>
+  <tr><td class="k">OQ-05 &mdash; Native Contact Sharing</td><td>Do iPhone NameDrop/AirDrop and Android contact sharing include the URL field from the author's own card? This needs device testing; the QR path works regardless.</td></tr>
+  <tr><td class="k">OQ-06 &mdash; Domain &amp; Branding</td><td>The final domain (shown here as <code>rebirthai.app</code>) and URL format must be chosen early, because they are permanently embedded in every contact card.</td></tr>
+  <tr><td class="k">OQ-07 &mdash; Video Limits</td><td>Are 100 MB / about 3 minutes enough? Longer video would need a transcoding and streaming service such as Mux.</td></tr>
+  <tr><td class="k">RISK-01 &mdash; Contact Setup Friction</td><td>Adding a link to one's own contact card is a manual step on both iPhone and Android, and many authors may skip it. Mitigations: a clear step-by-step guide with screenshots, and the QR flow, which works without that step.</td></tr>
+  <tr><td class="k">RISK-02 &mdash; AI Fabrication or Flattened Voice</td><td>The AI could add details or make every testimony sound the same. Mitigations: RC-04, accept/reject suggestions, and a review of test sessions before the demo.</td></tr>
+  <tr><td class="k">RISK-03 &mdash; Oversharing &amp; Third Parties</td><td>Authors may publish details they later regret, or name family members without consent. Mitigations: a preview reminder, Unlisted visibility, and one-click unpublish and delete.</td></tr>
+  <tr><td class="k">RISK-04 &mdash; Abuse of Public Pages</td><td>Open uploads could be misused for inappropriate content. Mitigations: authenticated uploads, file-type allow-lists, and the report link. Moderation tooling is post-MVP.</td></tr>
+  <tr><td class="k">RISK-05 &mdash; AI Cost During the Demo</td><td>Heavy demo traffic could exhaust the API budget. Mitigations: per-user rate limits, prompt caching, and a spend limit in the Anthropic Console (RC-08).</td></tr>
+  <tr><td class="k">RISK-06 &mdash; Uploads on Mobile Networks</td><td>Large videos may fail on weak connections. Mitigations: resumable uploads, progress UI, and size limits (RC-09).</td></tr>
+</table>
+
+<!-- ============ 8 ============ -->
+<h1>8 References &amp; Supporting Links</h1>
+<ul>
+  <li>Next.js Documentation: <a href="https://nextjs.org/docs">https://nextjs.org/docs</a></li>
+  <li>Vercel Documentation: <a href="https://vercel.com/docs">https://vercel.com/docs</a></li>
+  <li>Supabase Auth: <a href="https://supabase.com/docs/guides/auth">https://supabase.com/docs/guides/auth</a></li>
+  <li>Supabase Row-Level Security: <a href="https://supabase.com/docs/guides/database/postgres/row-level-security">https://supabase.com/docs/guides/database/postgres/row-level-security</a></li>
+  <li>Supabase Storage (resumable uploads): <a href="https://supabase.com/docs/guides/storage">https://supabase.com/docs/guides/storage</a></li>
+  <li>Claude API Documentation: <a href="https://platform.claude.com/docs">https://platform.claude.com/docs</a></li>
+  <li>vCard 3.0 &mdash; RFC 2426: <a href="https://www.rfc-editor.org/rfc/rfc2426">https://www.rfc-editor.org/rfc/rfc2426</a></li>
+  <li>TipTap Editor: <a href="https://tiptap.dev/docs">https://tiptap.dev/docs</a></li>
+  <li>WCAG 2.1: <a href="https://www.w3.org/TR/WCAG21/">https://www.w3.org/TR/WCAG21/</a></li>
+  <li>988 Suicide &amp; Crisis Lifeline: <a href="https://988lifeline.org">https://988lifeline.org</a></li>
+</ul>
+
+<h2>8.1 Traceability Snapshot</h2>
+<p>The table below shows how the highest-priority design items stay traceable into implementation planning. The full implementation plan will expand this mapping.</p>
+<table>
+  <tr><th style="width:9%">ID</th><th style="width:17%">Design Intent</th><th style="width:20%">UI/UX Artifact</th><th style="width:27%">Architecture / Service</th><th style="width:27%">Later Planning Target</th></tr>
+  <tr><td>US-03, US-05</td><td>Guided interview &amp; draft</td><td>Screen 5 AI Coach &rarr; Screen 6 Editor</td><td><code>/api/coach</code> + Claude API (streaming) + <code>coach_messages</code></td><td>Issue: Implement coach chat with streaming, persistence, and draft generation</td></tr>
+  <tr><td>US-07</td><td>Photos &amp; video</td><td>Screen 6 Editor media blocks</td><td><code>/api/upload-url</code> + Supabase Storage (resumable)</td><td>Issue: Signed direct uploads and editor media blocks</td></tr>
+  <tr><td>US-08</td><td>Publish to profile</td><td>Screens 7&ndash;8 &rarr; 13</td><td>Published snapshot in <code>testimonies</code> + server-rendered <code>/@handle</code></td><td>Issue: Publish/unpublish and public testimony page</td></tr>
+  <tr><td>US-09, US-10</td><td>Testimony on contact card</td><td>Screen 9 Add to Contact &rarr; Screen 10 QR</td><td><code>/api/vcard/[handle]</code> (vCard 3.0) + QR generation</td><td>Issue: vCard/QR generation and iOS/Android setup guide</td></tr>
+  <tr><td>US-13, US-14</td><td>Recipient opens &amp; returns</td><td>Screen 12 &rarr; Screen 13</td><td>Permanent handle URL + <code>handle_redirects</code></td><td>Issue: Stable URLs, redirects, and link previews</td></tr>
+</table>
+
+<p class="status"><b>Document Status:</b> Draft v0.1 for team review. Items marked ASSUMPTION and all OQ entries should be resolved before implementation planning. The implementation plan, GitHub Issues, ARCHITECTURE.md, and agentic development configuration come in later phases.</p>
+
+</body>
+</html>
