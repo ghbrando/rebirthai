@@ -3,6 +3,7 @@ import { getUserOrNull } from "@/lib/auth";
 import { SignInForm } from "@/components/profile/sign-in-form";
 
 export default async function Page({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
+  if (process.env.DEMO_MODE === "1") redirect("/demo");
   const session = await getUserOrNull();
   if (session) redirect("/dashboard"); // dashboard's layout sends profile-less users to /onboarding
   const { error } = await searchParams;

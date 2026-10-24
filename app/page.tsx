@@ -7,7 +7,7 @@ export default function Landing() {
       <p className="text-lg text-gray-700">
         Tell your story with an AI coach, then put it on your contact card so it travels with you.
       </p>
-      <Link href="/sign-in" className="w-fit rounded bg-[#7a2e3a] px-5 py-3 text-white">
+      <Link href={process.env.DEMO_MODE === "1" ? "/demo" : "/sign-in"} className="w-fit rounded bg-[#7a2e3a] px-5 py-3 text-white">
         Get started
       </Link>
     </main>
