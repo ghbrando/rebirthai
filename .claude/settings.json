@@ -9,7 +9,16 @@
       "Read(./.env.production)",
       "Read(./.env.test)",
       "Edit(./.env)",
-      "Edit(./.env.local)"
+      "Edit(./.env.local)",
+      "Read(**/.env)",
+      "Read(**/.env.local)",
+      "Read(**/.env.*.local)",
+      "Read(**/.env.development)",
+      "Read(**/.env.production)",
+      "Read(**/.env.staging)",
+      "Read(**/.env.test)",
+      "Edit(**/.env)",
+      "Edit(**/.env.*)"
     ]
   },
   "hooks": {
@@ -20,7 +29,9 @@
           {
             "type": "command",
             "command": "node",
-            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/guard.mjs"],
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/guard.mjs"
+            ],
             "onFailure": "block",
             "timeout": 20
           }

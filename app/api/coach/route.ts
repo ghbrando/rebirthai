@@ -101,11 +101,13 @@ export async function POST(req: Request) {
   const stream = new ReadableStream({
     async start(controller) {
       let full = "";
+      const model = coachModel("interview");
+      let logged = false;
       let emitted = 0;
       try {
         const events = getAnthropic().beta.messages.stream(
           {
-            model: coachModel("interview"),
+            model,
             max_tokens: 2048,
             thinking: { type: "adaptive" },
             output_config: { effort: "low" }, // chat: first tokens fast
@@ -132,7 +134,8 @@ export async function POST(req: Request) {
           }
         }
         const final = await events.finalMessage();
-        logAiUsage("interview", final.model, final.usage, testimony.id);
+        logAiUsage("interview", model, final.model, final.usage, testimony.id);
+        logged = true;
         if (final.stop_reason === "refusal" && !full.trim()) {
           full = "I'm not able to respond to that, but I'm still here. Would you like to continue with your story whenever you're ready?\n[[section: other]]";
           send(controller, { type: "text", text: parseSectionTag(full).text });
@@ -157,6 +160,7 @@ export async function POST(req: Request) {
           message: saved.data ?? null,
         });
       } catch (err) {
+        if (!logged) logAiUsage("interview", model, null, null, testimony.id);
         if (!req.signal.aborted) {
           console.error("coach stream error", err);
           send(controller, { type: "error", message: "The coach hit a problem. Please try again." });
