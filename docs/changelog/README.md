@@ -15,6 +15,7 @@ Release summaries live in `CHANGELOG.md` and link here.
 
 | Date | PR | Change | Issues |
 |---|---|---|---|
+| 2026-10-27 | #30 | [Private beta plan and Discovery direction](2026-10-27-pr-30-beta-plan.md) | #25–#29 |
 | 2026-10-27 | #24 | [Guardrails, PR checks, project instructions](2026-10-27-pr-24-project-setup-guardrails.md) | — |
 | 2026-10-26 | #23 | [Change records folder and backfill](2026-10-26-pr-23-change-records.md) | — |
 | 2026-10-26 | #22 | [Release changelog (CHANGELOG.md)](2026-10-26-pr-22-changelog.md) | — |
