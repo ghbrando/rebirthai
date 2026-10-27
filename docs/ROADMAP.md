@@ -7,8 +7,9 @@ Phases and traceability: `docs/IMPLEMENTATION_PLAN.md`.
 
 ## Where we are
 
-The MVP (SDD §2.2) is built on `main`. The current phase verifies it against every SDD
-pass/fail check and prepares a governed release.
+The MVP (SDD §2.2) is built on `main`. After the hackathon, a Google engineer asked the team to
+make it real, so the goal is now a **private beta** with him and people he knows
+(`docs/BETA_PLAN.md`). Current work: verify the MVP and meet the beta bar.
 
 ## Phases
 
@@ -31,8 +32,16 @@ Goal: every SDD story verified with evidence or explicitly excepted by the owner
 Goal: a governed, deployed MVP on its final domain.
 Governed branches — #1 (done) · Supabase project — #18 · Vercel and final domain — #19 · AI cost controls — #20
 
+Beta bar additions: privacy policy and terms — #25 · delete my account — #26 ·
+reports reach the operator — #27 · feedback link — #28.
+
 Sequencing note: #18 unblocks most verification; #19 waits on the domain decision (D-04),
 which must be made before any real contact card is shared.
+
+**8 · Discovery & Community — next, after the beta**
+Goal: after writing a testimony, browse others, get a "for you" feed of related testimonies, and
+find local Bible studies and churches that may fit. Opt-in only; designed with beta learnings.
+Design first — #29 (decisions D-06, D-07).
 
 ## Later (not planned in detail; each needs an owner decision)
 

@@ -243,6 +243,11 @@ are created for traceability and closed with links to their merge commits.
 | I-18 | [#1](https://github.com/ghbrando/rebirthai/issues/1) | Governed branches: `dev` / `staging`, rulesets for the agent account | 7 | Lab 2 trust model | Done (closed, Oct 26 2026) |
 | I-19 | [#19](https://github.com/ghbrando/rebirthai/issues/19) | Vercel deploy and final domain | 7 | RC-07, OQ-06, DD-02 | Backlog — blocked by D-04 |
 | I-20 | [#20](https://github.com/ghbrando/rebirthai/issues/20) | AI cost controls: Anthropic spend limit and rate-limit check | 7 | RC-08, RISK-05 | Backlog — awaiting review (human action) |
+| I-21 | [#25](https://github.com/ghbrando/rebirthai/issues/25) | Privacy policy and terms of use pages | 7 | POLICY §2, §4; RC-07 | Backlog — awaiting review |
+| I-22 | [#26](https://github.com/ghbrando/rebirthai/issues/26) | Delete my account and all my data | 7 | US-12, RC-03, RC-07 | Backlog — awaiting review |
+| I-23 | [#27](https://github.com/ghbrando/rebirthai/issues/27) | Reports reach the operator, who can take a page down | 7 | US-15, RISK-04 | Backlog — awaiting review |
+| I-24 | [#28](https://github.com/ghbrando/rebirthai/issues/28) | In-app feedback link for beta users | 7 | BETA_PLAN | Backlog — awaiting review |
+| I-25 | [#29](https://github.com/ghbrando/rebirthai/issues/29) | Design Discovery & Community | 8 | OQ-01, OQ-04, D-06, D-07 | Backlog — awaiting review |
 
 ---
 
@@ -257,6 +262,9 @@ are created for traceability and closed with links to their merge commits.
 | D-03 | Which Supabase and Vercel accounts/projects host the app? | — | I-17, I-19 |
 | D-04 | Final domain and URL format (OQ-06) — permanent once vCards exist | `rebirthai.app` placeholder; do not publish real vCards | I-14, I-19 |
 | D-05 | Recipient accounts (OQ-01), multiple testimonies (OQ-02), discovery (OQ-04) | Out of MVP scope | Post-MVP |
+| D-06 | Discovery: where Bible-study and church listings come from (churches list themselves vs. public map data) | Not decided; no listings built | I-25, Discovery phase |
+| D-07 | Discovery: consent model for the feed and matching | Opt-in only; Unlisted never shown (BETA_PLAN principles) | I-25 |
+| D-08 | Who continues the project and who owns it after the hackathon | Owner (ghbrando) decides outside the code | Private beta |
 
 ### 6.2 Risks
 

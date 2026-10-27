@@ -250,6 +250,173 @@
       "dependencies": ["I-17 (live key)"],
       "verification": ["Screenshot of the spend limit; rate-limit check recorded"],
       "out_of_scope": ["Changing the model or prompt"]
+    },
+    {
+      "key": "I-21",
+      "title": "Privacy policy and terms of use pages",
+      "phase": "7 Release Readiness",
+      "area": "Frontend",
+      "priority": "P0",
+      "sequence": 20,
+      "done": false,
+      "labels": [
+        "type:feature",
+        "human-action"
+      ],
+      "context": "Beta users will share deeply personal testimonies. There is no privacy policy or terms. Required before inviting anyone (docs/BETA_PLAN.md).",
+      "trace": "POLICY §2, §4; RC-07",
+      "acceptance": [
+        "Privacy policy states what is collected (profile, testimony, media, coach conversations, reports), why, who processes it (hosting, AI provider), retention, and how to delete everything",
+        "Terms cover acceptable content and the operator's right to remove pages",
+        "Both linked from sign-in and the public page footer",
+        "Owner has reviewed the text (owner action; not legal advice)"
+      ],
+      "design": [
+        "docs/POLICY.md",
+        "docs/BETA_PLAN.md"
+      ],
+      "dependencies": [
+        "D-03 (names the hosting providers)"
+      ],
+      "verification": [
+        "Screenshots of both pages and links on mobile"
+      ],
+      "out_of_scope": [
+        "Formal legal review"
+      ]
+    },
+    {
+      "key": "I-22",
+      "title": "Delete my account and all my data",
+      "phase": "7 Release Readiness",
+      "area": "Backend",
+      "priority": "P0",
+      "sequence": 21,
+      "done": false,
+      "labels": [
+        "type:feature"
+      ],
+      "context": "Authors can delete a testimony but not their account. Before real users, a person must be able to remove everything: profile, testimony, media, coach conversations, handle.",
+      "trace": "US-12, RC-03, RC-07; POLICY §2",
+      "acceptance": [
+        "Settings offers Delete account with a clear, plain-language confirmation",
+        "Deletes profile, testimony, coach conversations, stored media in both buckets, and the sign-in account",
+        "The public page and contact-card link show a friendly 'no longer available' page, not an error",
+        "Handle behavior for deleted accounts follows RC-03 and is documented",
+        "Runs server-side only; the service-role key never reaches the client (RC-07)"
+      ],
+      "design": [
+        "SDD US-12, RC-03",
+        "docs/ARCHITECTURE.md"
+      ],
+      "dependencies": [
+        "I-17 (live Supabase)"
+      ],
+      "verification": [
+        "Unit tests for the deletion route",
+        "Manual check: after deletion no rows or files remain for the user"
+      ],
+      "out_of_scope": [
+        "Data export"
+      ]
+    },
+    {
+      "key": "I-23",
+      "title": "Reports reach the operator, who can take a page down",
+      "phase": "7 Release Readiness",
+      "area": "Backend",
+      "priority": "P1",
+      "sequence": 22,
+      "done": false,
+      "labels": [
+        "type:feature"
+      ],
+      "context": "Recipients can report a public page and reports are stored, but nobody is notified and there is no takedown path.",
+      "trace": "US-15, RISK-04; POLICY §2 (operator)",
+      "acceptance": [
+        "Each new report notifies the operator with a link to the page",
+        "The operator can unpublish a reported page without editing the author's story",
+        "The author is told their page was unpublished and why, in plain words",
+        "Steps written in docs/OPERATIONS.md"
+      ],
+      "design": [
+        "SDD US-15",
+        "docs/POLICY.md"
+      ],
+      "dependencies": [
+        "I-17"
+      ],
+      "verification": [
+        "End to end: report a page, receive notification, unpublish, author sees notice"
+      ],
+      "out_of_scope": [
+        "Full moderation dashboard",
+        "Automated content screening"
+      ]
+    },
+    {
+      "key": "I-24",
+      "title": "In-app feedback link for beta users",
+      "phase": "7 Release Readiness",
+      "area": "Frontend",
+      "priority": "P2",
+      "sequence": 23,
+      "done": false,
+      "labels": [
+        "type:feature"
+      ],
+      "context": "The beta exists to learn. Users need a one-tap way to say what works and what they want next.",
+      "trace": "docs/BETA_PLAN.md",
+      "acceptance": [
+        "A 'Send feedback' link in the signed-in menu",
+        "Feedback reaches the owner with the page it was sent from, and the sender's handle only with consent",
+        "No new paid service without owner approval"
+      ],
+      "design": [
+        "docs/BETA_PLAN.md"
+      ],
+      "dependencies": [],
+      "verification": [
+        "Feedback sent from a phone arrives"
+      ],
+      "out_of_scope": [
+        "Surveys, analytics"
+      ]
+    },
+    {
+      "key": "I-25",
+      "title": "Design Discovery & Community: feed, related testimonies, local Bible studies and churches",
+      "area": "Docs",
+      "priority": "P2",
+      "sequence": 24,
+      "done": false,
+      "labels": [
+        "type:design"
+      ],
+      "context": "Owner direction (2026-10-27): after writing a testimony, browse others, get a 'for you' feed of related testimonies, and find local Bible studies and churches that may fit. Post-beta phase; this Issue is the design, not the build.",
+      "trace": "OQ-01, OQ-04, RISK-04; D-06, D-07; docs/BETA_PLAN.md",
+      "acceptance": [
+        "SDD v0.2 section with stories (US-), constraints (RC-) and decisions (DD-) for the feed, related testimonies, and Bible study and church matching",
+        "Opt-in consent model: never automatic, Unlisted never shown, existing testimonies not added automatically",
+        "Listing source decision prepared for the owner (D-06): churches list themselves vs. public map data, with tradeoffs",
+        "Matching explains suggestions and never decides whether a person fits; domain rules for denominations recorded",
+        "Privacy and security review of storing and matching faith, health and location data",
+        "Informed by design-partner and beta feedback"
+      ],
+      "design": [
+        "docs/BETA_PLAN.md",
+        "docs/POLICY.md"
+      ],
+      "dependencies": [
+        "Private beta running",
+        "Owner decisions D-06, D-07"
+      ],
+      "verification": [
+        "Owner approves the SDD v0.2 section"
+      ],
+      "out_of_scope": [
+        "Building the feed or matching"
+      ]
     }
   ]
 }

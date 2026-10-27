@@ -11,6 +11,7 @@ How this file is maintained:
 ## [Unreleased]
 
 ### Added
+- Private beta plan, with Discovery & Community (a feed of related testimonies, local Bible studies and churches) planned as the next phase; new Issues for privacy policy, account deletion, report handling and feedback (#30, [record](docs/changelog/2026-10-27-pr-30-beta-plan.md))
 - Automatic checks (lint, type-check, unit tests) on every pull request, plus agent guardrails that block pushes to `staging`/`main` and reading secret files (#24, [record](docs/changelog/2026-10-27-pr-24-project-setup-guardrails.md))
 - Change records: one context file per change in `docs/changelog/`, backfilled for all past changes (#23, [record](docs/changelog/2026-10-26-pr-23-change-records.md))
 - Release changelog with links to the change records (#22, [record](docs/changelog/2026-10-26-pr-22-changelog.md))

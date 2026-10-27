@@ -2,7 +2,9 @@
 
 AI-guided testimony platform: a person writes their story with an AI coach, publishes it at a
 permanent `/@handle` URL, and shares it through a contact card (vCard + QR).
-Hackathon project: favor working demos over polish; keep the README current with how to run it.
+Started as a hackathon project; now heading to a private beta with real users (`docs/BETA_PLAN.md`).
+Ship small and fast, but never cut corners on privacy, data, or the coach's truthfulness.
+Keep the README current with how to run it.
 
 ## Run and test
 - Run: `npm run dev` (needs `.env.local`, see README; `DEMO_MODE=1` enables `/demo` sign-in)
