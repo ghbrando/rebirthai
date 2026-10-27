@@ -11,6 +11,7 @@ How this file is maintained:
 ## [Unreleased]
 
 ### Added
+- Automatic checks (lint, type-check, unit tests) on every pull request, plus agent guardrails that block pushes to `staging`/`main` and reading secret files (#24, [record](docs/changelog/2026-10-27-pr-24-project-setup-guardrails.md))
 - Change records: one context file per change in `docs/changelog/`, backfilled for all past changes (#23, [record](docs/changelog/2026-10-26-pr-23-change-records.md))
 - Release changelog with links to the change records (#22, [record](docs/changelog/2026-10-26-pr-22-changelog.md))
 - Implementation plan with phases, real status and SDD traceability (`docs/IMPLEMENTATION_PLAN.md`) (#21, [record](docs/changelog/2026-10-26-pr-21-lab3-planning.md))

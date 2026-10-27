@@ -15,6 +15,7 @@ Release summaries live in `CHANGELOG.md` and link here.
 
 | Date | PR | Change | Issues |
 |---|---|---|---|
+| 2026-10-27 | #24 | [Guardrails, PR checks, project instructions](2026-10-27-pr-24-project-setup-guardrails.md) | — |
 | 2026-10-26 | #23 | [Change records folder and backfill](2026-10-26-pr-23-change-records.md) | — |
 | 2026-10-26 | #22 | [Release changelog (CHANGELOG.md)](2026-10-26-pr-22-changelog.md) | — |
 | 2026-10-26 | #21 | [Implementation plan, backlog, persistent context](2026-10-26-pr-21-lab3-planning.md) | #1–#20 |
