@@ -25,6 +25,20 @@ learn what they would want next (especially for Discovery, below).
 Good before beta, not blocking: dashboard #11, accessibility #15, installable app #12,
 performance #17, large video uploads #13, in-app feedback link #28.
 
+## Free for users; AI cost stays low
+Owner decision (2026-10-27): RebirthAI is free for the people using it. The operator pays for
+hosting and AI, so cost per testimony must stay low as it grows (target scale: ~10k users).
+- **Measure:** every coach call logs its token use and estimated cost (`event: "ai_usage"` in the
+  server logs, by testimony). The beta gives the real cost per testimony.
+- **Cheaper models where quality holds:** each coach step (interview, draft, edit suggestions) can
+  run on its own model via settings. Default stays on the top model until the truthfulness check
+  (#10) shows a cheaper one invents nothing. The interview is the likeliest saving; the draft,
+  where quality matters most, likely stays on the top model.
+- **Hard cap:** a monthly spending limit in the Anthropic Console (#20) on top of the existing
+  per-author hourly message limit.
+- **Not pursued:** users paying with their own AI subscription (most users won't have one; Claude
+  doesn't allow it) and on-phone models (too weak, and small models invent details).
+
 ## Owner decisions, in order
 1. **Team and ownership (D-08)** (outside the code): who from the hackathon team continues and who owns the project.
 2. **Design-partner conversation**: who he would invite, and what would make him trust it with his own story.
