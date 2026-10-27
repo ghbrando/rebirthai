@@ -39,4 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-.claude/
+# Local-only Claude files; settings.json and hooks/ are committed.
+.claude/worktrees/
+.claude/settings.local.json

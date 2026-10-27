@@ -1,0 +1,48 @@
+# Lint, type-check and unit tests on every pull request into dev, staging and main.
+# From /project-setup. Scripts: lint, typecheck, test (vitest unit tests only; no secrets needed).
+#
+# The job name below ("lint-typecheck-test") is the status-check name GitHub
+# reports. Rulesets require checks by that name, so renaming the job silently
+# un-requires it: change the ruleset in the same breath.
+#
+# No secrets: the workflow uses `pull_request` (never `pull_request_target`)
+# and a read-only token, so a PR from anywhere cannot reach credentials.
+name: Checks
+
+on:
+  pull_request:
+    branches: [dev, staging, main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  lint-typecheck-test:
+    name: lint-typecheck-test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test
