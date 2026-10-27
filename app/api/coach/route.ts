@@ -1,6 +1,7 @@
 import type Anthropic from "@anthropic-ai/sdk";
 import { getUserOrNull } from "@/lib/auth";
-import { aiConfigured, COACH_MODEL, getAnthropic } from "@/lib/ai/client";
+import { aiConfigured, getAnthropic } from "@/lib/ai/client";
+import { coachModel, logAiUsage } from "@/lib/ai/usage";
 import {
   COACH_OPENING_USER_TURN,
   COACH_SYSTEM_PROMPT,
@@ -104,7 +105,7 @@ export async function POST(req: Request) {
       try {
         const events = getAnthropic().beta.messages.stream(
           {
-            model: COACH_MODEL,
+            model: coachModel("interview"),
             max_tokens: 2048,
             thinking: { type: "adaptive" },
             output_config: { effort: "low" }, // chat: first tokens fast
@@ -131,6 +132,7 @@ export async function POST(req: Request) {
           }
         }
         const final = await events.finalMessage();
+        logAiUsage("interview", final.model, final.usage, testimony.id);
         if (final.stop_reason === "refusal" && !full.trim()) {
           full = "I'm not able to respond to that, but I'm still here. Would you like to continue with your story whenever you're ready?\n[[section: other]]";
           send(controller, { type: "text", text: parseSectionTag(full).text });
