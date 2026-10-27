@@ -1,7 +1,8 @@
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { z } from "zod";
 import { getUserOrNull } from "@/lib/auth";
-import { aiConfigured, COACH_MODEL, getAnthropic } from "@/lib/ai/client";
+import { aiConfigured, getAnthropic } from "@/lib/ai/client";
+import { coachModel, logAiUsage } from "@/lib/ai/usage";
 import { DRAFT_SYSTEM_PROMPT } from "@/lib/ai/prompts";
 import { getTestimonyById, loadHistory, transcript } from "@/lib/ai/coach-data";
 import { DraftOutputSchema, toTestimonyContent } from "@/lib/ai/content";
@@ -33,7 +34,7 @@ export async function POST(req: Request) {
 
   try {
     const msg = await getAnthropic().messages.parse({
-      model: COACH_MODEL,
+      model: coachModel("draft"),
       max_tokens: 16000,
       thinking: { type: "adaptive" },
       output_config: { effort: "medium", format: zodOutputFormat(DraftOutputSchema) },
@@ -45,6 +46,7 @@ export async function POST(req: Request) {
         },
       ],
     });
+    logAiUsage("draft", msg.model, msg.usage, testimony.id);
     if (msg.stop_reason === "refusal" || !msg.parsed_output) {
       return Response.json({ error: "Couldn't create a draft this time. Please try again." }, { status: 502 });
     }

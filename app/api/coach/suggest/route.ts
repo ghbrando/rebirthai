@@ -1,7 +1,8 @@
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { z } from "zod";
 import { getUserOrNull } from "@/lib/auth";
-import { aiConfigured, COACH_MODEL, getAnthropic } from "@/lib/ai/client";
+import { aiConfigured, getAnthropic } from "@/lib/ai/client";
+import { coachModel, logAiUsage } from "@/lib/ai/usage";
 import { SUGGEST_SYSTEM_PROMPT } from "@/lib/ai/prompts";
 import { blockText, getTestimonyById, loadHistory, transcript } from "@/lib/ai/coach-data";
 import type { CoachSuggestion, SuggestResponse } from "@/lib/types";
@@ -51,7 +52,7 @@ export async function POST(req: Request) {
 
   try {
     const msg = await getAnthropic().messages.parse({
-      model: COACH_MODEL,
+      model: coachModel("suggest"),
       max_tokens: 8000,
       thinking: { type: "adaptive" },
       output_config: { effort: "medium", format: zodOutputFormat(Output) },
@@ -63,6 +64,7 @@ export async function POST(req: Request) {
         },
       ],
     });
+    logAiUsage("suggest", msg.model, msg.usage, testimony.id);
     if (msg.stop_reason === "refusal" || !msg.parsed_output) {
       return Response.json({ error: "No suggestions this time. Please try again." }, { status: 502 });
     }

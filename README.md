@@ -19,6 +19,7 @@ Create `.env.local` with:
 | `SUPABASE_SERVICE_ROLE_KEY` | **server-only** (RC-07) |
 | `ANTHROPIC_API_KEY` | **server-only** (RC-07) |
 | `NEXT_PUBLIC_SITE_URL` | public origin, e.g. `http://localhost:3000` |
+| `COACH_MODEL_INTERVIEW`, `COACH_MODEL_DRAFT`, `COACH_MODEL_SUGGEST` | optional; Claude model per coach step (`claude-opus-5-5` default; also `claude-sonnet-5-5`, `claude-haiku-5-5`). Change only after the coach truthfulness check (#10). |
 
 ### Database
 
