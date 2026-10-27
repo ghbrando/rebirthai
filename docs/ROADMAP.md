@@ -40,7 +40,7 @@ which must be made before any real contact card is shared.
 
 **8 · Discovery & Community — next, after the beta**
 Goal: after writing a testimony, browse others, get a "for you" feed of related testimonies, and
-find local Bible studies and churches that may fit. Opt-in only; designed with beta learnings.
+find local Bible studies and churches to explore. Opt-in only; designed with beta learnings.
 Design first — #29 (decisions D-06, D-07).
 
 ## Later (not planned in detail; each needs an owner decision)
