@@ -1,5 +1,24 @@
 # RebirthAI
 
+## Lament
+
+As Christians, knowing why a Christian is baptized is meaningful. We felt it is tough to share a testimony of how Jesus has changed someone. The gospel has saved believers, and we want to know why. Forming a testimony requires being prompted by the Jesus. 
+
+## Discern
+
+Sharing our testimonies online would bring glory to God, but not everyone wants to have their information online. Because understanding what Jesus has done in our lives involves a relationship with Him, we thought it would be best to help Christians write to Him. Through chatting with an AI coach, we could form a testimony.
+
+## Build
+
+We created a model that is designed to help Christians share their beliefs:
+https://github.com/user-attachments/assets/218e19f5-bf97-4287-9cdb-083862a09808
+
+## Steward
+
+God pushed us to preach our testimony to people on God’s earth. It worked. We took it a step further and included our testimony. Now we can make testimonies more powerful.
+
+# Product Specification
+
 AI-guided testimony platform: write your story with an AI coach, add photos/video, publish it at a permanent `/@handle` URL, and put that URL on your contact card (vCard + QR) so it travels with you. Source of truth: `docs/sdd/RebirthAI_SDD.html`.
 
 Stack: Next.js (App Router, TS) · Tailwind + shadcn/ui · Supabase (Auth, Postgres+RLS, Storage) · Anthropic SDK (`claude-opus-5-5`) · TipTap · `qrcode` · `@vercel/og`.
