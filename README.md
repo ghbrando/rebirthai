@@ -2,7 +2,7 @@
 
 ## Lament
 
-As Christians, knowing why a Christian is baptized is meaningful. We felt it is tough to share a testimony of how Jesus has changed someone. The gospel has saved believers, and we want to know why. Forming a testimony requires being prompted by the Jesus. 
+As Christians, it matters to know why someone is baptized. We feel it is tough to share a testimony of how Jesus has changed someone. The Gospel has saved believers, and we want to know why. Forming a testimony requires being prompted by Jesus. 
 
 ## Discern
 
