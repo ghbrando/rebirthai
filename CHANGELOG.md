@@ -11,6 +11,7 @@ How this file is maintained:
 ## [Unreleased]
 
 ### Added
+- The dashboard now explains when a page was taken down and offers only "Keep editing" (#44, follow-up to #39 and #41, [record](docs/changelog/2026-11-02-dashboard-takedown-notice.md))
 - Reports now alert the operator's phone, and the operator can take a page down (and restore it) with one command; the author sees why and how to reach the operator, and cannot republish while it is down. Includes a database change that needs owner approval (#41, [record](docs/changelog/2026-11-02-report-takedown.md))
 - Delete my account: authors can permanently remove their profile, testimony, coach conversations, photos and videos; their link then shows "no longer available" and the handle is never reused (#40, [record](docs/changelog/2026-11-02-delete-account.md))
 - A real dashboard that says in plain words where your testimony stands and offers one clear next step (#39, [record](docs/changelog/2026-11-02-dashboard.md))
