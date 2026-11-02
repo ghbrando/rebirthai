@@ -7,7 +7,7 @@ const links = [
   ["/editor", "Editor"],
   ["/preview", "Preview"],
   ["/publish", "Publish"],
-  ["/contact", "Contact"],
+  ["/contact", "Contact card"],
   ["/share", "Share"],
   ["/settings", "Settings"],
 ] as const;

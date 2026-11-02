@@ -1,5 +1,7 @@
 "use client";
 
+import { permanentUrl } from "@/lib/vcard/build";
+
 import { useActionState, useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -102,7 +104,7 @@ export function ProfileForm({ mode, userId, profile }: Props) {
               onChange={(e) => { setAvail(null); setHandle(e.target.value.toLowerCase()); }}
               className={input} aria-describedby="handle-help handle-msg" />
           </div>
-          <p id="handle-help" className="text-xs text-gray-600">Your link: /u/{handle || "yourhandle"}. 3-30 letters, numbers or underscores.</p>
+          <p id="handle-help" className="text-xs text-gray-600">Your link: {permanentUrl(handle || "yourhandle")}. 3-30 letters, numbers or underscores.</p>
           <p id="handle-msg" role="status" className={`text-sm ${(fe.handle || (handleMsg && !handleMsg.ok)) ? "text-red-700" : "text-green-800"}`}>
             {fe.handle ?? handleMsg?.msg}
           </p>

@@ -53,7 +53,7 @@ export function ShareActions({ url, handle }: { url: string; handle: string }) {
         </button>
       )}
       <a href={`/api/vcard/${handle}`} download={`${handle}.vcf`} className={btn}>
-        Download .vcf
+        Download contact card
       </a>
       <span role="status" className="text-sm">
         {copied === "ok" && "Link copied."}

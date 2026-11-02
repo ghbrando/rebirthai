@@ -6,11 +6,11 @@ import { useRouter } from "next/navigation";
 type Props = {
   status: "draft" | "published" | "unpublished";
   visibility: "public" | "unlisted";
-  handle: string;
+  url: string;
   canPublish: boolean;
 };
 
-export function PublishPanel({ status, visibility: initial, handle, canPublish }: Props) {
+export function PublishPanel({ status, visibility: initial, url, canPublish }: Props) {
   const router = useRouter();
   const [visibility, setVisibility] = useState(initial);
   const [busy, setBusy] = useState(false);
@@ -66,9 +66,9 @@ export function PublishPanel({ status, visibility: initial, handle, canPublish }
 
       {published && (
         <p className="text-sm">
-          Live at{" "}
-          <a className="text-blue-800 underline" href={`/@${handle}`}>
-            /@{handle}
+          Your link:{" "}
+          <a className="break-all text-blue-800 underline" href={url}>
+            {url}
           </a>
         </p>
       )}
