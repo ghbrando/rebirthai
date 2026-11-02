@@ -137,15 +137,15 @@ export function CoachChat() {
   const hasUserMsg = messages.some((m) => m.role === "user");
 
   return (
-    <div className="mx-auto flex h-[calc(100dvh-3.25rem)] w-full max-w-2xl flex-col">
-      <div className="border-b px-4 py-2">
+    <div className="mx-auto flex h-[calc(100dvh-5.25rem)] sm:h-[calc(100dvh-3.25rem)] w-full max-w-2xl flex-col">
+      <div className="border-b px-4 py-1.5">
         <div className="flex items-center justify-between gap-2">
-          <div className="flex gap-1.5 text-xs">
+          <div className="flex flex-wrap gap-1.5 text-xs">
             {ARC.map((a) => (
               <span
                 key={a.key}
                 className={`rounded-full px-2 py-0.5 ${
-                  covered.includes(a.key) ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-500"
+                  covered.includes(a.key) ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-700"
                 }`}
               >
                 {covered.includes(a.key) ? "✓ " : ""}
@@ -169,7 +169,11 @@ export function CoachChat() {
             </button>
           )}
         </div>
-        <p className="mt-1 text-xs text-gray-500">
+        <p className="mt-1 text-xs leading-snug text-gray-700">
+          Your story so far: Before, Turning point, After. When all three are checked, create your
+          draft.
+        </p>
+        <p className="mt-1 text-xs leading-snug text-gray-700">
           This AI coach helps you tell your story. It is not a counselor or pastor and can&apos;t give
           counseling. If you are in crisis, call or text 988.
         </p>
