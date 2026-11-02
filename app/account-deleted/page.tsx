@@ -12,6 +12,10 @@ export default function Page() {
         Your profile, testimony, coach conversations, photos and videos have been removed. Your link
         now shows that the testimony is no longer available.
       </p>
+      <p className="text-gray-700">
+        Copies may stay for a short time in browser caches, link previews and our backups before they
+        expire. What the coach already read to help you write can&apos;t be called back.
+      </p>
       <p>
         <Link href="/" className="underline">
           Go to the home page

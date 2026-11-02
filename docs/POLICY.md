@@ -88,7 +88,9 @@ A link saved in someone's contacts can never be updated. Therefore: the domain a
 must be final before real contact cards are handed out (D-04), old handles redirect forever,
 and a released handle is never given to another user. This includes the handles (current and
 old) of a deleted account: they are retired forever, and their link shows "This testimony is no
-longer available" instead of someone else's story.
+longer available" instead of someone else's story. Deletion is honest about its limits: copies
+may persist briefly in caches, link previews and backups, and what the coach already processed
+cannot be recalled.
 
 ## 12. Out of bounds (SDD §2.3)
 

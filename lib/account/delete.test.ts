@@ -73,25 +73,24 @@ function fakeWorld() {
       guard(`removeFiles:${bucket}`);
       for (const p of paths) files[bucket].delete(p);
     },
-    async deleteCoachMessages(id) {
-      guard("deleteCoachMessages");
-      db.coachMessages.delete(id);
-    },
-    async deleteMediaRows(id) {
-      guard("deleteMediaRows");
-      db.mediaRows.delete(id);
-    },
-    async deleteTestimony(id) {
-      guard("deleteTestimony");
-      for (const [k, t] of db.testimonies) if (t.id === id) db.testimonies.delete(k);
-    },
-    async deleteProfile(id) {
-      guard("deleteProfile");
-      for (const [k, v] of db.profiles) if (v === id) db.profiles.delete(k);
+    async isPublished(id) {
+      guard("isPublished");
+      return [...db.testimonies.values()].some((t) => t.id === id && t.published);
     },
     async deleteAuthUser(id) {
       guard("deleteAuthUser");
+      // ON DELETE CASCADE from auth.users: profile -> testimony -> coach messages, media rows.
       db.authUsers.delete(id);
+      const profileId = db.profiles.get(id);
+      if (profileId) {
+        const t = db.testimonies.get(profileId);
+        if (t) {
+          db.coachMessages.delete(t.id);
+          db.mediaRows.delete(t.id);
+          db.testimonies.delete(profileId);
+        }
+        db.profiles.delete(id);
+      }
     },
   };
   return { files, db, calls, ports, failOnce: (name: string) => (failAt = name) };
@@ -117,10 +116,7 @@ describe("deleteAccount", () => {
       `removeFiles:${PUBLIC_BUCKET}`, // published testimony media
       `removeFiles:${PUBLIC_BUCKET}`, // profile photo
       `removeFiles:${PRIVATE_BUCKET}`,
-      "deleteCoachMessages",
-      "deleteMediaRows",
-      "deleteTestimony",
-      "deleteProfile",
+      "isPublished",
       "deleteAuthUser",
     ]);
   });
@@ -142,7 +138,7 @@ describe("deleteAccount", () => {
   test("only lists storage under the caller's own folders", async () => {
     const w = fakeWorld();
     await deleteAccount(ME, w.ports);
-    const listed = w.calls.filter((c) => c.startsWith("listFiles")).sort();
+    const listed = [...new Set(w.calls.filter((c) => c.startsWith("listFiles")))].sort();
     expect(listed).toEqual(
       [
         `listFiles:${PUBLIC_BUCKET}:${MY_TESTIMONY}`,
@@ -163,12 +159,13 @@ describe("deleteAccount", () => {
     expect(w.files[PRIVATE_BUCKET].has(`${OTHER}/${OTHER_TESTIMONY}/x.jpg`)).toBe(true);
   });
 
-  test("hides the public page before a failure later on", async () => {
+  test("a failed final step loses nothing but public content, and keeps the account usable", async () => {
     const w = fakeWorld();
-    w.failOnce("deleteCoachMessages");
+    w.failOnce("deleteAuthUser");
     const err = await deleteAccount(ME, w.ports).catch((e) => e);
     expect(err).toBeInstanceOf(AccountDeletionError);
-    expect((err as AccountDeletionError).step).toBe("coach-messages");
+    expect((err as AccountDeletionError).step).toBe("auth-user");
+    expect(w.db.profiles.has(ME)).toBe(true); // Settings still works, so the author can retry
     expect(w.db.testimonies.get(MY_PROFILE)?.published).toBe(false);
     expect([...w.files[PUBLIC_BUCKET]].some((p) => p.includes(MY_TESTIMONY) || p.includes(ME))).toBe(false);
     expect(w.db.authUsers.has(ME)).toBe(true); // still signed in, so the author can retry
@@ -179,9 +176,7 @@ describe("deleteAccount", () => {
     "unpublishTestimony",
     `removeFiles:${PUBLIC_BUCKET}`,
     `removeFiles:${PRIVATE_BUCKET}`,
-    "deleteMediaRows",
-    "deleteTestimony",
-    "deleteProfile",
+    "isPublished",
     "deleteAuthUser",
   ])("a retry after a failure at %s finishes the job", async (step) => {
     const w = fakeWorld();
@@ -201,5 +196,32 @@ describe("deleteAccount", () => {
     const { steps } = await deleteAccount(ME, w.ports);
     expect(steps).toEqual(["find", "avatar", "private-media", "auth-user"]);
     expect(w.db.authUsers.has(ME)).toBe(false);
+  });
+
+  test("takes the testimony down again if it was republished during deletion", async () => {
+    const w = fakeWorld();
+    const ports: DeletionPorts = {
+      ...w.ports,
+      removeFiles: async (bucket, paths) => {
+        await w.ports.removeFiles(bucket, paths);
+        if (bucket === PRIVATE_BUCKET) {
+          // another tab republishes, copying a file back to the public bucket
+          w.db.testimonies.get(MY_PROFILE)!.published = true;
+          w.files[PUBLIC_BUCKET].add(`${MY_TESTIMONY}/again.jpg`);
+        }
+      },
+    };
+    const { steps } = await deleteAccount(ME, ports);
+    expect(steps).toContain("recheck");
+    expect([...w.files[PUBLIC_BUCKET]].some((p) => p.startsWith(`${MY_TESTIMONY}/`))).toBe(false);
+    expect(w.db.authUsers.has(ME)).toBe(false);
+  });
+
+  test("stops before deleting the account if the testimony cannot be taken down", async () => {
+    const w = fakeWorld();
+    const ports: DeletionPorts = { ...w.ports, isPublished: async () => true };
+    const err = await deleteAccount(ME, ports).catch((e) => e);
+    expect((err as AccountDeletionError).step).toBe("recheck");
+    expect(w.db.authUsers.has(ME)).toBe(true);
   });
 });

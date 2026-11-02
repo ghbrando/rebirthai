@@ -5,8 +5,9 @@ const PAGE = 1000;
 
 /**
  * Supabase-backed deletion ports.
- * - `session`: the caller's RLS client. All table rows are read and deleted through it, so
- *   Postgres itself guarantees only the caller's rows are touched (RC-02).
+ * - `session`: the caller's RLS client. Table rows are read and unpublished through it, so
+ *   Postgres itself guarantees only the caller's rows are touched (RC-02). Rows are deleted by
+ *   the ON DELETE CASCADE from auth.users when the sign-in account is deleted.
  * - `admin`: the service-role client (RC-07, server-only). Used only for storage (published
  *   testimony files are not writable by authors) and `auth.admin.deleteUser`.
  */
@@ -56,24 +57,17 @@ export function supabaseDeletionPorts(session: SupabaseClient, admin: SupabaseCl
         .eq("id", testimonyId);
       check(error);
     },
+    async isPublished(testimonyId) {
+      const { data, error } = await session.from("testimonies").select("status").eq("id", testimonyId).maybeSingle();
+      check(error);
+      return data?.status === "published";
+    },
     listFiles,
     async removeFiles(bucket, paths) {
       for (let i = 0; i < paths.length; i += PAGE) {
         const { error } = await admin.storage.from(bucket).remove(paths.slice(i, i + PAGE));
         check(error);
       }
-    },
-    async deleteCoachMessages(testimonyId) {
-      check((await session.from("coach_messages").delete().eq("testimony_id", testimonyId)).error);
-    },
-    async deleteMediaRows(testimonyId) {
-      check((await session.from("media").delete().eq("testimony_id", testimonyId)).error);
-    },
-    async deleteTestimony(testimonyId) {
-      check((await session.from("testimonies").delete().eq("id", testimonyId)).error);
-    },
-    async deleteProfile(profileId) {
-      check((await session.from("profiles").delete().eq("id", profileId)).error);
     },
     async deleteAuthUser(userId) {
       const { error } = await admin.auth.admin.deleteUser(userId);

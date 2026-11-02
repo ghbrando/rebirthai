@@ -55,7 +55,7 @@ DD-08 one testimony per profile (MVP).
 1. Every route that reads private data or changes data verifies the session on the server with `requireUser()` / `getUserOrNull()`. `proxy.ts` only refreshes cookies; it is not authorization (RC-01).
 2. Ownership is enforced by Postgres RLS. Never disable RLS or widen a policy to make a feature work (RC-02).
 3. `ANTHROPIC_API_KEY` and `SUPABASE_SERVICE_ROLE_KEY` are used only in server code. Never import `lib/supabase/server` or the Anthropic SDK from a `"use client"` file, and never prefix a secret with `NEXT_PUBLIC_` (RC-07).
-4. The service-role client (`createServiceClient`) is allowed only where RLS cannot express the operation: publish (moving media), reporting, the demo route, and account deletion (storage cleanup and `auth.admin.deleteUser`, #26; table rows are still deleted through the caller's RLS client). Any new use is an escalation.
+4. The service-role client (`createServiceClient`) is allowed only where RLS cannot express the operation: publish (moving media), reporting, the demo route, and the account-deletion route `app/api/account/delete` (storage cleanup and `auth.admin.deleteUser`, #26; rows go through the auth.users cascade). Any new use is an escalation.
 5. **`/demo` signs anyone in as `DEMO_EMAIL` without an email step. `DEMO_MODE` must never be set in a deployed (preview, staging or production) environment.**
 
 **Data and URL invariants**

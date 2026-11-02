@@ -15,9 +15,11 @@ create table public.retired_handles (
 -- RLS on, no policies: authors and visitors cannot read or write it directly (RC-02).
 -- It is written by the trigger below and read through is_handle_retired().
 alter table public.retired_handles enable row level security;
+revoke all on public.retired_handles from anon, authenticated;
 
--- Runs for direct profile deletes and for the cascade from auth.users. BEFORE DELETE, so the
--- profile's handle_redirects rows still exist (the FK cascade removes them afterwards).
+-- Account deletion removes the profile through the ON DELETE CASCADE from auth.users. Row-level
+-- triggers fire for cascaded deletes too. BEFORE DELETE, so the profile's handle_redirects rows
+-- still exist here (their own FK cascade runs after the profile row is removed).
 create or replace function public.retire_profile_handles() returns trigger
 language plpgsql security definer set search_path = public as $$
 begin
@@ -56,7 +58,11 @@ begin
   return new;
 end $$;
 
--- Yes/no lookup for the public page and contact card ("no longer available").
+-- Trigger-only functions: nobody calls them directly.
+revoke execute on function public.retire_profile_handles() from public;
+revoke execute on function public.guard_handle() from public;
+
+-- Yes/no lookup for the public page, contact card ("no longer available") and handle check.
 -- One handle at a time: the list of retired handles cannot be read or enumerated.
 create or replace function public.is_handle_retired(h text) returns boolean
 language sql stable security definer set search_path = public as $$
