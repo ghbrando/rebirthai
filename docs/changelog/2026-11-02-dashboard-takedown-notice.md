@@ -1,5 +1,5 @@
 ---
-pr: pending
+pr: 44
 issues: [11, 27]
 date: 2026-11-02
 branch: feature/dashboard-takedown-notice
@@ -8,7 +8,7 @@ author: implementation engineer
 ids: []
 areas: [app/(app)/dashboard/page.tsx, lib/dashboard/state.ts]
 type: feature
-status: open
+status: merged
 ---
 
 # Dashboard explains when a page was taken down

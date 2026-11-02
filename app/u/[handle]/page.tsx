@@ -10,6 +10,7 @@ type Loaded =
   | { kind: "ok"; profile: PublicProfile; t: PublicTestimony }
   | { kind: "redirect"; to: string }
   | { kind: "unavailable" }
+  | { kind: "gone" }
   | { kind: "missing" };
 
 interface PublicProfile {
@@ -47,6 +48,9 @@ const load = cache(async (rawHandle: string): Promise<Loaded> => {
     }
     const { data: old } = await db.from("handle_lookup").select("new_handle").eq("old_handle", handle).maybeSingle();
     if (old?.new_handle) return { kind: "redirect", to: old.new_handle as string };
+    // The author deleted their account (#26): the handle is retired forever (RC-03).
+    const { data: retired } = await db.rpc("is_handle_retired", { h: handle });
+    if (retired === true) return { kind: "gone" };
     // Distinguish "exists but not published" from "doesn't exist" (service client, existence only).
     try {
       const { data: exists } = await createServiceClient()
@@ -98,6 +102,13 @@ export default async function Page({
   const r = await load(handle);
   if (r.kind === "redirect") permanentRedirect(`/u/${r.to}`); // RC-03: 308
   if (r.kind === "missing") notFound();
+  if (r.kind === "gone")
+    return (
+      <main className="mx-auto max-w-2xl p-6">
+        <h1 className="text-2xl font-semibold">This testimony is no longer available</h1>
+        <p className="mt-2 text-gray-700">The author has removed it.</p>
+      </main>
+    );
   if (r.kind === "unavailable")
     return (
       <main className="mx-auto max-w-2xl p-6">
