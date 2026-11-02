@@ -10,6 +10,9 @@ How this file is maintained:
 
 ## [Unreleased]
 
+### Changed
+- Beta copy pass: removed "Screen N" labels, one link format (`/@handle`) everywhere, plain publish status sentences, Heading/Subheading editor toolbar, "Ask the AI for help", "Download contact card" (#35, [record](docs/changelog/2026-11-02-beta-copy-pass.md))
+
 ### Added
 - Local test environment with made-up people, so demos and reviews never use real accounts; fixes a sign-in loop in demo mode (#34, [record](docs/changelog/2026-11-01-local-test-env.md))
 - Domain rules for Discovery and stronger coach truthfulness checks recorded from a ministry-focused review; AI cost logging counts failed calls (#32, [record](docs/changelog/2026-10-27-pr-32-review-findings.md))
