@@ -50,9 +50,11 @@ export async function POST(req: Request) {
     .join("\n");
   const history = await loadHistory(auth.supabase, testimony.id);
 
+  const model = coachModel("suggest");
+  let logged = false;
   try {
     const msg = await getAnthropic().messages.parse({
-      model: coachModel("suggest"),
+      model,
       max_tokens: 8000,
       thinking: { type: "adaptive" },
       output_config: { effort: "medium", format: zodOutputFormat(Output) },
@@ -64,7 +66,8 @@ export async function POST(req: Request) {
         },
       ],
     });
-    logAiUsage("suggest", msg.model, msg.usage, testimony.id);
+    logAiUsage("suggest", model, msg.model, msg.usage, testimony.id);
+    logged = true;
     if (msg.stop_reason === "refusal" || !msg.parsed_output) {
       return Response.json({ error: "No suggestions this time. Please try again." }, { status: 502 });
     }
@@ -88,6 +91,7 @@ export async function POST(req: Request) {
     const res: SuggestResponse = { suggestions, ...(note ? { note } : {}) };
     return Response.json(res);
   } catch (err) {
+    if (!logged) logAiUsage("suggest", model, null, null, testimony.id);
     console.error("suggest error", err);
     return Response.json({ error: "No suggestions this time. Please try again." }, { status: 502 });
   }

@@ -11,6 +11,10 @@ const PRICES: Record<string, { input: number; output: number; cacheRead: number 
   "claude-opus-5-5": { input: 4, output: 20, cacheRead: 0.2 },
   "claude-sonnet-5-5": { input: 2, output: 10, cacheRead: 0.2 },
   "claude-haiku-5-5": { input: 0.1, output: 0.5, cacheRead: 0.01 },
+  // Fallback targets (server-side refusal fallback); listed after the coach models so prefix
+  // matching of dated IDs finds the longer name first.
+  "claude-opus-5": { input: 5, output: 25, cacheRead: 0.5 },
+  "claude-opus-4-8": { input: 5, output: 25, cacheRead: 0.5 },
 };
 
 export const SUPPORTED_COACH_MODELS = Object.keys(PRICES);
@@ -28,8 +32,13 @@ export interface UsageLike {
   cache_creation_input_tokens?: number | null;
 }
 
+/** Price row for a model ID, including dated variants (e.g. "claude-opus-5-5-2026..."). */
+function priceFor(model: string) {
+  return PRICES[model] ?? Object.entries(PRICES).find(([k]) => model.startsWith(k))?.[1];
+}
+
 export function estimateCostUsd(model: string, u: UsageLike): number | null {
-  const p = PRICES[model];
+  const p = priceFor(model);
   if (!p) return null;
   const read = u.cache_read_input_tokens ?? 0;
   const write = u.cache_creation_input_tokens ?? 0;
@@ -38,19 +47,31 @@ export function estimateCostUsd(model: string, u: UsageLike): number | null {
   return Math.round(usd * 1e6) / 1e6;
 }
 
-/** One JSON line per AI call; aggregate by testimony_id for cost per testimony. */
-export function logAiUsage(step: AiStep, model: string, usage: UsageLike, testimonyId: string): void {
+/**
+ * One JSON line per AI call; aggregate by testimony_id for cost per testimony.
+ * `servedModel` is the model that answered (a fallback can differ from the one requested).
+ * `usage: null` records a call that failed before usage was known (counted, cost unknown).
+ */
+export function logAiUsage(
+  step: AiStep,
+  requestedModel: string,
+  servedModel: string | null,
+  usage: UsageLike | null,
+  testimonyId: string,
+): void {
   console.log(
     JSON.stringify({
       event: "ai_usage",
       step,
-      model,
+      model: servedModel ?? requestedModel,
+      requested_model: requestedModel,
       testimony_id: testimonyId,
-      input_tokens: usage.input_tokens,
-      output_tokens: usage.output_tokens,
-      cache_read_tokens: usage.cache_read_input_tokens ?? 0,
-      cache_write_tokens: usage.cache_creation_input_tokens ?? 0,
-      est_usd: estimateCostUsd(model, usage),
+      failed: usage === null,
+      input_tokens: usage?.input_tokens ?? null,
+      output_tokens: usage?.output_tokens ?? null,
+      cache_read_tokens: usage ? (usage.cache_read_input_tokens ?? 0) : null,
+      cache_write_tokens: usage ? (usage.cache_creation_input_tokens ?? 0) : null,
+      est_usd: usage ? estimateCostUsd(servedModel ?? requestedModel, usage) : null,
     }),
   );
 }

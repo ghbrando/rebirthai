@@ -39,6 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-# Local-only Claude files; settings.json and hooks/ are committed.
-.claude/worktrees/
-.claude/settings.local.json
+# Claude files: only shared settings, hooks and project agents are committed.
+.claude/*
+!.claude/settings.json
+!.claude/hooks/
+!.claude/agents/

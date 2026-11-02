@@ -32,9 +32,11 @@ export async function POST(req: Request) {
     return Response.json({ error: "Share a bit of your story with the coach first." }, { status: 422 });
   }
 
+  const model = coachModel("draft");
+  let logged = false;
   try {
     const msg = await getAnthropic().messages.parse({
-      model: coachModel("draft"),
+      model,
       max_tokens: 16000,
       thinking: { type: "adaptive" },
       output_config: { effort: "medium", format: zodOutputFormat(DraftOutputSchema) },
@@ -46,7 +48,8 @@ export async function POST(req: Request) {
         },
       ],
     });
-    logAiUsage("draft", msg.model, msg.usage, testimony.id);
+    logAiUsage("draft", model, msg.model, msg.usage, testimony.id);
+    logged = true;
     if (msg.stop_reason === "refusal" || !msg.parsed_output) {
       return Response.json({ error: "Couldn't create a draft this time. Please try again." }, { status: 502 });
     }
@@ -62,6 +65,7 @@ export async function POST(req: Request) {
     const res: DraftResponse = { title, content };
     return Response.json(res);
   } catch (err) {
+    if (!logged) logAiUsage("draft", model, null, null, testimony.id);
     console.error("draft error", err);
     return Response.json({ error: "Couldn't create a draft this time. Please try again." }, { status: 502 });
   }

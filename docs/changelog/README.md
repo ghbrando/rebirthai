@@ -15,6 +15,7 @@ Release summaries live in `CHANGELOG.md` and link here.
 
 | Date | PR | Change | Issues |
 |---|---|---|---|
+| 2026-10-27 | #32 | [Fixes from the specialist review](2026-10-27-pr-32-review-findings.md) | #10, #29 |
 | 2026-10-27 | #31 | [AI cost controls: per-step models and cost logging](2026-10-27-pr-31-ai-cost-controls.md) | #10, #20 |
 | 2026-10-27 | #30 | [Private beta plan and Discovery direction](2026-10-27-pr-30-beta-plan.md) | #25–#29 |
 | 2026-10-27 | #24 | [Guardrails, PR checks, project instructions](2026-10-27-pr-24-project-setup-guardrails.md) | — |
