@@ -69,6 +69,9 @@ export interface Testimony {
   visibility: Visibility;
   published_at: string | null;
   updated_at: string;
+  /** Set only by the operator (scripts/takedown.mjs, #27). Authors may read, never write. */
+  takedown_reason?: string | null;
+  takedown_at?: string | null;
 }
 
 export interface CoachMessage {
@@ -95,6 +98,12 @@ export interface Media {
 export interface HandleRedirect {
   old_handle: string;
   profile_id: string;
+}
+
+/** Handle of a deleted account; never reassigned (RC-03, migration 0002). No link to the person. */
+export interface RetiredHandle {
+  handle: string;
+  retired_at: string;
 }
 
 export interface Report {

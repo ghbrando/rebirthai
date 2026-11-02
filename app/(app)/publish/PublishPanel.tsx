@@ -8,9 +8,11 @@ type Props = {
   visibility: "public" | "unlisted";
   handle: string;
   canPublish: boolean;
+  /** Operator takedown in effect (#27): the notice above explains it, so skip the "add content" hint. */
+  takenDown?: boolean;
 };
 
-export function PublishPanel({ status, visibility: initial, handle, canPublish }: Props) {
+export function PublishPanel({ status, visibility: initial, handle, canPublish, takenDown }: Props) {
   const router = useRouter();
   const [visibility, setVisibility] = useState(initial);
   const [busy, setBusy] = useState(false);
@@ -94,7 +96,7 @@ export function PublishPanel({ status, visibility: initial, handle, canPublish }
           Delete permanently
         </button>
       </div>
-      {!canPublish && <p className="text-sm text-gray-700">Add a title and some content before publishing.</p>}
+      {!canPublish && !takenDown && <p className="text-sm text-gray-700">Add a title and some content before publishing.</p>}
       {error && (
         <p role="alert" className="text-sm text-red-800">
           {error}

@@ -1,5 +1,5 @@
 ---
-pr: pending
+pr: 42
 issues: [37]
 date: 2026-11-02
 branch: feature/37-site-url-guard
@@ -8,7 +8,7 @@ author: implementation engineer
 ids: [RC-03]
 areas: [lib/site-url.ts, lib/vcard/build.ts, app/u/[handle]/page.tsx]
 type: fix
-status: open
+status: merged
 ---
 
 # Contact cards never point at a test address

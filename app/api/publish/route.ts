@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getUserOrNull } from "@/lib/auth";
 import { createServiceClient } from "@/lib/supabase/server";
 import { collectMediaIds } from "@/components/testimony/Renderer";
+import { TAKEDOWN_BLOCKED_MESSAGE } from "@/lib/takedown";
 import type { Testimony, Media } from "@/lib/types";
 
 const EXT: Record<string, string> = {
@@ -52,6 +53,8 @@ export async function POST(req: Request) {
   };
 
   if (body.action === "publish") {
+    // #27: an operator takedown blocks republishing until the operator restores the page.
+    if (t.takedown_at) return NextResponse.json({ error: TAKEDOWN_BLOCKED_MESSAGE }, { status: 403 });
     const visibility = body.visibility === "unlisted" ? "unlisted" : "public";
     if (!t.title.trim() || !t.draft_content?.content?.length)
       return NextResponse.json({ error: "Add a title and some content before publishing." }, { status: 400 });
@@ -71,7 +74,8 @@ export async function POST(req: Request) {
       if (error) return NextResponse.json({ error: `Media copy failed: ${error.message}` }, { status: 500 });
       await admin.from("media").update({ public_path: dest }).eq("id", m.id);
     }
-    const { error } = await admin
+    // The takedown_at filter closes the race with an operator takedown that lands mid-publish.
+    const { data: updated, error } = await admin
       .from("testimonies")
       .update({
         published_content: t.draft_content,
@@ -80,8 +84,14 @@ export async function POST(req: Request) {
         visibility,
         published_at: new Date().toISOString(),
       })
-      .eq("id", t.id);
+      .eq("id", t.id)
+      .is("takedown_at", null)
+      .select("id");
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    if (!updated?.length) {
+      await removePublicFiles();
+      return NextResponse.json({ error: TAKEDOWN_BLOCKED_MESSAGE }, { status: 403 });
+    }
     return NextResponse.json({ ok: true });
   }
 
