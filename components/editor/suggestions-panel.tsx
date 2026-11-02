@@ -84,9 +84,9 @@ export function SuggestionsPanel({ editor, testimonyId }: { editor: Editor | nul
   const reject = (s: CoachSuggestion) => setItems((cur) => cur.filter((x) => x.id !== s.id));
 
   return (
-    <aside className="space-y-3 text-sm" aria-label="Suggestions">
-      <h2 className="text-lg font-semibold">Suggestions</h2>
-      <p className="text-gray-600">Nothing changes in your testimony unless you press Accept.</p>
+    <aside className="space-y-3 text-sm" aria-label="Ask the AI for help">
+      <h2 className="text-lg font-semibold">Ask the AI for help</h2>
+      <p className="text-gray-600">The AI only suggests. Nothing changes in your testimony unless you press Accept.</p>
       <div className="flex flex-wrap gap-2">
         {CHIPS.map((c) => (
           <button key={c} type="button" className="rounded-full border px-3 py-1" disabled={loading} onClick={() => ask(c)}>

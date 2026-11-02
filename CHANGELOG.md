@@ -10,6 +10,9 @@ How this file is maintained:
 
 ## [Unreleased]
 
+### Changed
+- Beta copy pass: removed "Screen N" labels, one link format (`/@handle`) everywhere, plain publish status sentences, Heading/Subheading editor toolbar, "Ask the AI for help", "Download contact card" (#35, [record](docs/changelog/2026-11-02-beta-copy-pass.md))
+
 ### Added
 - Contact cards and QR codes can no longer point at a test address in production; a missing or test site address now stops with a clear error (#42, [record](docs/changelog/2026-11-02-site-url-guard.md))
 - The dashboard now explains when a page was taken down and offers only "Keep editing" (#44, follow-up to #39 and #41, [record](docs/changelog/2026-11-02-dashboard-takedown-notice.md))

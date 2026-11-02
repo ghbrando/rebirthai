@@ -6,13 +6,13 @@ import { useRouter } from "next/navigation";
 type Props = {
   status: "draft" | "published" | "unpublished";
   visibility: "public" | "unlisted";
-  handle: string;
+  url: string;
   canPublish: boolean;
   /** Operator takedown in effect (#27): the notice above explains it, so skip the "add content" hint. */
   takenDown?: boolean;
 };
 
-export function PublishPanel({ status, visibility: initial, handle, canPublish, takenDown }: Props) {
+export function PublishPanel({ status, visibility: initial, url, canPublish, takenDown }: Props) {
   const router = useRouter();
   const [visibility, setVisibility] = useState(initial);
   const [busy, setBusy] = useState(false);
@@ -68,9 +68,9 @@ export function PublishPanel({ status, visibility: initial, handle, canPublish, 
 
       {published && (
         <p className="text-sm">
-          Live at{" "}
-          <a className="text-blue-800 underline" href={`/@${handle}`}>
-            /@{handle}
+          Your link:{" "}
+          <a className="break-all text-blue-800 underline" href={url}>
+            {url}
           </a>
         </p>
       )}

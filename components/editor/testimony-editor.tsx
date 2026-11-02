@@ -73,7 +73,7 @@ export function TestimonyEditor({
       VideoNode,
     ],
     content: initialContent as unknown as JSONContent,
-    editorProps: { attributes: { class: "prose min-h-64 max-w-none rounded border p-3 focus:outline-none" } },
+    editorProps: { attributes: { class: "prose [&_h2]:mt-4 [&_h2]:text-2xl [&_h2]:font-bold [&_h3]:mt-3 [&_h3]:text-xl [&_h3]:font-semibold min-h-64 max-w-none rounded border p-3 focus:outline-none" } },
     onUpdate: ({ editor }) => {
       setState("unsaved");
       if (timer.current) clearTimeout(timer.current);
@@ -101,8 +101,8 @@ export function TestimonyEditor({
         <div className="flex flex-wrap items-center gap-2">
           {editor && (
             <>
-              {btn("H2", editor.isActive("heading", { level: 2 }), () => editor.chain().focus().toggleHeading({ level: 2 }).run())}
-              {btn("H3", editor.isActive("heading", { level: 3 }), () => editor.chain().focus().toggleHeading({ level: 3 }).run())}
+              {btn("Heading", editor.isActive("heading", { level: 2 }), () => editor.chain().focus().toggleHeading({ level: 2 }).run())}
+              {btn("Subheading", editor.isActive("heading", { level: 3 }), () => editor.chain().focus().toggleHeading({ level: 3 }).run())}
               {btn("Bold", editor.isActive("bold"), () => editor.chain().focus().toggleBold().run())}
               {btn("Italic", editor.isActive("italic"), () => editor.chain().focus().toggleItalic().run())}
             </>
@@ -122,8 +122,8 @@ export function TestimonyEditor({
               .run()
           }
         />
-        <Link href="/preview" className="inline-block text-sm underline">
-          Preview
+        <Link href="/preview" className="inline-block rounded bg-black px-4 py-2 text-sm text-white">
+          Preview your page
         </Link>
       </section>
       <SuggestionsPanel editor={editor} testimonyId={testimonyId} />
