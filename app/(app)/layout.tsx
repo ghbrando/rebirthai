@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { requireProfile } from "@/lib/auth";
+import { getFeedbackUrl } from "@/lib/feedback";
 
 const links = [
   ["/dashboard", "Dashboard"],
@@ -14,6 +15,7 @@ const links = [
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   await requireProfile(); // RC-01: server-side session check for every author screen
+  const feedbackUrl = getFeedbackUrl(process.env.NEXT_PUBLIC_FEEDBACK_URL); // hidden when unset (#28)
   return (
     <div className="flex min-h-screen flex-col">
       <nav aria-label="Main" className="grid grid-cols-4 border-b px-2 text-center text-sm sm:flex sm:gap-2 sm:px-4 sm:text-left">
@@ -24,6 +26,18 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         ))}
       </nav>
       {children}
+      {feedbackUrl && (
+        <footer className="mt-auto px-4 py-4 text-center text-xs text-gray-500">
+          <a
+            href={feedbackUrl}
+            target={feedbackUrl.startsWith("mailto:") ? undefined : "_blank"}
+            rel="noopener noreferrer"
+            className="underline hover:text-gray-800"
+          >
+            Send feedback
+          </a>
+        </footer>
+      )}
     </div>
   );
 }
