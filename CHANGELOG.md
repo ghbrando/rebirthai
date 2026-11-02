@@ -14,6 +14,7 @@ How this file is maintained:
 - Beta copy pass: removed "Screen N" labels, one link format (`/@handle`) everywhere, plain publish status sentences, Heading/Subheading editor toolbar, "Ask the AI for help", "Download contact card" (#35, [record](docs/changelog/2026-11-02-beta-copy-pass.md))
 
 ### Added
+- A small "Send feedback" link on every signed-in screen for beta users, set by `NEXT_PUBLIC_FEEDBACK_URL` and hidden when unset (#48, advances #28, [record](docs/changelog/2026-11-02-pr-48-feedback-link.md))
 - First-impression polish: readable font, menu that fits a phone, calmer coach header, clearer landing page, menu on Settings (#45, [record](docs/changelog/2026-11-02-pr-45-first-impression-polish.md))
 - Publish screen: plain "who can see this" sentences, Unlisted by default (owner decision D-09), delete moved apart with a clear confirmation, and one consent sentence for contact details in settings and contact (#46, [record](docs/changelog/2026-11-02-publish-clarity.md))
 - Contact cards and QR codes can no longer point at a test address in production; a missing or test site address now stops with a clear error (#42, [record](docs/changelog/2026-11-02-site-url-guard.md))
