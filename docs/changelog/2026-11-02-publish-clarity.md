@@ -1,5 +1,5 @@
 ---
-pr: 0
+pr: 46
 issues: [36]
 date: 2026-11-02
 branch: feature/36-publish-clarity
