@@ -11,6 +11,7 @@ How this file is maintained:
 ## [Unreleased]
 
 ### Added
+- Local test environment with made-up people, so demos and reviews never use real accounts; fixes a sign-in loop in demo mode (#34, [record](docs/changelog/2026-11-01-local-test-env.md))
 - Domain rules for Discovery and stronger coach truthfulness checks recorded from a ministry-focused review; AI cost logging counts failed calls (#32, [record](docs/changelog/2026-10-27-pr-32-review-findings.md))
 - AI cost tracking per testimony and a per-step choice of coach model, so RebirthAI can stay free for users as it grows; the coach itself is unchanged (#31, [record](docs/changelog/2026-10-27-pr-31-ai-cost-controls.md))
 - Private beta plan, with Discovery & Community (a feed of related testimonies, local Bible studies and churches) planned as the next phase; new Issues for privacy policy, account deletion, report handling and feedback (#30, [record](docs/changelog/2026-10-27-pr-30-beta-plan.md))
@@ -32,6 +33,7 @@ First working MVP, built in a hackathon sprint. Code-complete for SDD stories US
 SDD's pass/fail checks are not yet verified (see Issues #10–#17).
 
 ### Added
+- Local test environment with made-up people, so demos and reviews never use real accounts; fixes a sign-in loop in demo mode (#34, [record](docs/changelog/2026-11-01-local-test-env.md))
 - Sign in with an email link or Google, and create a profile with a unique handle, photo and bio (#3, [record](docs/changelog/2026-10-24-auth-profile.md))
 - Change your handle without breaking links: old links keep working forever (#3, [record](docs/changelog/2026-10-24-auth-profile.md))
 - AI coach that interviews you one question at a time through life before, the turning point and life after, and picks up where you left off (#4, [record](docs/changelog/2026-10-24-ai-coach.md))

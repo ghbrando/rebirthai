@@ -8,6 +8,8 @@ Keep the README current with how to run it.
 
 ## Run and test
 - Run: `npm run dev` (needs `.env.local`, see README; `DEMO_MODE=1` enables `/demo` sign-in)
+- Local test environment with fictional data (for reviews, screenshots, demos): README
+  "Local test environment". Never point local work at a hosted project.
 - Test: `npm test` (Vitest unit tests)
 - Lint / types: `npm run lint`, `npm run typecheck`
 Every change passes these before a PR; CI (`lint-typecheck-test`) runs them on every PR.
