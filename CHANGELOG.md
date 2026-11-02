@@ -11,6 +11,7 @@ How this file is maintained:
 ## [Unreleased]
 
 ### Added
+- A real dashboard that says in plain words where your testimony stands and offers one clear next step (#39, [record](docs/changelog/2026-11-02-dashboard.md))
 - Local test environment with made-up people, so demos and reviews never use real accounts; fixes a sign-in loop in demo mode (#34, [record](docs/changelog/2026-11-01-local-test-env.md))
 - Domain rules for Discovery and stronger coach truthfulness checks recorded from a ministry-focused review; AI cost logging counts failed calls (#32, [record](docs/changelog/2026-10-27-pr-32-review-findings.md))
 - AI cost tracking per testimony and a per-step choice of coach model, so RebirthAI can stay free for users as it grows; the coach itself is unchanged (#31, [record](docs/changelog/2026-10-27-pr-31-ai-cost-controls.md))
