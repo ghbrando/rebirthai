@@ -5,6 +5,7 @@ import { createClient } from "@supabase/supabase-js";
 import { TestimonyRenderer, collectMediaIds } from "@/components/testimony/Renderer";
 import { createServiceClient } from "@/lib/supabase/server";
 import type { TestimonyContent } from "@/lib/types";
+import { getSiteUrl } from "@/lib/site-url";
 
 type Loaded =
   | { kind: "ok"; profile: PublicProfile; t: PublicTestimony }
@@ -69,8 +70,7 @@ const load = cache(async (rawHandle: string): Promise<Loaded> => {
 });
 
 function siteUrl() {
-  const u = process.env.NEXT_PUBLIC_SITE_URL ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
-  return new URL(u);
+  return new URL(getSiteUrl());
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }): Promise<Metadata> {
