@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { saveContactFields, type ContactState } from "@/app/(app)/contact/actions";
+import { CONTACT_CONSENT_TEXT } from "@/lib/visibility";
 
 const initial: ContactState = { ok: false, message: "" };
 
@@ -62,10 +63,8 @@ export function ContactFieldsForm(props: {
           />
         )}
       </div>
-      <p className="text-xs text-gray-500">
-        Phone and email are only shared if you turn them on, and also appear on your public
-        &quot;Save contact&quot; card. No photo is ever included.
-      </p>
+      <p className="text-base">{CONTACT_CONSENT_TEXT}</p>
+      <p className="text-xs text-gray-500">No photo is ever included.</p>
       <button
         type="submit"
         disabled={pending}

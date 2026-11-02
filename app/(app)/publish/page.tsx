@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireProfile } from "@/lib/auth";
 import type { Testimony } from "@/lib/types";
+import { DEFAULT_VISIBILITY } from "@/lib/visibility";
 import { permanentUrl } from "@/lib/vcard/build";
 import { takedownNotice } from "@/lib/takedown";
 import { TakedownNotice } from "@/components/TakedownNotice";
@@ -37,7 +38,7 @@ export default async function Page() {
       <TakedownNotice notice={notice} />
       <PublishPanel
         status={t?.status ?? "draft"}
-        visibility={t?.visibility ?? "public"}
+        visibility={t && t.status !== "draft" ? t.visibility : DEFAULT_VISIBILITY}
         url={permanentUrl(profile.handle)}
         canPublish={canPublish}
         takenDown={!!notice}
