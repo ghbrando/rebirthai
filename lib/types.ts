@@ -97,6 +97,12 @@ export interface HandleRedirect {
   profile_id: string;
 }
 
+/** Handle of a deleted account; never reassigned (RC-03, migration 0002). No link to the person. */
+export interface RetiredHandle {
+  handle: string;
+  retired_at: string;
+}
+
 export interface Report {
   id: string;
   testimony_id: string;

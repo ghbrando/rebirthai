@@ -11,6 +11,7 @@ How this file is maintained:
 ## [Unreleased]
 
 ### Added
+- Delete my account: authors can permanently remove their profile, testimony, coach conversations, photos and videos; their link then shows "no longer available" and the handle is never reused (#PENDING, [record](docs/changelog/2026-11-02-delete-account.md))
 - Domain rules for Discovery and stronger coach truthfulness checks recorded from a ministry-focused review; AI cost logging counts failed calls (#32, [record](docs/changelog/2026-10-27-pr-32-review-findings.md))
 - AI cost tracking per testimony and a per-step choice of coach model, so RebirthAI can stay free for users as it grows; the coach itself is unchanged (#31, [record](docs/changelog/2026-10-27-pr-31-ai-cost-controls.md))
 - Private beta plan, with Discovery & Community (a feed of related testimonies, local Bible studies and churches) planned as the next phase; new Issues for privacy policy, account deletion, report handling and feedback (#30, [record](docs/changelog/2026-10-27-pr-30-beta-plan.md))
