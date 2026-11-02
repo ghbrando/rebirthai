@@ -25,7 +25,7 @@ Create `.env.local` with:
 
 ### Database
 
-Apply `supabase/migrations/0001_init.sql`, then `0003_takedown.sql` (Supabase SQL editor, or `supabase db push` for all). 0001 creates all tables, RLS policies, public views, the `media-private` / `media-public` buckets and storage policies.
+Apply the files in `supabase/migrations/` in order (Supabase SQL editor, or `supabase db push`). `0001_init.sql` creates all tables, RLS policies, public views, the `media-private` / `media-public` buckets and storage policies; `0002_retired_handles.sql` keeps the handles of deleted accounts from ever being reused; `0003_takedown.sql` lets the operator take a reported page down and restore it.
 
 In Supabase Auth settings, enable Email (magic link) and Google, and add `http://localhost:3000/auth/callback` (and your Vercel URL) as redirect URLs.
 

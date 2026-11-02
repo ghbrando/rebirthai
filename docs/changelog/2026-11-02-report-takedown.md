@@ -8,7 +8,7 @@ author: Implementation Engineer (agent)
 ids: [RC-13, RISK-04]
 areas: [app/api/report, app/api/publish, app/(app)/publish, lib/report-notify.ts, lib/takedown.ts, components/TakedownNotice.tsx, scripts/takedown.mjs, supabase/migrations/0003_takedown.sql, docs/OPERATIONS.md]
 type: feature
-status: open
+status: merged
 ---
 
 # Reports reach the operator, who can take a page down
