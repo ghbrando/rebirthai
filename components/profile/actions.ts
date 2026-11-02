@@ -21,6 +21,9 @@ export async function checkHandle(handle: string): Promise<{ available: boolean;
   }
   const { data: mine } = await supabase.from("profiles").select("id,handle").eq("user_id", user.id).maybeSingle();
   if (mine?.handle === handle) return { available: true };
+  // RC-03: handles of deleted accounts are never reassigned (migration 0002). Session client.
+  const { data: retired } = await supabase.rpc("is_handle_retired", { h: handle });
+  if (retired === true) return { available: false, reason: "That handle is already in use." };
   if (!process.env.SUPABASE_SERVICE_ROLE_KEY) return { available: true }; // DB enforces on save
   const admin = createServiceClient();
   const [{ data: taken }, { data: redirected }] = await Promise.all([

@@ -8,7 +8,7 @@ author: Implementation Engineer
 ids: [RC-03, RC-11]
 areas: [app/(app)/publish, app/(app)/share, app/(app)/contact, app/(app)/preview, app/(app)/layout.tsx, components/editor, components/profile, components/share]
 type: feature
-status: open
+status: merged
 ---
 
 # Beta copy pass: plain words and one link format
