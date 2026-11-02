@@ -8,7 +8,7 @@ author: implementation engineer agent
 ids: [RC-01, RC-03]
 areas: [app/(app)/dashboard, lib/dashboard]
 type: feature
-status: open
+status: merged
 ---
 
 # Dashboard: where your testimony stands and what to do next
