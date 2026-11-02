@@ -25,7 +25,6 @@ export default async function Page() {
   return (
     <main className="mx-auto max-w-2xl space-y-6 p-6">
       <div>
-        <p className="text-sm text-gray-500">Screen 10</p>
         <h1 className="text-2xl font-semibold">Share your testimony</h1>
         <p className="mt-2 text-gray-600">
           Scan this code with a phone camera to add you as a contact, with your testimony link
@@ -41,7 +40,7 @@ export default async function Page() {
         className="mx-auto rounded border bg-white"
       />
       <p className="text-center">
-        Your permanent link: <a href={url} className="break-all underline">{url}</a>
+        Your link: <a href={url} className="break-all underline">{url}</a>
       </p>
       <ShareActions url={url} handle={profile.handle} />
     </main>

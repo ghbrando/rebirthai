@@ -8,7 +8,7 @@ author: Implementation Engineer
 ids: [US-12, US-13, US-09, RC-06]
 areas: [app/(app)/publish, components/profile/profile-form.tsx, components/share/contact-fields-form.tsx, lib/visibility.ts]
 type: feature
-status: open
+status: merged
 ---
 
 # Publish screen: clear "who can see this", safe delete, plain contact consent

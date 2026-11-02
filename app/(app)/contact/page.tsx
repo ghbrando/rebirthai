@@ -10,11 +10,10 @@ export default async function Page() {
   return (
     <main className="mx-auto max-w-2xl space-y-6 p-6">
       <div>
-        <p className="text-sm text-gray-500">Screen 9</p>
-        <h1 className="text-2xl font-semibold">Add to my contact info</h1>
+        <h1 className="text-2xl font-semibold">Add your link to your contact card</h1>
         <p className="mt-2 text-gray-600">
           Put your testimony link on your own contact card so anyone you hand your phone to, or
-          who looks you up, can find it. Your link is permanent:{" "}
+          who looks you up, can find it. Your link never changes:{" "}
           <code className="break-all">{url}</code>
         </p>
       </div>
@@ -30,7 +29,7 @@ export default async function Page() {
         download={`${profile.handle}.vcf`}
         className="inline-block rounded border px-3 py-1.5 text-sm hover:bg-gray-50"
       >
-        Download contact card (.vcf)
+        Download contact card
       </a>
 
       <section className="space-y-3">
@@ -38,21 +37,21 @@ export default async function Page() {
         <details className="rounded-lg border p-4" open>
           <summary className="cursor-pointer font-medium">iPhone</summary>
           <ol className="mt-2 list-decimal space-y-1 pl-5 text-sm">
-            <li>Open Contacts and tap <strong>My Card</strong> at the top.</li>
-            <li>Tap <strong>Edit</strong>, then <strong>add url</strong>.</li>
+            <li>Open the Contacts app and tap <strong>My Card</strong> at the top.</li>
+            <li>Tap <strong>Edit</strong>, then <strong>add url</strong> (a website address).</li>
             <li>
               Label it <strong>homepage</strong> and paste <code className="break-all">{url}</code>.
             </li>
             <li>Tap <strong>Done</strong>.</li>
           </ol>
           <p className="mt-2 text-sm text-gray-600">
-            Or: tap the downloaded .vcf file and choose <strong>Add Contact</strong>.
+            Or: tap the downloaded contact card and choose <strong>Add Contact</strong>.
           </p>
         </details>
         <details className="rounded-lg border p-4">
           <summary className="cursor-pointer font-medium">Android</summary>
           <ol className="mt-2 list-decimal space-y-1 pl-5 text-sm">
-            <li>Open Contacts and tap your profile (<strong>Me</strong> / <strong>Your profile</strong>).</li>
+            <li>Open the Contacts app and tap your own name (it may say <strong>Me</strong> or <strong>Your profile</strong>).</li>
             <li>Tap <strong>Edit</strong>.</li>
             <li>
               Add a <strong>Website</strong> field and paste <code className="break-all">{url}</code>.
@@ -60,7 +59,7 @@ export default async function Page() {
             <li>Tap <strong>Save</strong>.</li>
           </ol>
           <p className="mt-2 text-sm text-gray-600">
-            Or: open the downloaded .vcf file to import it.
+            Or: open the downloaded contact card to add it.
           </p>
         </details>
       </section>
