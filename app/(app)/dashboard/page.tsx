@@ -2,6 +2,8 @@ import Link from "next/link";
 import { requireProfile } from "@/lib/auth";
 import { permanentUrl } from "@/lib/vcard/build";
 import { dashboardCopy, deriveDashboardState } from "@/lib/dashboard/state";
+import { takedownNotice } from "@/lib/takedown";
+import { TakedownNotice } from "@/components/TakedownNotice";
 import type { Testimony } from "@/lib/types";
 
 const primaryBtn =
@@ -31,11 +33,13 @@ export default async function Page() {
   const hasDraftContent = (t?.draft_content?.content?.length ?? 0) > 0;
   const copy = dashboardCopy(state, profile.handle, hasDraftContent);
   const isPublished = state === "published_public" || state === "published_unlisted";
-  const url = permanentUrl(profile.handle);
+  const url = isPublished ? permanentUrl(profile.handle) : "";
+  const notice = takedownNotice(t);
 
   return (
     <main className="mx-auto w-full max-w-2xl space-y-6 p-4 sm:p-6">
       <h1 className="text-2xl font-semibold">Welcome, {profile.display_name}</h1>
+      <TakedownNotice notice={notice} />
       <section aria-labelledby="where" className="space-y-4 rounded border p-4 sm:p-6">
         <h2 id="where" className="text-xl font-semibold">
           {copy.heading}

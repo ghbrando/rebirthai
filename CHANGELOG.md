@@ -11,6 +11,7 @@ How this file is maintained:
 ## [Unreleased]
 
 ### Added
+- The dashboard now explains when a page was taken down and offers only "Keep editing" (follow-up to #39 and #41, [record](docs/changelog/2026-11-02-dashboard-takedown-notice.md))
 - A real dashboard that says in plain words where your testimony stands and offers one clear next step (#39, [record](docs/changelog/2026-11-02-dashboard.md))
 - Reports now alert the operator's phone, and the operator can take a page down (and restore it) with one command; the author sees why and how to reach the operator, and cannot republish while it is down. Includes a database change that needs owner approval (#41, [record](docs/changelog/2026-11-02-report-takedown.md))
 - Local test environment with made-up people, so demos and reviews never use real accounts; fixes a sign-in loop in demo mode (#34, [record](docs/changelog/2026-11-01-local-test-env.md))

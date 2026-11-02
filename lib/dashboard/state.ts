@@ -5,7 +5,8 @@ export type DashboardState =
   | "draft_in_progress"
   | "published_public"
   | "published_unlisted"
-  | "unpublished";
+  | "unpublished"
+  | "taken_down";
 
 export interface DashboardInput {
   /** Null when the author has no testimony row yet. */
@@ -15,12 +16,15 @@ export interface DashboardInput {
     title: string;
     draft_content: TestimonyContent | null;
     published_at: string | null;
+    /** Set when the operator took the page down (#27). */
+    takedown_at?: string | null;
   } | null;
   coachMessageCount: number;
 }
 
 /** Pure: where the author's testimony stands. */
 export function deriveDashboardState({ testimony: t, coachMessageCount }: DashboardInput): DashboardState {
+  if (t?.takedown_at) return "taken_down";
   if (t?.status === "published") return t.visibility === "unlisted" ? "published_unlisted" : "published_public";
   if (t?.status === "unpublished") return "unpublished";
   const hasContent = (t?.draft_content?.content?.length ?? 0) > 0 || !!t?.title?.trim();
@@ -84,6 +88,13 @@ export function dashboardCopy(state: DashboardState, handle: string, hasDraftCon
         body: "Your page is hidden and your words are saved. You can edit and publish again whenever you're ready.",
         primary: { label: "Keep editing", href: "/editor" },
         secondary: [{ label: "Publish again", href: "/publish" }],
+      };
+    case "taken_down":
+      return {
+        heading: "Your page is not visible right now",
+        body: "It was taken down after a report. Your story is safe and unchanged.",
+        primary: { label: "Keep editing", href: "/editor" },
+        secondary: [],
       };
   }
 }
