@@ -2,10 +2,10 @@ import Link from "next/link";
 
 export default function Landing() {
   return (
-    <main className="mx-auto flex max-w-2xl flex-1 flex-col justify-center gap-4 p-6">
+    <main className="mx-auto flex max-w-2xl flex-1 flex-col justify-start gap-4 px-6 pb-6 pt-12">
       <h1 className="text-4xl font-bold">RebirthAI</h1>
       <p className="text-lg text-gray-700">
-        Tell your story with an AI coach, then put it on your contact card so it travels with you.
+        RebirthAI is an AI coach that helps you tell your testimony and carry it on your contact card.
       </p>
       <Link href={process.env.DEMO_MODE === "1" ? "/demo" : "/sign-in"} className="w-fit rounded bg-[#7a2e3a] px-5 py-3 text-white">
         Get started

@@ -16,9 +16,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   await requireProfile(); // RC-01: server-side session check for every author screen
   return (
     <div className="flex min-h-screen flex-col">
-      <nav className="flex gap-4 overflow-x-auto border-b px-4 py-3 text-sm">
+      <nav aria-label="Main" className="grid grid-cols-4 border-b px-2 text-center text-sm sm:flex sm:gap-2 sm:px-4 sm:text-left">
         {links.map(([href, label]) => (
-          <Link key={href} href={href} className="whitespace-nowrap hover:underline">
+          <Link key={href} href={href} className="whitespace-nowrap py-2.5 hover:underline focus-visible:underline focus-visible:outline-2 sm:px-2">
             {label}
           </Link>
         ))}

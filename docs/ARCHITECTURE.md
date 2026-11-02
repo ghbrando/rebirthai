@@ -10,7 +10,7 @@ One Next.js (App Router, TypeScript) app on Vercel, one Supabase project, one AI
 
 ```
 Browser (author, PWA)  ──HTTPS──▶  Next.js on Vercel ──server-only key──▶ Anthropic API
-Recipient phone        ──tap URL─▶   ├─ author screens (app/(app), app/(auth), onboarding, settings)
+Recipient phone        ──tap URL─▶   ├─ author screens (app/(app) incl. settings, app/(auth), onboarding)
                                      ├─ public page  /@handle → /u/[handle]  (server-rendered)
                                      └─ route handlers  app/api/*            ──RLS──▶ Supabase Postgres
 Browser ──signed direct upload────────────────────────────────────────────────────▶ Supabase Storage
@@ -20,7 +20,7 @@ Browser ──signed direct upload───────────────�
 
 | Area | Paths | Responsibility |
 |---|---|---|
-| Auth & profile | `app/(auth)`, `app/auth/callback`, `app/onboarding`, `app/settings`, `components/profile` | Sign-in, session, profile, handle changes |
+| Auth & profile | `app/(auth)`, `app/auth/callback`, `app/onboarding`, `app/(app)/settings`, `components/profile` | Sign-in, session, profile, handle changes |
 | AI coach | `app/api/coach/**`, `lib/ai/**`, `app/(app)/coach`, `components/coach` | Interview, draft, suggestions, rate limit, crisis rules |
 | Editor & media | `app/(app)/editor`, `app/api/upload-url/**`, `lib/media/**`, `components/editor` | Draft editing, suggestion accept/reject, uploads, EXIF strip |
 | Publish & public page | `app/(app)/preview`, `app/(app)/publish`, `app/api/publish`, `app/u/**`, `app/api/og`, `app/api/report`, `components/testimony` | Snapshot publishing, public rendering, link previews, reports |
