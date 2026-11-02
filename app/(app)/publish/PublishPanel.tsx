@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { VISIBILITY_TEXT } from "@/lib/visibility";
 
 type Props = {
   status: "draft" | "published" | "unpublished";
@@ -39,7 +40,7 @@ export function PublishPanel({ status, visibility: initial, handle, canPublish }
   function confirmDelete() {
     if (
       window.confirm(
-        "Delete your testimony permanently? This removes your draft, coach conversation, photos and videos, and your public page. This cannot be undone.",
+        "Delete my testimony? You will lose your draft, coach conversation, photos and videos. Your testimony link and QR code will stop working. This cannot be undone.",
       )
     )
       void act("delete");
@@ -53,13 +54,13 @@ export function PublishPanel({ status, visibility: initial, handle, canPublish }
         <label className="flex items-start gap-2">
           <input type="radio" name="vis" checked={visibility === "public"} onChange={() => setVisibility("public")} />
           <span>
-            <b>Public</b> — anyone with the link; search engines may index it.
+            <b>Public</b> — {VISIBILITY_TEXT.public}
           </span>
         </label>
         <label className="flex items-start gap-2">
           <input type="radio" name="vis" checked={visibility === "unlisted"} onChange={() => setVisibility("unlisted")} />
           <span>
-            <b>Unlisted</b> — anyone with the link, but hidden from search engines.
+            <b>Unlisted</b> — {VISIBILITY_TEXT.unlisted}
           </span>
         </label>
       </fieldset>
@@ -86,13 +87,6 @@ export function PublishPanel({ status, visibility: initial, handle, canPublish }
             Unpublish
           </button>
         )}
-        <button
-          disabled={busy}
-          onClick={confirmDelete}
-          className="rounded-lg border border-red-700 px-4 py-2 text-red-800"
-        >
-          Delete permanently
-        </button>
       </div>
       {!canPublish && <p className="text-sm text-gray-700">Add a title and some content before publishing.</p>}
       {error && (
@@ -100,6 +94,15 @@ export function PublishPanel({ status, visibility: initial, handle, canPublish }
           {error}
         </p>
       )}
+      <div className="border-t pt-6">
+        <button
+          disabled={busy}
+          onClick={confirmDelete}
+          className="rounded-lg border border-red-700 px-4 py-2 text-red-800"
+        >
+          Delete my testimony
+        </button>
+      </div>
     </div>
   );
 }

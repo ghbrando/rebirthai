@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { HANDLE_REGEX, MEDIA_LIMITS, type Profile } from "@/lib/types";
 import { checkHandle, saveProfile, type FormState } from "./actions";
 
+import { CONTACT_CONSENT_TEXT } from "@/lib/visibility";
 const input =
   "h-11 w-full rounded-lg border px-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2";
 
@@ -152,6 +153,7 @@ export function ProfileForm({ mode, userId, profile }: Props) {
                 className="mt-1 size-5" />
               <span>Show my phone/email on my public page so readers can add me to their contacts.</span>
             </label>
+            <p className="text-base">{CONTACT_CONSENT_TEXT}</p>
           </fieldset>
         )}
 

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireProfile } from "@/lib/auth";
 import type { Testimony } from "@/lib/types";
+import { DEFAULT_VISIBILITY } from "@/lib/visibility";
 import { PublishPanel } from "./PublishPanel";
 
 export default async function Page() {
@@ -26,7 +27,7 @@ export default async function Page() {
       </p>
       <PublishPanel
         status={t?.status ?? "draft"}
-        visibility={t?.visibility ?? "public"}
+        visibility={t && t.status !== "draft" ? t.visibility : DEFAULT_VISIBILITY}
         handle={profile.handle}
         canPublish={canPublish}
       />
