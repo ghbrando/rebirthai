@@ -33,6 +33,7 @@ export default async function Page() {
         visibility={t?.visibility ?? "public"}
         handle={profile.handle}
         canPublish={canPublish}
+        takenDown={!!notice}
       />
     </main>
   );
