@@ -1,5 +1,5 @@
 ---
-pr: PRNUM
+pr: 49
 issues: [25]
 date: 2026-11-02
 branch: feature/25-privacy-terms
