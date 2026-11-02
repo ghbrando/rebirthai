@@ -1,5 +1,5 @@
 ---
-pr: pending
+pr: 43
 issues: [35]
 date: 2026-11-02
 branch: feature/35-copy-pass
