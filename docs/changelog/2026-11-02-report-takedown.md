@@ -1,5 +1,5 @@
 ---
-pr: PRNUM
+pr: 41
 issues: [27]
 date: 2026-11-02
 branch: feature/27-report-takedown
