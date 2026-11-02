@@ -19,11 +19,13 @@ Create `.env.local` with:
 | `SUPABASE_SERVICE_ROLE_KEY` | **server-only** (RC-07) |
 | `ANTHROPIC_API_KEY` | **server-only** (RC-07) |
 | `NEXT_PUBLIC_SITE_URL` | public origin, e.g. `http://localhost:3000` |
+| `REPORT_WEBHOOK_URL` | optional, **server-only**; an ntfy.sh topic URL or any webhook that takes a plain-text POST, notified when a page is reported (`docs/OPERATIONS.md`) |
+| `OPERATOR_CONTACT_EMAIL` | optional; shown to an author whose page was taken down so they can reach the operator |
 | `COACH_MODEL_INTERVIEW`, `COACH_MODEL_DRAFT`, `COACH_MODEL_SUGGEST` | optional; Claude model per coach step (`claude-opus-5-5` default; also `claude-sonnet-5-5`, `claude-haiku-5-5`). Change only after the coach truthfulness check (#10). |
 
 ### Database
 
-Apply `supabase/migrations/0001_init.sql` (Supabase SQL editor, or `supabase db push`). It creates all tables, RLS policies, public views, the `media-private` / `media-public` buckets and storage policies.
+Apply `supabase/migrations/0001_init.sql`, then `0002_takedown.sql` (Supabase SQL editor, or `supabase db push` for all). 0001 creates all tables, RLS policies, public views, the `media-private` / `media-public` buckets and storage policies.
 
 In Supabase Auth settings, enable Email (magic link) and Google, and add `http://localhost:3000/auth/callback` (and your Vercel URL) as redirect URLs.
 

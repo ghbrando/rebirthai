@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
 import { HANDLE_REGEX } from "@/lib/types";
+import { notifyOperatorOfReport } from "@/lib/report-notify";
 
 /** RC-13: store a content report for operator review. Accepts form posts or JSON. */
 export async function POST(req: Request) {
@@ -32,6 +33,8 @@ export async function POST(req: Request) {
   } catch {
     return NextResponse.json({ error: "Could not submit report" }, { status: 500 });
   }
+  // Best effort (#27): never fails the report, never throws.
+  await notifyOperatorOfReport({ handle, reason, reportedAt: new Date() });
   if (isForm) return NextResponse.redirect(new URL(`/u/${handle}?reported=1`, req.url), 303);
   return NextResponse.json({ ok: true });
 }

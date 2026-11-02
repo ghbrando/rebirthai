@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getUserOrNull } from "@/lib/auth";
 import { createServiceClient } from "@/lib/supabase/server";
 import { collectMediaIds } from "@/components/testimony/Renderer";
+import { TAKEDOWN_BLOCKED_MESSAGE } from "@/lib/takedown";
 import type { Testimony, Media } from "@/lib/types";
 
 const EXT: Record<string, string> = {
@@ -52,6 +53,8 @@ export async function POST(req: Request) {
   };
 
   if (body.action === "publish") {
+    // #27: an operator takedown blocks republishing until the operator restores the page.
+    if (t.takedown_at) return NextResponse.json({ error: TAKEDOWN_BLOCKED_MESSAGE }, { status: 403 });
     const visibility = body.visibility === "unlisted" ? "unlisted" : "public";
     if (!t.title.trim() || !t.draft_content?.content?.length)
       return NextResponse.json({ error: "Add a title and some content before publishing." }, { status: 400 });
