@@ -15,7 +15,7 @@ Release summaries live in `CHANGELOG.md` and link here.
 
 | Date | PR | Change | Issues |
 |---|---|---|---|
-| 2026-11-02 | #PENDING | [Delete my account and all my data](2026-11-02-delete-account.md) | #26 |
+| 2026-11-02 | #40 | [Delete my account and all my data](2026-11-02-delete-account.md) | #26 |
 | 2026-10-27 | #32 | [Fixes from the specialist review](2026-10-27-pr-32-review-findings.md) | #10, #29 |
 | 2026-10-27 | #31 | [AI cost controls: per-step models and cost logging](2026-10-27-pr-31-ai-cost-controls.md) | #10, #20 |
 | 2026-10-27 | #30 | [Private beta plan and Discovery direction](2026-10-27-pr-30-beta-plan.md) | #25–#29 |

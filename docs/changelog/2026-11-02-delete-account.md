@@ -1,5 +1,5 @@
 ---
-pr: PENDING
+pr: 40
 issues: [26]
 date: 2026-11-02
 branch: feature/26-delete-account
