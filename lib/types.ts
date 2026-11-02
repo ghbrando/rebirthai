@@ -69,6 +69,9 @@ export interface Testimony {
   visibility: Visibility;
   published_at: string | null;
   updated_at: string;
+  /** Set only by the operator (scripts/takedown.mjs, #27). Authors may read, never write. */
+  takedown_reason?: string | null;
+  takedown_at?: string | null;
 }
 
 export interface CoachMessage {

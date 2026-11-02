@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { requireProfile } from "@/lib/auth";
 import type { Testimony } from "@/lib/types";
+import { takedownNotice } from "@/lib/takedown";
+import { TakedownNotice } from "@/components/TakedownNotice";
 import { PublishPanel } from "./PublishPanel";
 
 export default async function Page() {
@@ -11,7 +13,8 @@ export default async function Page() {
     .eq("profile_id", profile.id)
     .maybeSingle();
   const t = data as Testimony | null;
-  const canPublish = !!t && !!t.title.trim() && (t.draft_content?.content?.length ?? 0) > 0;
+  const notice = takedownNotice(t);
+  const canPublish = !!t && !notice && !!t.title.trim() && (t.draft_content?.content?.length ?? 0) > 0;
 
   return (
     <main className="mx-auto w-full max-w-2xl space-y-6 p-4 sm:p-6">
@@ -24,11 +27,13 @@ export default async function Page() {
           Review preview
         </Link>
       </p>
+      <TakedownNotice notice={notice} />
       <PublishPanel
         status={t?.status ?? "draft"}
         visibility={t?.visibility ?? "public"}
         handle={profile.handle}
         canPublish={canPublish}
+        takenDown={!!notice}
       />
     </main>
   );

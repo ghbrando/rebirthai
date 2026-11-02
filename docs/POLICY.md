@@ -75,7 +75,7 @@ step.
 
 - Every public page has a Report link; reports are stored for operator review.
 - Only allow-listed media types and sizes are accepted (images ≤10 MB; video ≤100 MB, about 3 minutes).
-- Moderation tooling and takedown workflow are post-MVP; until then, the operator reviews reports manually.
+- The operator is alerted to each report (page link and time only) and can take a page down (and restore it) with `scripts/takedown.mjs`; the author sees the reason and how to reach the operator. Reports and the takedown log are kept about 90 days after a page or account is deleted. See `docs/OPERATIONS.md`. Fuller moderation tooling is post-MVP.
 
 ## 10. Accessibility (RC-11)
 
