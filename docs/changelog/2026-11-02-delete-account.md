@@ -93,8 +93,8 @@ on `profiles` fires under the cascade and retires the handles. Then sign-out.
 - **vCard redirects to the page** rather than returning its own HTML, so there is one wording.
 
 ## Assumptions and open questions
-- **Owner decision needed:** reports about a deleted testimony are removed by the existing `reports`
-  cascade. Alternative: keep them anonymized for about 90 days for abuse review. Left unchanged.
+- Reports are kept (anonymized, handle only) by #41's migration 0003; the owner approves the
+  retention policy there. This PR does not change the reports cascade.
 - A person who deletes and signs up again cannot get their old handle back.
 - Files uploaded between the storage step and the final step (another tab) would be orphaned in
   `media-private`; unreachable, but not removed. Low likelihood.
@@ -115,8 +115,16 @@ on `profiles` fires under the cascade and retires the handles. Then sign-out.
 - `app/api/account/delete/route.test.ts`: 401 when signed out, 400 without `DELETE`, deletes the
   session user even if the body names another id, signs out; 403 for another origin, a missing or
   malformed Origin; 415 for a form post; accepts `NEXT_PUBLIC_SITE_URL` as origin.
-- Not run against a live Supabase in this change (no local stack available to this agent); the
-  migration and storage listing are verified by reading only.
+- Verified end to end on local Supabase (2026-11-02, QA): migration 0002 applied; deleting from
+  Settings removed every row (profiles, testimonies, coach_messages, media), the auth user and all
+  files in both buckets; the handle was retired and a second user's claim was refused in the UI and
+  by a direct insert; `/@deltest_1` shows "no longer available" and the vCard redirects there; the
+  CSRF checks returned 403 and 415. With #41's 0003, a report survives with `testimony_id` null and
+  the handle kept.
+
+![Delete confirmation](https://raw.githubusercontent.com/ghbrando/rebirthai/34b4fba33dbdbabfbc98a5484a147cda22798b67/docs/changelog/assets/2026-11-02-delete-account/C1-delete-confirm.png)
+![Account deleted](https://raw.githubusercontent.com/ghbrando/rebirthai/34b4fba33dbdbabfbc98a5484a147cda22798b67/docs/changelog/assets/2026-11-02-delete-account/C2-account-deleted.png)
+![Handle claim refused](https://raw.githubusercontent.com/ghbrando/rebirthai/34b4fba33dbdbabfbc98a5484a147cda22798b67/docs/changelog/assets/2026-11-02-delete-account/C4-claim-refused.png)
 
 ## Known limitations and follow-ups
 - Pages already cached by a recipient's browser or a link preview service may show old content until
