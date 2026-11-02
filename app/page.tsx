@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LegalLinks } from "@/components/legal/LegalLinks";
 
 export default function Landing() {
   return (
@@ -10,6 +11,9 @@ export default function Landing() {
       <Link href={process.env.DEMO_MODE === "1" ? "/demo" : "/sign-in"} className="w-fit rounded bg-[#7a2e3a] px-5 py-3 text-white">
         Get started
       </Link>
+      <footer className="mt-auto border-t pt-2">
+        <LegalLinks />
+      </footer>
     </main>
   );
 }
