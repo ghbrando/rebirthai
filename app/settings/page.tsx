@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireProfile } from "@/lib/auth";
 import { ProfileForm } from "@/components/profile/profile-form";
 import { signOut } from "@/components/profile/actions";
+import { DeleteAccount } from "@/components/profile/delete-account";
 import { Button } from "@/components/ui/button";
 
 export default async function Page() {
@@ -23,6 +24,9 @@ export default async function Page() {
           <Link href="/publish" className="text-red-700 underline">Delete my testimony</Link>
         </p>
       </section>
+      <div className="border-t pt-8">
+        <DeleteAccount handle={profile.handle} />
+      </div>
     </main>
   );
 }

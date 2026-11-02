@@ -69,6 +69,9 @@ export async function GET(
           308,
         );
       }
+      // Deleted account (#26): send the visitor to the friendly "no longer available" page.
+      const { data: retired } = await supabase.rpc("is_handle_retired", { h: handle });
+      if (retired === true) return NextResponse.redirect(new URL(`/u/${handle}`, request.url), 307);
       return notFound();
     }
 

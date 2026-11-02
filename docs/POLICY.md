@@ -60,6 +60,9 @@ if the author wants to include them, and never preaches or corrects the author's
 - Phone and email appear on the contact card or public page **only** if the author turns them on. Nothing is shared by default.
 - Unlisted testimonies are marked so search engines skip them.
 - Deleting a testimony removes the story, the conversation and the stored media. It is permanent.
+- Deleting the account (Settings) removes everything: profile, testimony, coach conversations,
+  photos and videos, and the sign-in account. It is permanent. Only the handle text is kept, with
+  no link to the person, so it can never be reused (§11).
 - Never log coach messages, story text or contact details.
 
 ## 8. Third parties and consent (RISK-03)
@@ -83,7 +86,11 @@ and never autoplays video with sound.
 
 A link saved in someone's contacts can never be updated. Therefore: the domain and URL format
 must be final before real contact cards are handed out (D-04), old handles redirect forever,
-and a released handle is never given to another user.
+and a released handle is never given to another user. This includes the handles (current and
+old) of a deleted account: they are retired forever, and their link shows "This testimony is no
+longer available" instead of someone else's story. Deletion is honest about its limits: copies
+may persist briefly in caches, link previews and backups, and what the coach already processed
+cannot be recalled.
 
 ## 12. Out of bounds (SDD §2.3)
 
