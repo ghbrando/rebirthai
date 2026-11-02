@@ -3,10 +3,11 @@ import { getUserOrNull } from "@/lib/auth";
 import { SignInForm } from "@/components/profile/sign-in-form";
 
 export default async function Page({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
-  if (process.env.DEMO_MODE === "1") redirect("/demo");
+  const { error } = await searchParams;
+  // Demo mode skips this form, except after a failed demo sign-in: redirecting back would loop.
+  if (process.env.DEMO_MODE === "1" && !error) redirect("/demo");
   const session = await getUserOrNull();
   if (session) redirect("/dashboard"); // dashboard's layout sends profile-less users to /onboarding
-  const { error } = await searchParams;
   return (
     <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center gap-6 p-6">
       <div>
