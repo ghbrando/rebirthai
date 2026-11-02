@@ -40,7 +40,13 @@ Issue #11. The dashboard was a `PageStub` placeholder.
 None (read-only queries on existing tables).
 
 ## Verification
-`npm run lint`, `npm run typecheck`, `npm test` pass (23 tests). Running-app check left to the Lead.
+`npm run lint`, `npm run typecheck`, `npm test` pass (23 tests). Verified on local Supabase (2026-11-02), phone width, all five states plus signed-out redirect:
+
+![Published, anyone can find it](https://raw.githubusercontent.com/ghbrando/rebirthai/ab71fb46a8a2c17c7d89af4eeab4cdf26caebe99/docs/changelog/assets/2026-11-02-dashboard/A1-maria-public.png)
+![Published, link only](https://raw.githubusercontent.com/ghbrando/rebirthai/ab71fb46a8a2c17c7d89af4eeab4cdf26caebe99/docs/changelog/assets/2026-11-02-dashboard/A2-maria-unlisted.png)
+![Not public](https://raw.githubusercontent.com/ghbrando/rebirthai/ab71fb46a8a2c17c7d89af4eeab4cdf26caebe99/docs/changelog/assets/2026-11-02-dashboard/A3-maria-unpublished.png)
+![Not started](https://raw.githubusercontent.com/ghbrando/rebirthai/ab71fb46a8a2c17c7d89af4eeab4cdf26caebe99/docs/changelog/assets/2026-11-02-dashboard/A5-not-started.png)
+![In progress](https://raw.githubusercontent.com/ghbrando/rebirthai/ab71fb46a8a2c17c7d89af4eeab4cdf26caebe99/docs/changelog/assets/2026-11-02-dashboard/A6-in-progress.png)
 
 ## Known limitations and follow-ups
 No visual evidence yet.
