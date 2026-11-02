@@ -10,7 +10,7 @@ One Next.js (App Router, TypeScript) app on Vercel, one Supabase project, one AI
 
 ```
 Browser (author, PWA)  ──HTTPS──▶  Next.js on Vercel ──server-only key──▶ Anthropic API
-Recipient phone        ──tap URL─▶   ├─ author screens (app/(app), app/(auth), onboarding, settings)
+Recipient phone        ──tap URL─▶   ├─ author screens (app/(app) incl. settings, app/(auth), onboarding)
                                      ├─ public page  /@handle → /u/[handle]  (server-rendered)
                                      └─ route handlers  app/api/*            ──RLS──▶ Supabase Postgres
 Browser ──signed direct upload────────────────────────────────────────────────────▶ Supabase Storage
@@ -31,7 +31,8 @@ Browser ──signed direct upload───────────────�
 
 `profiles` (one per user; opt-in contact fields) · `testimonies` (one per profile; separate
 `draft_content` and `published_content` JSON) · `coach_messages` (private) · `media` ·
-`handle_redirects` (old handle → profile, permanent) · `reports`.
+`handle_redirects` (old handle → profile, permanent) · `retired_handles` (handles of deleted
+accounts, never reused; 0002) · `reports`.
 Storage buckets: `media-private` (drafts, signed URLs) and `media-public` (published).
 
 ## 4. Key data flows
@@ -54,7 +55,7 @@ DD-08 one testimony per profile (MVP).
 1. Every route that reads private data or changes data verifies the session on the server with `requireUser()` / `getUserOrNull()`. `proxy.ts` only refreshes cookies; it is not authorization (RC-01).
 2. Ownership is enforced by Postgres RLS. Never disable RLS or widen a policy to make a feature work (RC-02).
 3. `ANTHROPIC_API_KEY` and `SUPABASE_SERVICE_ROLE_KEY` are used only in server code. Never import `lib/supabase/server` or the Anthropic SDK from a `"use client"` file, and never prefix a secret with `NEXT_PUBLIC_` (RC-07).
-4. The service-role client (`createServiceClient`) is allowed only where RLS cannot express the operation: publish (moving media), reporting, and the demo route. Any new use is an escalation.
+4. The service-role client (`createServiceClient`) is allowed only where RLS cannot express the operation: publish (moving media), reporting, the demo route, and the account-deletion route `app/api/account/delete` (storage cleanup and `auth.admin.deleteUser`, #26; rows go through the auth.users cascade). Any new use is an escalation.
 5. **`/demo` signs anyone in as `DEMO_EMAIL` without an email step. `DEMO_MODE` must never be set in a deployed (preview, staging or production) environment.**
 
 **Data and URL invariants**

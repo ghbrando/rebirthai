@@ -8,7 +8,7 @@ author: Implementation Engineer
 ids: [RC-11]
 areas: [app/layout.tsx, app/globals.css, app/(app)/layout.tsx, app/(app)/settings, app/page.tsx, components/coach/CoachChat.tsx]
 type: feature
-status: open
+status: merged
 ---
 
 # First-impression polish: readable type, phone-width menu, calmer coach header

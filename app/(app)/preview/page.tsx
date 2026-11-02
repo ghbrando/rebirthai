@@ -36,7 +36,7 @@ export default async function Page() {
 
   return (
     <main className="mx-auto w-full max-w-2xl space-y-6 p-4 sm:p-6">
-      <p className="text-sm text-gray-700">Screen 7 · Preview — this is exactly how your page will look.</p>
+      <p className="text-sm text-gray-700">This is exactly how your page will look.</p>
       <div role="note" className="rounded-lg border border-amber-700 bg-amber-50 p-4 text-sm text-amber-950">
         Before you publish: have you named anyone who hasn&apos;t agreed to be named publicly (family, friends,
         others)? Consider removing or changing names. You can also publish as Unlisted, and unpublish or delete at

@@ -10,8 +10,17 @@ How this file is maintained:
 
 ## [Unreleased]
 
+### Changed
+- Beta copy pass: removed "Screen N" labels, one link format (`/@handle`) everywhere, plain publish status sentences, Heading/Subheading editor toolbar, "Ask the AI for help", "Download contact card" (#35, [record](docs/changelog/2026-11-02-beta-copy-pass.md))
+
 ### Added
 - First-impression polish: readable font, menu that fits a phone, calmer coach header, clearer landing page, menu on Settings (#45, [record](docs/changelog/2026-11-02-pr-45-first-impression-polish.md))
+- Publish screen: plain "who can see this" sentences, Unlisted by default (owner decision D-09), delete moved apart with a clear confirmation, and one consent sentence for contact details in settings and contact (#46, [record](docs/changelog/2026-11-02-publish-clarity.md))
+- Contact cards and QR codes can no longer point at a test address in production; a missing or test site address now stops with a clear error (#42, [record](docs/changelog/2026-11-02-site-url-guard.md))
+- The dashboard now explains when a page was taken down and offers only "Keep editing" (#44, follow-up to #39 and #41, [record](docs/changelog/2026-11-02-dashboard-takedown-notice.md))
+- Reports now alert the operator's phone, and the operator can take a page down (and restore it) with one command; the author sees why and how to reach the operator, and cannot republish while it is down. Includes a database change that needs owner approval (#41, [record](docs/changelog/2026-11-02-report-takedown.md))
+- Delete my account: authors can permanently remove their profile, testimony, coach conversations, photos and videos; their link then shows "no longer available" and the handle is never reused (#40, [record](docs/changelog/2026-11-02-delete-account.md))
+- A real dashboard that says in plain words where your testimony stands and offers one clear next step (#39, [record](docs/changelog/2026-11-02-dashboard.md))
 - Local test environment with made-up people, so demos and reviews never use real accounts; fixes a sign-in loop in demo mode (#34, [record](docs/changelog/2026-11-01-local-test-env.md))
 - Domain rules for Discovery and stronger coach truthfulness checks recorded from a ministry-focused review; AI cost logging counts failed calls (#32, [record](docs/changelog/2026-10-27-pr-32-review-findings.md))
 - AI cost tracking per testimony and a per-step choice of coach model, so RebirthAI can stay free for users as it grows; the coach itself is unchanged (#31, [record](docs/changelog/2026-10-27-pr-31-ai-cost-controls.md))

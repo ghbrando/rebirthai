@@ -1,4 +1,5 @@
 // vCard 3.0 builder (RFC 2426). No photo by design (RC-10).
+import { getSiteUrl } from "@/lib/site-url";
 
 export interface VCardInput {
   displayName: string;
@@ -7,12 +8,8 @@ export interface VCardInput {
   phone?: string | null;
   email?: string | null;
   shareContact?: boolean;
-  /** Site origin, no trailing slash. Defaults to NEXT_PUBLIC_SITE_URL. */
+  /** Site origin, no trailing slash. Defaults to getSiteUrl() (lib/site-url.ts). */
   siteUrl?: string;
-}
-
-export function getSiteUrl(): string {
-  return (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/+$/, "");
 }
 
 /** Permanent testimony URL (RC-03). */

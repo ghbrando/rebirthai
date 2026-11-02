@@ -2,15 +2,18 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { VISIBILITY_TEXT } from "@/lib/visibility";
 
 type Props = {
   status: "draft" | "published" | "unpublished";
   visibility: "public" | "unlisted";
-  handle: string;
+  url: string;
   canPublish: boolean;
+  /** Operator takedown in effect (#27): the notice above explains it, so skip the "add content" hint. */
+  takenDown?: boolean;
 };
 
-export function PublishPanel({ status, visibility: initial, handle, canPublish }: Props) {
+export function PublishPanel({ status, visibility: initial, url, canPublish, takenDown }: Props) {
   const router = useRouter();
   const [visibility, setVisibility] = useState(initial);
   const [busy, setBusy] = useState(false);
@@ -39,7 +42,7 @@ export function PublishPanel({ status, visibility: initial, handle, canPublish }
   function confirmDelete() {
     if (
       window.confirm(
-        "Delete your testimony permanently? This removes your draft, coach conversation, photos and videos, and your public page. This cannot be undone.",
+        "Delete my testimony? You will lose your draft, coach conversation, photos and videos. Your testimony link and QR code will stop working. This cannot be undone.",
       )
     )
       void act("delete");
@@ -53,22 +56,22 @@ export function PublishPanel({ status, visibility: initial, handle, canPublish }
         <label className="flex items-start gap-2">
           <input type="radio" name="vis" checked={visibility === "public"} onChange={() => setVisibility("public")} />
           <span>
-            <b>Public</b> — anyone with the link; search engines may index it.
+            <b>Public</b> — {VISIBILITY_TEXT.public}
           </span>
         </label>
         <label className="flex items-start gap-2">
           <input type="radio" name="vis" checked={visibility === "unlisted"} onChange={() => setVisibility("unlisted")} />
           <span>
-            <b>Unlisted</b> — anyone with the link, but hidden from search engines.
+            <b>Unlisted</b> — {VISIBILITY_TEXT.unlisted}
           </span>
         </label>
       </fieldset>
 
       {published && (
         <p className="text-sm">
-          Live at{" "}
-          <a className="text-blue-800 underline" href={`/@${handle}`}>
-            /@{handle}
+          Your link:{" "}
+          <a className="break-all text-blue-800 underline" href={url}>
+            {url}
           </a>
         </p>
       )}
@@ -86,20 +89,22 @@ export function PublishPanel({ status, visibility: initial, handle, canPublish }
             Unpublish
           </button>
         )}
-        <button
-          disabled={busy}
-          onClick={confirmDelete}
-          className="rounded-lg border border-red-700 px-4 py-2 text-red-800"
-        >
-          Delete permanently
-        </button>
       </div>
-      {!canPublish && <p className="text-sm text-gray-700">Add a title and some content before publishing.</p>}
+      {!canPublish && !takenDown && <p className="text-sm text-gray-700">Add a title and some content before publishing.</p>}
       {error && (
         <p role="alert" className="text-sm text-red-800">
           {error}
         </p>
       )}
+      <div className="border-t pt-6">
+        <button
+          disabled={busy}
+          onClick={confirmDelete}
+          className="rounded-lg border border-red-700 px-4 py-2 text-red-800"
+        >
+          Delete my testimony
+        </button>
+      </div>
     </div>
   );
 }
