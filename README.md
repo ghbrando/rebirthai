@@ -27,6 +27,30 @@ Apply the files in `supabase/migrations/` in order (Supabase SQL editor, or `sup
 
 In Supabase Auth settings, enable Email (magic link) and Google, and add `http://localhost:3000/auth/callback` (and your Vercel URL) as redirect URLs.
 
+### Local test environment (fictional data)
+
+Reviews, demos and screenshots run against a local Supabase seeded with made-up people, never
+a hosted project. Needs Docker and the Supabase CLI (on the team's Windows machine they live in
+WSL Ubuntu: prefix the `supabase` commands with `wsl -d Ubuntu -u root --` and run them from the
+repo's `/mnt/c/...` path).
+
+```bash
+supabase start -x studio,imgproxy,edge-runtime,logflare,vector,supavisor  # applies migrations
+supabase status -o env        # local keys (shared local defaults, not secrets)
+SUPABASE_URL=http://localhost:54321 SUPABASE_SERVICE_ROLE_KEY=<secret key> node scripts/seed-demo.mjs
+NEXT_PUBLIC_SUPABASE_URL=http://localhost:54321 NEXT_PUBLIC_SUPABASE_ANON_KEY=<publishable key> \
+SUPABASE_SERVICE_ROLE_KEY=<secret key> NEXT_PUBLIC_SITE_URL=http://localhost:3000 \
+DEMO_MODE=1 DEMO_EMAIL=demo@rebirthai.local npm run dev
+```
+
+Open `/demo` to sign in as Maria (published testimony at `/@maria_g`). `newcomer@rebirthai.local`
+is a signed-up user with nothing written. The coach needs `ANTHROPIC_API_KEY`; every other
+screen works without it. `supabase stop` when done.
+
+WSL notes: use `localhost`, not `127.0.0.1` (Windows reaches WSL ports over IPv6 here). WSL
+shuts down, and the database with it, when no WSL process is attached, so keep one open while
+working: `wsl -d Ubuntu -- sleep infinity` in the background.
+
 ## Run
 
 ```bash
