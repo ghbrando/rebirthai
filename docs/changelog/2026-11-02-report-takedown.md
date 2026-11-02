@@ -45,10 +45,19 @@ Issue #27. Before this, reports were only stored in the `reports` table, with no
 - No new dependencies.
 
 ## Verification
-`npm run lint`, `npm run typecheck`, `npm test` pass. New tests: `lib/report-notify.test.ts` (no PII, failure tolerance), `app/api/publish/route.test.ts` (taken-down page refused), `scripts/takedown-args.test.ts`. The migration and script were not run against a database in this change.
+`npm run lint`, `npm run typecheck`, `npm test` pass. New tests: `lib/report-notify.test.ts` (no PII, failure tolerance), `app/api/publish/route.test.ts` (taken-down page refused), `scripts/takedown-args.test.ts`. Verified end to end on local Supabase (2026-11-02): migration 0003 applied after 0002; report saved with handle; takedown dry run and --yes; public page, vCard and dashboard hidden; author notice shown; author PATCH/DELETE bypasses refused; report rate limit held; restore works.
+
+Report submitted:
+![Report submitted](https://raw.githubusercontent.com/ghbrando/rebirthai/1cee976b21d5cacc695a3e6b5df545cb6cb2a603/docs/changelog/assets/2026-11-02-report-takedown/B1-report-submitted.png)
+
+Author sees the takedown notice:
+![Takedown notice](https://raw.githubusercontent.com/ghbrando/rebirthai/1cee976b21d5cacc695a3e6b5df545cb6cb2a603/docs/changelog/assets/2026-11-02-report-takedown/B2-maria-takedown-notice.png)
+
+After restore:
+![Restored](https://raw.githubusercontent.com/ghbrando/rebirthai/1cee976b21d5cacc695a3e6b5df545cb6cb2a603/docs/changelog/assets/2026-11-02-report-takedown/B4-maria-restored.png)
 
 ## Known limitations and follow-ups
-- Migration and script untested against a live Postgres here; verify on the local test environment after owner approval.
+- Once #39 merges, the dashboard needs the TakedownNotice (it shows "Publish again" during a takedown today).
 - No in-app operator console; no reporter feedback loop.
 
 ## Risks and rollback
