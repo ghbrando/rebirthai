@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 
-const state = vi.hoisted(() => ({ testimony: {} as Record<string, unknown>, adminCalls: 0 }));
+const state = vi.hoisted(() => ({ testimony: {} as Record<string, unknown>, adminCalls: 0, updated: [{ id: "t1" }] as unknown[] }));
 
 vi.mock("@/lib/auth", () => ({
   getUserOrNull: async () => ({
@@ -19,7 +19,7 @@ vi.mock("@/lib/auth", () => ({
 vi.mock("@/lib/supabase/server", () => ({
   createServiceClient: () => {
     state.adminCalls++;
-    return { from: () => ({ update: () => ({ eq: async () => ({ error: null }) }) }), storage: { from: () => ({ list: async () => ({ data: [] }), remove: async () => ({}) }) } };
+    return { from: () => ({ update: () => ({ eq: () => { const r = Promise.resolve({ error: null, data: state.updated }); return Object.assign(r, { is: () => ({ select: async () => ({ error: null, data: state.updated }) }) }); } }) }), storage: { from: () => ({ list: async () => ({ data: [] }), remove: async () => ({}) }) } };
   },
 }));
 vi.mock("@/components/testimony/Renderer", () => ({ collectMediaIds: () => [] }));
@@ -32,6 +32,7 @@ const call = (action: string) =>
 describe("publish route and takedowns", () => {
   beforeEach(() => {
     state.adminCalls = 0;
+    state.updated = [{ id: "t1" }];
     state.testimony = {
       id: "t1",
       title: "My story",
@@ -46,6 +47,12 @@ describe("publish route and takedowns", () => {
     expect(res.status).toBe(403);
     expect((await res.json()).error).toMatch(/taken down/i);
     expect(state.adminCalls).toBe(1); // client is created before the check, but nothing is written
+  });
+
+  test("refuses when a takedown lands mid-publish (guarded update matches no row)", async () => {
+    state.updated = [];
+    const res = await call("publish");
+    expect(res.status).toBe(403);
   });
 
   test("still publishes a page that was not taken down", async () => {

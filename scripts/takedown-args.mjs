@@ -25,10 +25,18 @@ export function parseArgs(argv) {
   return { ok: true, handle, restore, reason: restore ? null : reason.slice(0, 1000), yes: flags.has("--yes") };
 }
 
-/** Hosted projects are allowed; this only checks the URL looks like a Supabase project URL. */
+/** Hosted projects are allowed, but the service key only travels over https (http only for localhost). */
 export function validateEnv(env) {
   if (!env.SUPABASE_URL || !env.SUPABASE_SERVICE_ROLE_KEY)
     return "Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.";
-  if (!/^https?:\/\//.test(env.SUPABASE_URL)) return "SUPABASE_URL must start with http:// or https://";
+  let u;
+  try {
+    u = new URL(env.SUPABASE_URL);
+  } catch {
+    return "SUPABASE_URL is not a valid URL.";
+  }
+  const local = u.hostname === "localhost" || u.hostname === "127.0.0.1";
+  if (u.protocol !== "https:" && !(u.protocol === "http:" && local))
+    return "SUPABASE_URL must be https (http is only allowed for localhost / 127.0.0.1).";
   return null;
 }

@@ -1,12 +1,11 @@
 // #27: tell the operator a report arrived. Optional, best effort, and deliberately PII-free.
 // Works with ntfy.sh (plain-text body + Title header) and generic webhooks that accept plain text.
+// Sends only the page link, handle and time: never the reporter's text, IP, or story content.
 
-const EXCERPT_MAX = 80;
 const TIMEOUT_MS = 3000;
 
 export interface ReportNotice {
   handle: string;
-  reason: string; // the reporter's free text; only a short excerpt is ever sent
   reportedAt: Date;
   siteUrl?: string;
 }
@@ -15,18 +14,21 @@ function siteOrigin(siteUrl?: string) {
   return (siteUrl || process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/+$/, "");
 }
 
-/** Keeps the first line, collapses whitespace, strips link-like text, truncates. Never the full report. */
-export function reasonExcerpt(reason: string): string {
-  const oneLine = reason.replace(/https?:\/\/\S+/gi, "[link]").replace(/\s+/g, " ").trim();
-  return oneLine.length > EXCERPT_MAX ? `${oneLine.slice(0, EXCERPT_MAX - 1)}…` : oneLine;
+/** Only https webhooks are used (the alert names a page; keep it off plain http). */
+export function isValidWebhookUrl(url: string | undefined): url is string {
+  if (!url) return false;
+  try {
+    return new URL(url).protocol === "https:";
+  } catch {
+    return false;
+  }
 }
 
-/** The message text and title. No reporter IP, no story text, no full report. */
 export function buildReportMessage(n: ReportNotice) {
   const link = `${siteOrigin(n.siteUrl)}/@${n.handle}`;
   return {
     title: `RebirthAI report: @${n.handle}`,
-    body: [`Page: ${link}`, `Reason: ${reasonExcerpt(n.reason)}`, `Reported: ${n.reportedAt.toISOString()}`].join("\n"),
+    body: [`Page: ${link}`, `Reported: ${n.reportedAt.toISOString()}`].join("\n"),
   };
 }
 
@@ -37,6 +39,10 @@ export async function notifyOperatorOfReport(
 ): Promise<boolean> {
   const url = opts.webhookUrl ?? process.env.REPORT_WEBHOOK_URL;
   if (!url) return false;
+  if (!isValidWebhookUrl(url)) {
+    console.warn(JSON.stringify({ event: "report_notify_skipped", reason: "webhook_not_https" }));
+    return false;
+  }
   const { title, body } = buildReportMessage(n);
   try {
     const res = await (opts.fetchImpl ?? fetch)(url, {

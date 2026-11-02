@@ -1,27 +1,26 @@
 import { describe, expect, test, vi } from "vitest";
-import { buildReportMessage, notifyOperatorOfReport, reasonExcerpt } from "./report-notify";
+import { buildReportMessage, isValidWebhookUrl, notifyOperatorOfReport } from "./report-notify";
 
 const notice = {
   handle: "maria_g",
-  reason: "This names my brother without permission. See https://example.com/secret?token=abc\nand more " + "x".repeat(300),
   reportedAt: new Date("2026-11-02T10:00:00Z"),
   siteUrl: "https://rebirth.example/",
 };
 
 describe("buildReportMessage", () => {
-  test("has the page link, a short excerpt and the time, and nothing else", () => {
+  test("has only the page link, handle and time", () => {
     const { title, body } = buildReportMessage(notice);
     expect(title).toBe("RebirthAI report: @maria_g");
-    expect(body).toContain("Page: https://rebirth.example/@maria_g");
-    expect(body).toContain("Reported: 2026-11-02T10:00:00.000Z");
-    expect(body).not.toContain("token=abc");
-    expect(body).not.toContain("x".repeat(100));
-    expect(body.split("\n")).toHaveLength(3);
+    expect(body).toBe("Page: https://rebirth.example/@maria_g\nReported: 2026-11-02T10:00:00.000Z");
   });
-  test("excerpt is single-line and truncated", () => {
-    const e = reasonExcerpt(notice.reason);
-    expect(e.length).toBeLessThanOrEqual(80);
-    expect(e).not.toContain("\n");
+});
+
+describe("isValidWebhookUrl", () => {
+  test("requires https", () => {
+    expect(isValidWebhookUrl("https://ntfy.sh/t")).toBe(true);
+    expect(isValidWebhookUrl("http://ntfy.sh/t")).toBe(false);
+    expect(isValidWebhookUrl("nonsense")).toBe(false);
+    expect(isValidWebhookUrl(undefined)).toBe(false);
   });
 });
 
@@ -36,12 +35,15 @@ describe("notifyOperatorOfReport", () => {
     expect(init.headers.Title).toBe("RebirthAI report: @maria_g");
     expect(init.signal).toBeDefined();
   });
-  test("does nothing without a webhook URL", async () => {
+  test("does nothing without a webhook URL, or with a non-https one", async () => {
     const fetchImpl = vi.fn();
     vi.stubEnv("REPORT_WEBHOOK_URL", "");
     expect(await notifyOperatorOfReport(notice, { fetchImpl })).toBe(false);
-    expect(fetchImpl).not.toHaveBeenCalled();
     vi.unstubAllEnvs();
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    expect(await notifyOperatorOfReport(notice, { webhookUrl: "http://x.test", fetchImpl })).toBe(false);
+    expect(fetchImpl).not.toHaveBeenCalled();
+    warn.mockRestore();
   });
   test("tolerates network failure and bad status, logging without PII", async () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});

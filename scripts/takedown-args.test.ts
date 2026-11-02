@@ -27,4 +27,10 @@ describe("validateEnv", () => {
     expect(validateEnv({})).not.toBeNull();
     expect(validateEnv({ SUPABASE_URL: "https://x.supabase.co", SUPABASE_SERVICE_ROLE_KEY: "k" })).toBeNull();
   });
+  test("http only for localhost", () => {
+    const k = { SUPABASE_SERVICE_ROLE_KEY: "k" };
+    expect(validateEnv({ ...k, SUPABASE_URL: "http://localhost:54321" })).toBeNull();
+    expect(validateEnv({ ...k, SUPABASE_URL: "http://127.0.0.1:54321" })).toBeNull();
+    expect(validateEnv({ ...k, SUPABASE_URL: "http://x.supabase.co" })).not.toBeNull();
+  });
 });
