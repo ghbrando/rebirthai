@@ -11,7 +11,7 @@ How this file is maintained:
 ## [Unreleased]
 
 ### Added
-- First-impression polish: readable font, menu that fits a phone, calmer coach header, clearer landing page, menu on Settings (#38, [record](docs/changelog/2026-11-02-pr-TBD-first-impression-polish.md))
+- First-impression polish: readable font, menu that fits a phone, calmer coach header, clearer landing page, menu on Settings (#45, [record](docs/changelog/2026-11-02-pr-45-first-impression-polish.md))
 - Local test environment with made-up people, so demos and reviews never use real accounts; fixes a sign-in loop in demo mode (#34, [record](docs/changelog/2026-11-01-local-test-env.md))
 - Domain rules for Discovery and stronger coach truthfulness checks recorded from a ministry-focused review; AI cost logging counts failed calls (#32, [record](docs/changelog/2026-10-27-pr-32-review-findings.md))
 - AI cost tracking per testimony and a per-step choice of coach model, so RebirthAI can stay free for users as it grows; the coach itself is unchanged (#31, [record](docs/changelog/2026-10-27-pr-31-ai-cost-controls.md))

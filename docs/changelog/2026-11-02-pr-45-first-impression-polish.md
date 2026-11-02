@@ -1,5 +1,5 @@
 ---
-pr: TBD
+pr: 45
 issues: [38]
 date: 2026-11-02
 branch: feature/38-polish
