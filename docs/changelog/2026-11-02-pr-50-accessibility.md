@@ -8,7 +8,7 @@ author: Implementation Engineer
 ids: [RC-11]
 areas: [app/globals.css, app/layout.tsx, "app/(app)/layout.tsx", components/coach, components/editor, components/profile, components/share, components/ui/button.tsx]
 type: fix
-status: open
+status: merged
 ---
 
 # Accessibility pass (WCAG 2.1 AA code audit)
