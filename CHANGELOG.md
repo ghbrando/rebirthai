@@ -14,6 +14,7 @@ How this file is maintained:
 - Beta copy pass: removed "Screen N" labels, one link format (`/@handle`) everywhere, plain publish status sentences, Heading/Subheading editor toolbar, "Ask the AI for help", "Download contact card" (#35, [record](docs/changelog/2026-11-02-beta-copy-pass.md))
 
 ### Added
+- Privacy policy and terms of use pages, linked from the home page, sign-in and every public testimony page; marked as a draft until the owner fills in the remaining details and has them reviewed (#49, [record](docs/changelog/2026-11-02-privacy-terms.md))
 - A small "Send feedback" link on every signed-in screen for beta users, set by `NEXT_PUBLIC_FEEDBACK_URL` and hidden when unset (#48, advances #28, [record](docs/changelog/2026-11-02-pr-48-feedback-link.md))
 - `npm run smoke`: a phone-sized browser test of the demo path (sign-in, every author screen, public page, contact card, QR) against a running local app (#47, advances #14, [record](docs/changelog/2026-11-02-pr-47-smoke-test.md))
 - First-impression polish: readable font, menu that fits a phone, calmer coach header, clearer landing page, menu on Settings (#45, [record](docs/changelog/2026-11-02-pr-45-first-impression-polish.md))
