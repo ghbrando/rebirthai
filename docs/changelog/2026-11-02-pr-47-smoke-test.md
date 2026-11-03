@@ -8,7 +8,7 @@ author: implementation engineer
 ids: [US-01, US-13]
 areas: [e2e, playwright.config.ts, package.json, README.md]
 type: infra
-status: open
+status: merged
 ---
 
 # Smoke test of the full demo path
