@@ -8,7 +8,7 @@ author: implementation engineer
 ids: []
 areas: [app/(app)/layout.tsx, lib/feedback.ts, README.md]
 type: feature
-status: open
+status: merged
 ---
 
 # Send feedback link for beta users

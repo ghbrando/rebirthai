@@ -54,6 +54,10 @@ WSL notes: use `localhost`, not `127.0.0.1` (Windows reaches WSL ports over IPv6
 shuts down, and the database with it, when no WSL process is attached, so keep one open while
 working: `wsl -d Ubuntu -- sleep infinity` in the background.
 
+### Smoke test
+
+With the local test environment above running (app on `DEMO_MODE=1`, seeded Maria), run `npm run smoke` (first time: `npx playwright install chromium`). It walks the demo path on a 390x844 phone viewport against `BASE_URL` (default `http://localhost:3000`) and saves screenshots to `test-results/`. Not part of CI (CI has no database).
+
 ## Run
 
 ```bash
