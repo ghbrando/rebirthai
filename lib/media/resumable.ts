@@ -35,12 +35,44 @@ export function buildTusMetadata(up: Pick<UploadUrlResponse, "bucket" | "path">,
   };
 }
 
-/** Identifies "the same file for the same testimony" across retries and page reloads. */
+/** Stable 53-bit string hash (cyrb53). Not cryptographic; only keeps raw file names out of storage. */
+export function stableHash(input: string): string {
+  let h1 = 0xdeadbeef;
+  let h2 = 0x41c6ce57;
+  for (let i = 0; i < input.length; i++) {
+    const ch = input.charCodeAt(i);
+    h1 = Math.imul(h1 ^ ch, 2654435761);
+    h2 = Math.imul(h2 ^ ch, 1597334677);
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
+}
+
+/** Identifies "the same file for the same testimony" across retries and page reloads. tus keeps it in
+ *  localStorage, so it holds a hash of name + size + lastModified, never the raw file name. */
 export function tusFingerprint(
   testimonyId: string,
-  file: Pick<File, "name" | "type" | "size" | "lastModified">,
+  file: Pick<File, "name" | "size" | "lastModified">,
 ): string {
-  return ["rebirthai-tus", testimonyId, file.name, file.type, file.size, file.lastModified].join("|");
+  return `rebirthai-tus-${testimonyId}-${stableHash([file.name, file.size, file.lastModified].join("|"))}`;
+}
+
+/** tus-js-client keeps resumable upload URLs in localStorage under "tus::". Cleared on sign-out and
+ *  account deletion so the next person on a shared device sees no trace of the uploads. */
+export function clearTusStorage(given?: Pick<Storage, "length" | "key" | "removeItem">) {
+  try {
+    const storage = given ?? (typeof window === "undefined" ? undefined : window.localStorage);
+    if (!storage) return;
+    const keys: string[] = [];
+    for (let i = 0; i < storage.length; i++) {
+      const k = storage.key(i);
+      if (k?.startsWith("tus::")) keys.push(k);
+    }
+    for (const k of keys) storage.removeItem(k);
+  } catch {
+    // Storage blocked (private mode): nothing stored, nothing to clear.
+  }
 }
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;

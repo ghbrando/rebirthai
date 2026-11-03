@@ -56,7 +56,7 @@ if the author wants to include them, and never preaches or corrects the author's
 
 - Conversations and drafts are always private. Only the published testimony is public.
 - Draft media is private and served by short-lived signed links until published.
-- Location (GPS) data is removed from uploaded images.
+- Location (GPS) data is removed from uploaded images. **Videos are not stripped yet:** a phone video can still carry the place it was recorded in its file metadata, and that stays in the published copy (follow-up Issue "Strip location metadata from videos").
 - Phone and email appear on the contact card or public page **only** if the author turns them on. Nothing is shared by default.
 - Unlisted testimonies are marked so search engines skip them.
 - Deleting a testimony removes the story, the conversation and the stored media. It is permanent.

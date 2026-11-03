@@ -3,6 +3,8 @@ import type { PreviousUpload, UploadOptions } from "tus-js-client";
 import type { UploadUrlResponse } from "@/lib/types";
 import {
   buildTusMetadata,
+  clearTusStorage,
+  stableHash,
   chooseUploadMethod,
   isRetryableStatus,
   mediaIdFromObjectName,
@@ -72,6 +74,32 @@ describe("TUS request building", () => {
     for (const s of [400, 401, 403, 404, 413]) expect(isRetryableStatus(s)).toBe(false);
     expect(percent(3, 4)).toBe(75);
     expect(percent(0, 0)).toBe(0);
+  });
+});
+
+describe("fingerprint privacy and sign-out cleanup", () => {
+  it("never contains the raw file name", () => {
+    const fp = tusFingerprint(TESTIMONY, { name: "Grandma funeral.mp4", size: 10, lastModified: 5 });
+    expect(fp).not.toMatch(/Grandma|funeral/);
+    expect(stableHash("a|1|2")).toBe(stableHash("a|1|2"));
+    expect(stableHash("a|1|2")).not.toBe(stableHash("a|1|3"));
+  });
+  it("clears only tus entries from localStorage", () => {
+    const data = new Map([
+      ["tus::rebirthai-tus-x::1", "{}"],
+      ["tus::other::2", "{}"],
+      ["sb-auth", "keep"],
+    ]);
+    const storage = {
+      get length() {
+        return data.size;
+      },
+      key: (i: number) => [...data.keys()][i] ?? null,
+      removeItem: (k: string) => void data.delete(k),
+    };
+    clearTusStorage(storage);
+    expect([...data.keys()]).toEqual(["sb-auth"]);
+    expect(() => clearTusStorage(undefined)).not.toThrow();
   });
 });
 

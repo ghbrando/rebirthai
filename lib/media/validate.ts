@@ -46,3 +46,21 @@ export function validateFile(file: File): { kind: MediaKind } | { error: string 
   const error = validateMedia(kind, file.type, file.size);
   return error ? { error } : { kind };
 }
+
+export const MISSING_PHOTO_DESCRIPTION = "Add a description to every photo before publishing.";
+
+/** Publish-time check of a stored object against its media row (RC-06, RC-11): the real stored type and
+ *  size must be allowed for the row's kind, and images need alt text. Returns a plain message or null. */
+export function checkStoredMedia(
+  row: { kind: MediaKind; alt_text: string | null },
+  stored: { size?: number | null; contentType?: string | null } | null,
+): string | null {
+  if (row.kind === "image" && !row.alt_text?.trim()) return MISSING_PHOTO_DESCRIPTION;
+  const what = row.kind === "image" ? "A photo" : "A video";
+  if (!stored || typeof stored.size !== "number" || !stored.contentType) {
+    return `${what} in your story could not be found. Remove it and add it again, then publish.`;
+  }
+  const mime = stored.contentType.split(";")[0].trim().toLowerCase();
+  const invalid = validateMedia(row.kind, mime, stored.size);
+  return invalid ? `${what} in your story can't be published. ${invalid} Remove it and add it again.` : null;
+}

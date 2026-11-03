@@ -5,9 +5,9 @@ date: 2026-11-02
 branch: feature/13-resumable-uploads
 merge_commit: pending
 author: Implementation engineer agent, from Issue #13 (tus-js-client approved by the owner)
-ids: [RC-09, RISK-06, US-07, RC-07, RC-06]
-areas: [lib/media, app/api/upload-url, components/editor/media-uploader.tsx, lib/types.ts, supabase/config.toml, docs/ARCHITECTURE.md, package.json]
-type: feature
+ids: [RC-09, RISK-06, US-07, RC-07, RC-06, RC-11]
+areas: [lib/media, app/api/upload-url, app/api/publish, components/editor/media-uploader.tsx, components/profile, app/(app)/settings, lib/types.ts, supabase/config.toml, supabase/migrations/0004_storage_limits.sql, docs/ARCHITECTURE.md, docs/POLICY.md, package.json]
+type: security
 status: open
 ---
 
@@ -50,6 +50,27 @@ progress and size/type limits unchanged, files never pass through Vercel functio
   reach the existing 100 MB video limit.
 - `docs/ARCHITECTURE.md`: diagram, media flow and rule 11 describe both upload paths.
 
+### Security review follow-ups (same PR)
+- **Storage policy change, needs owner approval:** `supabase/migrations/0004_storage_limits.sql` sets
+  `allowed_mime_types` (jpeg, png, webp, mp4, quicktime) and `file_size_limit` 100 MB on both
+  `media-private` and `media-public`, and replaces the `for all` policy `media_public_avatars` with
+  insert/update/delete policies limited to `avatars/<uid>/<file>.{jpg,jpeg,png,webp}` (no SELECT;
+  photos are served by public URL). `media_private_owner` is unchanged.
+- `app/api/publish/route.ts`: before removing old public files or copying anything, every media item
+  is checked as actually stored (`storage.info()` size and content type, service role) with
+  `checkStoredMedia` in `lib/media/validate.ts`: wrong or disallowed type, over the limit, or missing
+  file -> 400 with a plain message; a photo with empty alt text -> 400 "Add a description to every
+  photo before publishing." A refused publish leaves the live page untouched.
+- `lib/media/resumable.ts`: the tus fingerprint is now `rebirthai-tus-<testimonyId>-<hash>` where the hash
+  (`stableHash`, cyrb53) covers name + size + lastModified; the raw file name is never stored.
+  `clearTusStorage()` removes `tus::*` localStorage entries; called by the new
+  `components/profile/sign-out-button.tsx` (Settings) and after a successful account deletion.
+- Account deletion (`lib/account`) reviewed, no change needed: it already removes
+  `media-private/<uid>/**`, `media-public/avatars/<uid>/**` and `media-public/<testimony_id>/**`
+  recursively (folders descended) and paginates listing and removal in pages of 1000.
+- `docs/POLICY.md` §7 now says video location metadata is not stripped. Follow-ups: #53 (strip video
+  location metadata), #54 (per-user storage cap and orphan cleanup).
+
 ## Decisions and alternatives
 - **Auth: the user's session access token, not a signed upload token.** The storage policy
   `media_private_owner` already lets an authenticated user write only under `{their user id}/`, so TUS
@@ -69,6 +90,12 @@ progress and size/type limits unchanged, files never pass through Vercel functio
   which continues from the server's offset. While online, retries follow `TUS_RETRY_DELAYS`
   (0-20 s) for status 0/5xx/409/423/429, then show a plain message; choosing the file again resumes.
 - **Cancel terminates** the TUS upload (`abort(true)`) so it is not resumed later.
+- **Avatar policy without SELECT.** Postgres applies SELECT policies to UPDATE/DELETE that read rows,
+  so authors can no longer remove or upsert avatars through the storage API. The app never does
+  (uploads are plain inserts with a new timestamped name; deletion uses the service role).
+- **Publish checks the stored object, not the row.** The row records what the browser claimed; storage
+  metadata is what was actually written. Checks run before `removePublicFiles()` so a failure does not
+  take the current page down.
 - **lockfile:** npm on Windows pruned four optional `@emnapi/*` wasm entries; they were restored so
   the lockfile diff is purely additive and `npm ci` on Linux CI is unaffected.
 
@@ -77,6 +104,9 @@ progress and size/type limits unchanged, files never pass through Vercel functio
   docs) and that the hosted project's global upload size limit allows 100 MB. The Free plan caps
   uploads at 50 MB; if the hosted project is on Free, videos between 50 and 100 MB fail regardless
   of this change (owner setting, pre-existing, verify with I-17).
+- `0004_storage_limits.sql`: on a hosted Free plan the bucket limit cannot effectively exceed the
+  project-wide 50 MB cap. `storage.info()` needs a storage version with the object info endpoint
+  (hosted has it; local CLI image unverified).
 - Video length (about 3 minutes, POLICY) is still not enforced in code; only the 100 MB size limit is.
   Unchanged by this PR.
 
@@ -85,15 +115,17 @@ progress and size/type limits unchanged, files never pass through Vercel functio
 - API: `POST /api/upload-url` accepts optional `method` (`"signed"` default | `"resumable"`) and
   `resumeMediaId` (uuid, resumable only). Response `token` is `null` for resumable.
 - Local config: `supabase/config.toml` `[storage] file_size_limit = "100MiB"`.
-- No schema, RLS or storage-policy changes. No new env vars.
+- Migration `0004_storage_limits.sql` (bucket type/size limits, narrowed avatar policies). Storage policy
+  change: needs owner approval before applying to a hosted project. No table changes. No new env vars.
 
 ## Verification
 - `npm run lint`, `npm run typecheck`, `npm test`: all pass.
-- New `lib/media/resumable.test.ts` (15 tests): threshold choice, chunk size, endpoint and metadata
+- New `lib/media/validate.test.ts` (publish-time stored-media check) and fingerprint/cleanup tests.
+- New `lib/media/resumable.test.ts` (17 tests): threshold choice, chunk size, endpoint and metadata
   building, fingerprint, retryable statuses, resume-candidate selection, orchestrator with a fake tus
   `Upload` (new upload with user token, resume into the same media row, server-refused resume starts
   fresh, offline pause then continue on the same instance, no retry offline, plain error, cancel).
-- Not done here: a run against real or local Supabase Storage, the manual throttle-and-interrupt test,
+- Not done here: applying 0004 to a local database, a run against real or local Supabase Storage, the manual throttle-and-interrupt test,
   and screenshots/GIF of the progress and paused states (no browser was run for this change).
 
 ## Known limitations and follow-ups
