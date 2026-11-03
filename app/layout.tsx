@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -17,6 +17,8 @@ export const metadata: Metadata = {
   title: "RebirthAI",
   description: "Tell your testimony with an AI coach and carry it on your contact card.",
 };
+
+export const viewport: Viewport = { themeColor: "#7a2e3a" };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
