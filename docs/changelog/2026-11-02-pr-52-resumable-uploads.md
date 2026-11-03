@@ -8,7 +8,7 @@ author: Implementation engineer agent, from Issue #13 (tus-js-client approved by
 ids: [RC-09, RISK-06, US-07, RC-07, RC-06, RC-11]
 areas: [lib/media, app/api/upload-url, app/api/publish, components/editor/media-uploader.tsx, components/profile, app/(app)/settings, lib/types.ts, supabase/config.toml, supabase/migrations/0004_storage_limits.sql, docs/ARCHITECTURE.md, docs/POLICY.md, package.json]
 type: security
-status: open
+status: merged
 ---
 
 # Resumable uploads for large videos
