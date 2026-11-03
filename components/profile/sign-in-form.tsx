@@ -51,9 +51,11 @@ export function SignInForm({ initialError }: { initialError?: string }) {
           type="email"
           required
           autoComplete="email"
+          aria-describedby={error ? "signin-error" : undefined}
+          aria-invalid={!!error}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="h-11 w-full rounded-lg border px-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2"
+          className="h-11 w-full rounded-lg border border-gray-500 px-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2"
         />
         <Button type="submit" size="lg" className="h-11 w-full" disabled={status === "sending"}>
           {status === "sending" ? "Sending..." : "Email me a sign-in link"}
@@ -64,7 +66,7 @@ export function SignInForm({ initialError }: { initialError?: string }) {
         Continue with Google
       </Button>
       {error && (
-        <p role="alert" className="text-sm text-red-700">
+        <p id="signin-error" role="alert" className="text-sm text-red-700">
           {error}
         </p>
       )}
