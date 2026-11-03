@@ -115,10 +115,15 @@ export function TestimonyEditor({
         <MediaUploader
           testimonyId={testimonyId}
           onInsert={(m) =>
+            // Insert after the current selection: with a photo or video selected, plain
+            // insertContent would replace it and silently drop media from the draft.
             editor
               ?.chain()
               .focus()
-              .insertContent({ type: m.kind, attrs: { mediaId: m.mediaId, alt: m.alt, caption: m.caption } })
+              .insertContentAt(editor.state.selection.to, {
+                type: m.kind,
+                attrs: { mediaId: m.mediaId, alt: m.alt, caption: m.caption },
+              })
               .run()
           }
         />

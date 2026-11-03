@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { clearTusStorage } from "@/lib/media/resumable";
 import { CONFIRM_WORD } from "@/lib/account/delete";
 
 /** Settings: permanently delete the account (#26). Requires typing DELETE. */
@@ -26,6 +27,7 @@ export function DeleteAccount({ handle }: { handle: string }) {
         body: JSON.stringify({ confirm: CONFIRM_WORD }),
       });
       if (res.ok) {
+        clearTusStorage();
         router.replace("/account-deleted");
         router.refresh(); // drop cached signed-in screens
         return;

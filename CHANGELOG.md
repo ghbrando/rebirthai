@@ -15,6 +15,7 @@ How this file is maintained:
 - Beta copy pass: removed "Screen N" labels, one link format (`/@handle`) everywhere, plain publish status sentences, Heading/Subheading editor toolbar, "Ask the AI for help", "Download contact card" (#35, [record](docs/changelog/2026-11-02-beta-copy-pass.md))
 
 ### Added
+- Large videos upload in resumable pieces: a dropped connection pauses ("Paused, reconnecting…") and continues where it stopped instead of starting over; uploads can be cancelled (#52, closes #13, [record](docs/changelog/2026-11-02-pr-52-resumable-uploads.md))
 - Installable app: web app manifest, theme color and home-screen icons; opens at the dashboard (#12, [record](docs/changelog/2026-11-02-pr-51-installable-app.md))
 - Privacy policy and terms of use pages, linked from the home page, sign-in and every public testimony page; marked as a draft until the owner fills in the remaining details and has them reviewed (#49, [record](docs/changelog/2026-11-02-privacy-terms.md))
 - A small "Send feedback" link on every signed-in screen for beta users, set by `NEXT_PUBLIC_FEEDBACK_URL` and hidden when unset (#48, advances #28, [record](docs/changelog/2026-11-02-pr-48-feedback-link.md))

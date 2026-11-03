@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { saveMediaMeta, uploadMedia } from "@/lib/media/client";
+import { saveMediaMeta, uploadMedia, UploadCancelledError, type UploadStatus } from "@/lib/media/client";
 
 /** Pick -> validate/strip/upload with progress -> REQUIRE alt text/description before inserting (RC-11). */
 export function MediaUploader({
@@ -13,6 +13,8 @@ export function MediaUploader({
 }) {
   const input = useRef<HTMLInputElement>(null);
   const [progress, setProgress] = useState<number | null>(null);
+  const [status, setStatus] = useState<UploadStatus>("uploading");
+  const cancelRef = useRef<AbortController | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState<{ kind: "image" | "video"; mediaId: string } | null>(null);
   const [alt, setAlt] = useState("");
@@ -23,14 +25,22 @@ export function MediaUploader({
     if (!file) return;
     setError(null);
     setProgress(0);
+    setStatus("uploading");
+    const controller = new AbortController();
+    cancelRef.current = controller;
     try {
-      const up = await uploadMedia(testimonyId, file, setProgress);
+      const up = await uploadMedia(testimonyId, file, {
+        onProgress: setProgress,
+        onStatus: setStatus,
+        signal: controller.signal,
+      });
       setPending(up);
       setAlt("");
       setCaption("");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Upload failed.");
+      if (!(e instanceof UploadCancelledError)) setError(e instanceof Error ? e.message : "Upload failed.");
     } finally {
+      cancelRef.current = null;
       setProgress(null);
       if (input.current) input.current.value = "";
     }
@@ -68,9 +78,33 @@ export function MediaUploader({
         Add photo or video
       </button>
       {progress !== null && (
-        <div className="mt-2" role="status">
-          <progress value={progress} max={100} aria-label="Upload progress" className="w-full" />
-          <span className="text-xs">{progress}% uploaded</span>
+        <div className="mt-2">
+          <div
+            role="progressbar"
+            aria-label="Upload progress"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={progress}
+            aria-valuetext={status === "reconnecting" ? `${progress}%, paused` : `${progress}%`}
+            className="h-2 w-full overflow-hidden rounded bg-gray-200"
+          >
+            <div
+              className={`h-full transition-all ${status === "reconnecting" ? "bg-amber-500" : "bg-black"}`}
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <div className="mt-1 flex items-center justify-between gap-2">
+            <span className="text-xs" role="status" aria-live="polite">
+              {status === "reconnecting" ? `Paused, reconnecting… (${progress}% uploaded)` : `${progress}% uploaded`}
+            </span>
+            <button
+              type="button"
+              className="rounded border border-gray-500 px-2 py-0.5 text-xs"
+              onClick={() => cancelRef.current?.abort()}
+            >
+              Cancel upload
+            </button>
+          </div>
         </div>
       )}
       {error && (

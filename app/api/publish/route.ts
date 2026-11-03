@@ -3,6 +3,7 @@ import { getUserOrNull } from "@/lib/auth";
 import { createServiceClient } from "@/lib/supabase/server";
 import { collectMediaIds } from "@/components/testimony/Renderer";
 import { TAKEDOWN_BLOCKED_MESSAGE } from "@/lib/takedown";
+import { checkStoredMedia } from "@/lib/media/validate";
 import type { Testimony, Media } from "@/lib/types";
 
 const EXT: Record<string, string> = {
@@ -63,6 +64,13 @@ export async function POST(req: Request) {
     const { data: rows } = ids.length
       ? await admin.from("media").select("*").eq("testimony_id", t.id).in("id", ids)
       : { data: [] as Media[] };
+    // Check every file as actually stored (type, size) and every photo description before touching the
+    // live page, so a refused publish leaves the current public version as it was (RC-06, RC-11, #13).
+    for (const m of (rows ?? []) as Media[]) {
+      const { data: stored } = await admin.storage.from("media-private").info(m.storage_path);
+      const problem = checkStoredMedia(m, stored);
+      if (problem) return NextResponse.json({ error: problem }, { status: 400 });
+    }
     // clear stale public files from a previous publish, then copy current ones
     await removePublicFiles();
     for (const m of (rows ?? []) as Media[]) {

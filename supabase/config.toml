@@ -116,7 +116,8 @@ port = 54324
 [storage]
 enabled = true
 # The maximum file size allowed (e.g. "5MB", "500KB").
-file_size_limit = "50MiB"
+# 100MiB so local resumable (TUS) video uploads can reach the 100 MB video limit (POLICY, #13).
+file_size_limit = "100MiB"
 
 # Uncomment to configure local storage buckets
 # [storage.buckets.images]

@@ -152,12 +152,18 @@ export interface UploadUrlRequest {
   kind: "image" | "video";
   mime: string;
   bytes: number;
+  /** "signed" (default): one-shot signed upload URL. "resumable": the browser uploads over TUS
+   *  with the user's own session (RC-09, #13). */
+  method?: "signed" | "resumable";
+  /** Resumable only: continue an earlier, interrupted upload of the same file into this media row. */
+  resumeMediaId?: string;
 }
 export interface UploadUrlResponse {
   mediaId: string;
   bucket: "media-private";
   path: string;
-  token: string; // Supabase signed upload token
+  /** Supabase signed upload token; null for resumable uploads (they use the session token). */
+  token: string | null;
 }
 
 export const MEDIA_LIMITS = {
