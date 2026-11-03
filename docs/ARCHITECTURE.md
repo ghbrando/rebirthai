@@ -13,7 +13,7 @@ Browser (author, PWA)  ──HTTPS──▶  Next.js on Vercel ──server-only
 Recipient phone        ──tap URL─▶   ├─ author screens (app/(app) incl. settings, app/(auth), onboarding)
                                      ├─ public page  /@handle → /u/[handle]  (server-rendered)
                                      └─ route handlers  app/api/*            ──RLS──▶ Supabase Postgres
-Browser ──signed direct upload────────────────────────────────────────────────────▶ Supabase Storage
+Browser ──direct upload (signed URL or TUS)───────────────────────────────────────▶ Supabase Storage
 ```
 
 ## 2. Components and ownership
@@ -38,7 +38,7 @@ Storage buckets: `media-private` (drafts, signed URLs) and `media-public` (publi
 ## 4. Key data flows
 
 - **Coach:** browser → `/api/coach` → verify session → load history → Claude (cached system prompt) → stream reply → persist message.
-- **Media:** browser → `/api/upload-url` for a signed URL → upload directly to `media-private`; never through a Vercel function.
+- **Media:** browser → `/api/upload-url` reserves a media row and path → upload directly to `media-private` (signed URL for images and small videos; resumable TUS with the user's own session token for videos over 6 MB, `lib/media/resumable.ts`); never through a Vercel function.
 - **Publish:** copy `draft_content` → `published_content`, move media to `media-public`. Later edits do not go live until republished.
 - **Recipient:** contact URL → `/@handle` rewrite → `/u/[handle]` → resolve handle (and `handle_redirects`) → render published snapshot server-side.
 
@@ -68,7 +68,7 @@ DD-08 one testimony per profile (MVP).
 10. The coach system prompt keeps the truthfulness and crisis rules (RC-04, RC-05) and prompt caching; the per-user rate limit stays on (RC-08).
 
 **Platform**
-11. Media uploads go browser → Supabase Storage with signed URLs (RC-09). Files pass through no Vercel function.
+11. Media uploads go browser → Supabase Storage directly (RC-09): signed URLs for images and small videos, resumable TUS uploads (6 MB chunks, user session token so storage RLS applies, never the service role) for larger videos. Files pass through no Vercel function.
 12. This is a recent Next.js with breaking changes: read the relevant guide in `node_modules/next/dist/docs/` before using framework APIs (see `AGENTS.md`).
 
 ## 7. Allowed and forbidden relationships
