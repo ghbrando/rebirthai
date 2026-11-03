@@ -6,6 +6,7 @@ import { TestimonyRenderer, collectMediaIds } from "@/components/testimony/Rende
 import { createServiceClient } from "@/lib/supabase/server";
 import type { TestimonyContent } from "@/lib/types";
 import { getSiteUrl } from "@/lib/site-url";
+import { LegalLinks } from "@/components/legal/LegalLinks";
 
 type Loaded =
   | { kind: "ok"; profile: PublicProfile; t: PublicTestimony }
@@ -186,6 +187,7 @@ export default async function Page({
             </form>
           </details>
         )}
+        <LegalLinks className="mt-4" />
       </footer>
     </main>
   );

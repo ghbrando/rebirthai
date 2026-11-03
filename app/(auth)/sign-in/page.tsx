@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getUserOrNull } from "@/lib/auth";
 import { SignInForm } from "@/components/profile/sign-in-form";
+import { LegalLinks } from "@/components/legal/LegalLinks";
 
 export const metadata = { title: "Sign in" };
 
@@ -17,6 +18,10 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ e
         <p className="mt-1 text-sm text-gray-600">Share your testimony. No password needed.</p>
       </div>
       <SignInForm initialError={error ? "Sign-in didn't complete. Please try again." : undefined} />
+      <div className="space-y-1">
+        <p className="text-sm text-gray-700">By signing in, you agree to our terms of use and privacy policy. RebirthAI is for adults 18 and older.</p>
+        <LegalLinks />
+      </div>
     </main>
   );
 }
