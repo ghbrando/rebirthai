@@ -137,22 +137,24 @@ export function CoachChat() {
   const hasUserMsg = messages.some((m) => m.role === "user");
 
   return (
-    <div className="mx-auto flex h-[calc(100dvh-5.25rem)] sm:h-[calc(100dvh-3.25rem)] w-full max-w-2xl flex-col">
+    <main id="main-content" className="mx-auto flex h-[calc(100dvh-5.25rem)] sm:h-[calc(100dvh-3.25rem)] w-full max-w-2xl flex-col">
+      <h1 className="sr-only">Coach</h1>
       <div className="border-b px-4 py-1.5">
         <div className="flex items-center justify-between gap-2">
-          <div className="flex flex-wrap gap-1.5 text-xs">
+          <ul aria-label="Your story so far" className="flex flex-wrap gap-1.5 text-xs">
             {ARC.map((a) => (
-              <span
+              <li
                 key={a.key}
                 className={`rounded-full px-2 py-0.5 ${
                   covered.includes(a.key) ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-700"
                 }`}
               >
-                {covered.includes(a.key) ? "✓ " : ""}
+                {covered.includes(a.key) ? <span aria-hidden>✓ </span> : null}
                 {a.label}
-              </span>
+                <span className="sr-only">{covered.includes(a.key) ? " (covered)" : " (not yet covered)"}</span>
+              </li>
             ))}
-          </div>
+          </ul>
           {drafted ? (
             <Link href="/editor" className="rounded-md bg-black px-3 py-1.5 text-sm font-medium text-white">
               Open editor
@@ -162,7 +164,7 @@ export function CoachChat() {
               onClick={createDraft}
               disabled={!hasUserMsg || drafting || streaming}
               className={`rounded-md px-3 py-1.5 text-sm font-medium disabled:opacity-40 ${
-                ready ? "bg-black text-white" : "border border-gray-300 text-gray-700"
+                ready ? "bg-black text-white" : "border border-gray-500 text-gray-700"
               }`}
             >
               {drafting ? "Writing your draft…" : "Create my draft"}
@@ -179,8 +181,18 @@ export function CoachChat() {
         </p>
       </div>
 
-      <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4" aria-live="polite">
-        {loading && <p className="text-sm text-gray-500">Loading your conversation&hellip;</p>}
+      {/* role=log + polite: new messages are announced. aria-busy holds the announcement until the
+          streamed reply is complete, so a screen reader does not read it token by token. */}
+      <div
+        role="log"
+        aria-label="Conversation with your coach"
+        aria-live="polite"
+        aria-relevant="additions text"
+        aria-busy={streaming}
+        tabIndex={0}
+        className="flex-1 space-y-3 overflow-y-auto px-4 py-4"
+      >
+        {loading && <p role="status" className="text-sm text-gray-600">Loading your conversation&hellip;</p>}
         {messages.map((m) => (
           <div key={m.id} className={m.role === "user" ? "flex justify-end" : "flex justify-start"}>
             <div
@@ -188,16 +200,17 @@ export function CoachChat() {
                 m.role === "user" ? "bg-black text-white" : "bg-gray-100 text-gray-900"
               }`}
             >
-              {m.content || <span className="text-gray-400">&hellip;</span>}
+              <span className="sr-only">{m.role === "user" ? "You: " : "Coach: "}</span>
+              {m.content || <span className="text-gray-600">&hellip;</span>}
             </div>
           </div>
         ))}
         {drafted && (
-          <p className="rounded-md bg-green-50 p-3 text-sm text-green-800">
+          <p role="status" className="rounded-md bg-green-50 p-3 text-sm text-green-800">
             Your draft is ready. You can edit every word in the editor.
           </p>
         )}
-        {error && <p className="rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+        {error && <p role="alert" className="rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</p>}
         <div ref={bottomRef} />
       </div>
 
@@ -212,9 +225,10 @@ export function CoachChat() {
             }
           }}
           rows={2}
+          aria-label="Your answer to the coach"
           maxLength={4000}
           placeholder="Type your answer (or say 'skip')"
-          className="min-h-11 flex-1 resize-none rounded-md border border-gray-300 px-3 py-2 text-[15px]"
+          className="min-h-11 flex-1 resize-none rounded-md border border-gray-500 px-3 py-2 text-[15px]"
         />
         <button
           type="submit"
@@ -224,6 +238,6 @@ export function CoachChat() {
           Send
         </button>
       </form>
-    </div>
+    </main>
   );
 }

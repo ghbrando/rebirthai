@@ -2,6 +2,8 @@ import { requireProfile } from "@/lib/auth";
 import { TestimonyEditor } from "@/components/editor/testimony-editor";
 import { EMPTY_CONTENT, type TestimonyContent } from "@/lib/types";
 
+export const metadata = { title: "Editor" };
+
 export default async function Page() {
   const { supabase, profile } = await requireProfile();
 
@@ -19,11 +21,11 @@ export default async function Page() {
     testimony = res.data;
   }
   if (!testimony) {
-    return <main className="p-6">Could not load your testimony. Please refresh.</main>;
+    return <main id="main-content" className="p-6">Could not load your testimony. Please refresh.</main>;
   }
 
   return (
-    <main className="mx-auto w-full max-w-5xl p-6">
+    <main id="main-content" className="mx-auto w-full max-w-5xl p-6">
       <h1 className="mb-4 text-2xl font-semibold">Editor</h1>
       <TestimonyEditor
         testimonyId={testimony.id}

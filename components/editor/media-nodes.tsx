@@ -38,31 +38,33 @@ function MediaView({ node, updateAttributes, deleteNode }: NodeViewProps) {
           <video src={url} controls preload="metadata" className="mx-auto max-h-96" aria-label={alt} />
         )
       ) : (
-        <div className="flex h-24 items-center justify-center text-sm text-gray-500">
+        <div role="status" className="flex h-24 items-center justify-center text-sm text-gray-600">
           {failed ? "Could not load media" : "Loading..."}
         </div>
       )}
       <label className="mt-2 block text-xs font-medium">
         {kind === "image" ? "Alt text (required)" : "Description (required)"}
         <input
-          className={`mt-1 w-full rounded border px-2 py-1 text-sm ${alt.trim() ? "" : "border-red-500"}`}
+          className={`mt-1 w-full rounded border border-gray-500 px-2 py-1 text-sm ${alt.trim() ? "" : "border-red-500"}`}
           value={alt}
           placeholder={kind === "image" ? "Describe the image for people who can't see it" : "Describe the video"}
+          aria-invalid={!alt.trim()}
+          aria-describedby={alt.trim() ? undefined : `alt-err-${mediaId}`}
           onChange={(e) => updateAttributes({ alt: e.target.value })}
           onBlur={() => persist(alt, caption)}
         />
       </label>
-      {!alt.trim() && <p className="text-xs text-red-600">Required. This block will not be saved until it is filled in.</p>}
+      {!alt.trim() && <p id={`alt-err-${mediaId}`} role="alert" className="text-xs text-red-700">Required. This block will not be saved until it is filled in.</p>}
       <label className="mt-2 block text-xs font-medium">
         Caption (optional)
         <input
-          className="mt-1 w-full rounded border px-2 py-1 text-sm"
+          className="mt-1 w-full rounded border border-gray-500 px-2 py-1 text-sm"
           value={caption ?? ""}
           onChange={(e) => updateAttributes({ caption: e.target.value || null })}
           onBlur={() => persist(alt, caption)}
         />
       </label>
-      <button type="button" className="mt-2 text-xs text-red-700 underline" onClick={() => deleteNode()}>
+      <button type="button" className="mt-2 text-xs text-red-700 underline" aria-label={kind === "image" ? "Remove this image" : "Remove this video"} onClick={() => deleteNode()}>
         Remove
       </button>
     </NodeViewWrapper>

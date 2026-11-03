@@ -10,7 +10,7 @@ import { checkHandle, saveProfile, type FormState } from "./actions";
 
 import { CONTACT_CONSENT_TEXT } from "@/lib/visibility";
 const input =
-  "h-11 w-full rounded-lg border px-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2";
+  "h-11 w-full rounded-lg border border-gray-500 px-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2";
 
 export function avatarUrl(path: string | null | undefined) {
   if (!path) return null;
@@ -92,7 +92,7 @@ export function ProfileForm({ mode, userId, profile }: Props) {
         <div>
           <label htmlFor="display_name" className="mb-1 block text-sm font-medium">Display name</label>
           <input id="display_name" name="display_name" required maxLength={100} value={name}
-            onChange={(e) => setName(e.target.value)} className={input} aria-describedby="err-name" />
+            onChange={(e) => setName(e.target.value)} className={input} aria-describedby="err-name" aria-invalid={!!fe.display_name} />
           <p id="err-name" role="alert" className="text-sm text-red-700">{fe.display_name}</p>
         </div>
 
@@ -103,7 +103,7 @@ export function ProfileForm({ mode, userId, profile }: Props) {
             <input id="handle" name="handle" required value={handle} autoCapitalize="none" autoCorrect="off"
               spellCheck={false} maxLength={30}
               onChange={(e) => { setAvail(null); setHandle(e.target.value.toLowerCase()); }}
-              className={input} aria-describedby="handle-help handle-msg" />
+              className={input} aria-describedby="handle-help handle-msg" aria-invalid={!!fe.handle || (!!handleMsg && !handleMsg.ok)} />
           </div>
           <p id="handle-help" className="text-xs text-gray-600">Your link: {permanentUrl(handle || "yourhandle")}. 3-30 letters, numbers or underscores.</p>
           <p id="handle-msg" role="status" className={`text-sm ${(fe.handle || (handleMsg && !handleMsg.ok)) ? "text-red-700" : "text-green-800"}`}>
@@ -118,15 +118,15 @@ export function ProfileForm({ mode, userId, profile }: Props) {
 
         <div>
           <label htmlFor="photo" className="mb-1 block text-sm font-medium">Photo (optional)</label>
-          <input id="photo" type="file" accept="image/jpeg,image/png,image/webp" onChange={onPhoto} className="block w-full text-sm" />
+          <input id="photo" type="file" accept="image/jpeg,image/png,image/webp" onChange={onPhoto} className="block w-full text-sm" aria-describedby="err-photo" />
           {uploading && <p role="status" className="text-sm">Uploading...</p>}
-          <p role="alert" className="text-sm text-red-700">{photoErr ?? fe.photo}</p>
+          <p id="err-photo" role="alert" className="text-sm text-red-700">{photoErr ?? fe.photo}</p>
         </div>
 
         <div>
           <label htmlFor="bio" className="mb-1 block text-sm font-medium">Short bio (optional)</label>
           <textarea id="bio" name="bio" rows={3} maxLength={500} value={bio} onChange={(e) => setBio(e.target.value)}
-            className="w-full rounded-lg border p-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2" />
+            className="w-full rounded-lg border border-gray-500 p-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2" />
         </div>
 
         <div>
@@ -141,14 +141,14 @@ export function ProfileForm({ mode, userId, profile }: Props) {
             <div>
               <label htmlFor="contact_phone" className="mb-1 block text-sm font-medium">Phone</label>
               <input id="contact_phone" name="contact_phone" type="tel" autoComplete="tel" value={phone}
-                onChange={(e) => setPhone(e.target.value)} className={input} />
-              <p role="alert" className="text-sm text-red-700">{fe.contact_phone}</p>
+                onChange={(e) => setPhone(e.target.value)} className={input} aria-describedby="err-phone" aria-invalid={!!fe.contact_phone} />
+              <p id="err-phone" role="alert" className="text-sm text-red-700">{fe.contact_phone}</p>
             </div>
             <div>
               <label htmlFor="contact_email" className="mb-1 block text-sm font-medium">Contact email</label>
               <input id="contact_email" name="contact_email" type="email" value={email}
-                onChange={(e) => setEmail(e.target.value)} className={input} />
-              <p role="alert" className="text-sm text-red-700">{fe.contact_email}</p>
+                onChange={(e) => setEmail(e.target.value)} className={input} aria-describedby="err-email" aria-invalid={!!fe.contact_email} />
+              <p id="err-email" role="alert" className="text-sm text-red-700">{fe.contact_email}</p>
             </div>
             <label className="flex items-start gap-2 text-sm">
               <input type="checkbox" name="share_contact" checked={share} onChange={(e) => setShare(e.target.checked)}
