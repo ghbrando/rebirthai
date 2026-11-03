@@ -73,7 +73,7 @@ export function TestimonyEditor({
       VideoNode,
     ],
     content: initialContent as unknown as JSONContent,
-    editorProps: { attributes: { class: "prose [&_h2]:mt-4 [&_h2]:text-2xl [&_h2]:font-bold [&_h3]:mt-3 [&_h3]:text-xl [&_h3]:font-semibold min-h-64 max-w-none rounded border p-3 focus:outline-none" } },
+    editorProps: { attributes: { class: "prose [&_h2]:mt-4 [&_h2]:text-2xl [&_h2]:font-bold [&_h3]:mt-3 [&_h3]:text-xl [&_h3]:font-semibold min-h-64 max-w-none rounded border border-gray-500 p-3", "aria-label": "Your testimony", "aria-multiline": "true" } },
     onUpdate: ({ editor }) => {
       setState("unsaved");
       if (timer.current) clearTimeout(timer.current);
@@ -88,7 +88,7 @@ export function TestimonyEditor({
       type="button"
       key={label}
       aria-pressed={active}
-      className={`rounded border px-2 py-1 text-sm ${active ? "bg-gray-200" : ""}`}
+      className={`rounded border border-gray-500 px-2 py-1 text-sm ${active ? "bg-gray-200" : ""}`}
       onClick={run}
     >
       {label}
@@ -100,12 +100,12 @@ export function TestimonyEditor({
       <section className="space-y-3">
         <div className="flex flex-wrap items-center gap-2">
           {editor && (
-            <>
+            <div role="toolbar" aria-label="Text formatting" className="flex flex-wrap gap-2">
               {btn("Heading", editor.isActive("heading", { level: 2 }), () => editor.chain().focus().toggleHeading({ level: 2 }).run())}
               {btn("Subheading", editor.isActive("heading", { level: 3 }), () => editor.chain().focus().toggleHeading({ level: 3 }).run())}
               {btn("Bold", editor.isActive("bold"), () => editor.chain().focus().toggleBold().run())}
               {btn("Italic", editor.isActive("italic"), () => editor.chain().focus().toggleItalic().run())}
-            </>
+            </div>
           )}
           <span className="ml-auto text-sm text-gray-600" role="status" aria-live="polite">
             {LABEL[state]}

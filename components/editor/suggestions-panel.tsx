@@ -89,7 +89,7 @@ export function SuggestionsPanel({ editor, testimonyId }: { editor: Editor | nul
       <p className="text-gray-600">The AI only suggests. Nothing changes in your testimony unless you press Accept.</p>
       <div className="flex flex-wrap gap-2">
         {CHIPS.map((c) => (
-          <button key={c} type="button" className="rounded-full border px-3 py-1" disabled={loading} onClick={() => ask(c)}>
+          <button key={c} type="button" className="rounded-full border border-gray-500 px-3 py-1" disabled={loading} onClick={() => ask(c)}>
             {c}
           </button>
         ))}
@@ -102,7 +102,7 @@ export function SuggestionsPanel({ editor, testimonyId }: { editor: Editor | nul
         }}
       >
         <input
-          className="min-w-0 flex-1 rounded border px-2 py-1"
+          className="min-w-0 flex-1 rounded border border-gray-500 px-2 py-1"
           value={instruction}
           onChange={(e) => setInstruction(e.target.value)}
           placeholder="Ask for a change..."
@@ -113,26 +113,34 @@ export function SuggestionsPanel({ editor, testimonyId }: { editor: Editor | nul
         </button>
       </form>
       {error && (
-        <p className="text-red-600" role="alert">
+        <p className="text-red-700" role="alert">
           {error}
         </p>
       )}
       {note && <p className="rounded bg-gray-100 p-2 whitespace-pre-wrap">{note}</p>}
+      <p role="status" className="sr-only">
+        {loading ? "Asking the AI..." : items.length ? `${items.length} suggestion${items.length === 1 ? "" : "s"} ready to review` : ""}
+      </p>
       <ul className="space-y-3">
-        {items.map((s) => (
+        {items.map((s, n) => (
           <li key={s.id} className="rounded border p-3">
             {s.original ? (
-              <p className="text-gray-600 line-through">{s.original}</p>
+              <p className="text-gray-600 line-through">
+                <span className="sr-only">Original text: </span>
+                {s.original}
+              </p>
             ) : (
-              <p className="text-xs text-gray-500">New text after block {s.blockIndex + 1}</p>
+              <p className="text-xs text-gray-600">New text after block {s.blockIndex + 1}</p>
             )}
-            <p className="mt-1 text-green-800">{s.proposed || "(remove this text)"}</p>
-            <p className="mt-1 text-xs text-gray-500">{s.reason}</p>
+            <p className="mt-1 text-green-800">
+              <span className="sr-only">Suggested text: </span>
+              {s.proposed || "(remove this text)"}</p>
+            <p className="mt-1 text-xs text-gray-600">{s.reason}</p>
             <div className="mt-2 flex gap-2">
-              <button type="button" className="rounded bg-black px-3 py-1 text-white" onClick={() => accept(s)}>
+              <button type="button" className="rounded bg-black px-3 py-1 text-white" aria-label={`Accept suggestion ${n + 1}`} onClick={() => accept(s)}>
                 Accept
               </button>
-              <button type="button" className="rounded border px-3 py-1" onClick={() => reject(s)}>
+              <button type="button" className="rounded border border-gray-500 px-3 py-1" aria-label={`Reject suggestion ${n + 1}`} onClick={() => reject(s)}>
                 Reject
               </button>
             </div>

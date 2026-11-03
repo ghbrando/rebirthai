@@ -11,6 +11,8 @@ const primaryBtn =
 const secondaryBtn =
   "inline-flex min-h-11 items-center justify-center rounded border border-black px-5 py-2 text-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black";
 
+export const metadata = { title: "Dashboard" };
+
 export default async function Page() {
   const { supabase, profile } = await requireProfile();
   const { data } = await supabase
@@ -37,7 +39,7 @@ export default async function Page() {
   const notice = takedownNotice(t);
 
   return (
-    <main className="mx-auto w-full max-w-2xl space-y-6 p-4 sm:p-6">
+    <main id="main-content" className="mx-auto w-full max-w-2xl space-y-6 p-4 sm:p-6">
       <h1 className="text-2xl font-semibold">Welcome, {profile.display_name}</h1>
       <TakedownNotice notice={notice} />
       <section aria-labelledby="where" className="space-y-4 rounded border p-4 sm:p-6">

@@ -79,6 +79,7 @@ export function PublishPanel({ status, visibility: initial, url, canPublish, tak
       <div className="flex flex-wrap gap-3">
         <button
           disabled={busy || !canPublish}
+          aria-describedby={!canPublish && !takenDown ? "publish-hint" : undefined}
           onClick={() => act("publish")}
           className="rounded-lg bg-black px-4 py-2 text-white disabled:opacity-50"
         >
@@ -90,7 +91,7 @@ export function PublishPanel({ status, visibility: initial, url, canPublish, tak
           </button>
         )}
       </div>
-      {!canPublish && !takenDown && <p className="text-sm text-gray-700">Add a title and some content before publishing.</p>}
+      {!canPublish && !takenDown && <p id="publish-hint" className="text-sm text-gray-700">Add a title and some content before publishing.</p>}
       {error && (
         <p role="alert" className="text-sm text-red-800">
           {error}

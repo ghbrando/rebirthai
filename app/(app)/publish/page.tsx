@@ -15,6 +15,8 @@ function statusSentence(status: Testimony["status"] | undefined): string {
   return "You haven't published your testimony yet. Only you can see it until you press Publish.";
 }
 
+export const metadata = { title: "Publish" };
+
 export default async function Page() {
   const { supabase, profile } = await requireProfile();
   const { data } = await supabase
@@ -27,7 +29,7 @@ export default async function Page() {
   const canPublish = !!t && !notice && !!t.title.trim() && (t.draft_content?.content?.length ?? 0) > 0;
 
   return (
-    <main className="mx-auto w-full max-w-2xl space-y-6 p-4 sm:p-6">
+    <main id="main-content" className="mx-auto w-full max-w-2xl space-y-6 p-4 sm:p-6">
       <h1 className="text-2xl font-semibold">Publish</h1>
       <p className="text-sm text-gray-700">
         {!notice && <>{statusSentence(t?.status)} </>}

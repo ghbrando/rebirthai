@@ -131,3 +131,14 @@
     font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   }
 }
+/* Accessibility (#15): a visible focus ring on every control, readable placeholders, skip link. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid #1d4ed8;
+    outline-offset: 2px;
+  }
+  ::placeholder {
+    color: #6b7280;
+    opacity: 1;
+  }
+}

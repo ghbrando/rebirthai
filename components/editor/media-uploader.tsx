@@ -61,7 +61,7 @@ export function MediaUploader({
       />
       <button
         type="button"
-        className="rounded border px-3 py-1"
+        className="rounded border border-gray-500 px-3 py-1"
         disabled={progress !== null || !!pending}
         onClick={() => input.current?.click()}
       >
@@ -69,12 +69,12 @@ export function MediaUploader({
       </button>
       {progress !== null && (
         <div className="mt-2" role="status">
-          <progress value={progress} max={100} className="w-full" />
+          <progress value={progress} max={100} aria-label="Upload progress" className="w-full" />
           <span className="text-xs">{progress}% uploaded</span>
         </div>
       )}
       {error && (
-        <p className="mt-2 text-red-600" role="alert">
+        <p className="mt-2 text-red-700" role="alert">
           {error}
         </p>
       )}
@@ -84,16 +84,18 @@ export function MediaUploader({
             {pending.kind === "image" ? "Describe this image (alt text, required)" : "Describe this video (required)"}
           </p>
           <input
-            className="mt-1 w-full rounded border px-2 py-1"
+            className="mt-1 w-full rounded border border-gray-500 px-2 py-1"
             value={alt}
             onChange={(e) => setAlt(e.target.value)}
+            aria-label={pending.kind === "image" ? "Alt text (required)" : "Video description (required)"}
             placeholder="What is shown?"
             autoFocus
           />
           <input
-            className="mt-2 w-full rounded border px-2 py-1"
+            className="mt-2 w-full rounded border border-gray-500 px-2 py-1"
             value={caption}
             onChange={(e) => setCaption(e.target.value)}
+            aria-label="Caption (optional)"
             placeholder="Caption (optional)"
           />
           <div className="mt-2 flex gap-2">

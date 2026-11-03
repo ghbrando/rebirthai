@@ -3,12 +3,14 @@ import { requireProfile } from "@/lib/auth";
 import { permanentUrl } from "@/lib/vcard/build";
 import { ContactFieldsForm } from "@/components/share/contact-fields-form";
 
+export const metadata = { title: "Contact card" };
+
 export default async function Page() {
   const { profile } = await requireProfile();
   const url = permanentUrl(profile.handle);
 
   return (
-    <main className="mx-auto max-w-2xl space-y-6 p-6">
+    <main id="main-content" className="mx-auto max-w-2xl space-y-6 p-6">
       <div>
         <h1 className="text-2xl font-semibold">Add your link to your contact card</h1>
         <p className="mt-2 text-gray-600">

@@ -105,14 +105,14 @@ export default async function Page({
   if (r.kind === "missing") notFound();
   if (r.kind === "gone")
     return (
-      <main className="mx-auto max-w-2xl p-6">
+      <main id="main-content" className="mx-auto max-w-2xl p-6">
         <h1 className="text-2xl font-semibold">This testimony is no longer available</h1>
         <p className="mt-2 text-gray-700">The author has removed it.</p>
       </main>
     );
   if (r.kind === "unavailable")
     return (
-      <main className="mx-auto max-w-2xl p-6">
+      <main id="main-content" className="mx-auto max-w-2xl p-6">
         <h1 className="text-2xl font-semibold">This testimony isn&apos;t available</h1>
         <p className="mt-2 text-gray-700">The author may have unpublished it or it hasn&apos;t been published yet.</p>
       </main>
@@ -137,7 +137,7 @@ export default async function Page({
   const photo = profile.photo_path ? publicUrl(profile.photo_path) : null;
 
   return (
-    <main className="mx-auto w-full max-w-2xl space-y-6 p-4 sm:p-6">
+    <main id="main-content" className="mx-auto w-full max-w-2xl space-y-6 p-4 sm:p-6">
       <header className="flex items-center gap-4">
         {photo && (
           // eslint-disable-next-line @next/next/no-img-element
@@ -160,7 +160,7 @@ export default async function Page({
       )}
 
       <article className="space-y-4">
-        {t.title && <h1 className="text-3xl font-bold">{t.title}</h1>}
+        <h1 className="text-3xl font-bold">{t.title || `${profile.display_name}'s testimony`}</h1>
         <TestimonyRenderer content={t.content} mediaUrls={mediaUrls} />
       </article>
 
@@ -180,7 +180,7 @@ export default async function Page({
                   minLength={3}
                   maxLength={1000}
                   rows={3}
-                  className="mt-1 w-full rounded border p-2 text-gray-900"
+                  className="mt-1 w-full rounded border border-gray-500 p-2 text-gray-900"
                 />
               </label>
               <button className="rounded border px-3 py-1">Submit report</button>

@@ -3,6 +3,8 @@ import { requireProfile } from "@/lib/auth";
 import { TestimonyRenderer, collectMediaIds } from "@/components/testimony/Renderer";
 import type { Testimony } from "@/lib/types";
 
+export const metadata = { title: "Preview" };
+
 export default async function Page() {
   const { supabase, profile } = await requireProfile();
   const { data } = await supabase
@@ -35,7 +37,7 @@ export default async function Page() {
   }
 
   return (
-    <main className="mx-auto w-full max-w-2xl space-y-6 p-4 sm:p-6">
+    <main id="main-content" className="mx-auto w-full max-w-2xl space-y-6 p-4 sm:p-6">
       <p className="text-sm text-gray-700">This is exactly how your page will look.</p>
       <div role="note" className="rounded-lg border border-amber-700 bg-amber-50 p-4 text-sm text-amber-950">
         Before you publish: have you named anyone who hasn&apos;t agreed to be named publicly (family, friends,
