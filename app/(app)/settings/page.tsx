@@ -5,10 +5,12 @@ import { signOut } from "@/components/profile/actions";
 import { DeleteAccount } from "@/components/profile/delete-account";
 import { Button } from "@/components/ui/button";
 
+export const metadata = { title: "Settings" };
+
 export default async function Page() {
   const { user, profile } = await requireProfile();
   return (
-    <main className="mx-auto max-w-3xl space-y-8 p-6">
+    <main id="main-content" className="mx-auto max-w-3xl space-y-8 p-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Settings</h1>
         <Link href="/dashboard" className="text-sm underline">Back to dashboard</Link>

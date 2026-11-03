@@ -74,7 +74,7 @@ export function DeleteAccount({ handle }: { handle: string }) {
               autoComplete="off"
               autoCapitalize="characters"
               spellCheck={false}
-              className="mt-1 block w-full max-w-xs rounded border p-2 text-gray-900"
+              className="mt-1 block w-full max-w-xs rounded border border-gray-500 p-2 text-gray-900"
             />
           </label>
           {error && (

@@ -38,7 +38,7 @@ export function ContactFieldsForm(props: {
             defaultValue={props.phone ?? ""}
             placeholder="+1 555 123 4567"
             aria-label="Phone number"
-            className="w-full rounded border px-2 py-1 text-sm"
+            className="w-full rounded border border-gray-500 px-2 py-1 text-sm"
           />
         )}
       </div>
@@ -59,12 +59,12 @@ export function ContactFieldsForm(props: {
             defaultValue={props.email ?? ""}
             placeholder="you@example.com"
             aria-label="Email"
-            className="w-full rounded border px-2 py-1 text-sm"
+            className="w-full rounded border border-gray-500 px-2 py-1 text-sm"
           />
         )}
       </div>
       <p className="text-base">{CONTACT_CONSENT_TEXT}</p>
-      <p className="text-xs text-gray-500">No photo is ever included.</p>
+      <p className="text-xs text-gray-600">No photo is ever included.</p>
       <button
         type="submit"
         disabled={pending}
@@ -73,7 +73,7 @@ export function ContactFieldsForm(props: {
         {pending ? "Saving..." : "Save"}
       </button>
       {state.message && (
-        <p role="status" className={state.ok ? "text-sm text-green-700" : "text-sm text-red-700"}>
+        <p role={state.ok ? "status" : "alert"} className={state.ok ? "text-sm text-green-700" : "text-sm text-red-700"}>
           {state.message}
         </p>
       )}

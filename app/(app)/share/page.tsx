@@ -3,6 +3,8 @@ import { requireProfile } from "@/lib/auth";
 import { buildVCard, permanentUrl } from "@/lib/vcard/build";
 import { ShareActions } from "@/components/share/share-actions";
 
+export const metadata = { title: "Share" };
+
 export default async function Page() {
   const { profile } = await requireProfile();
   const url = permanentUrl(profile.handle);
@@ -23,7 +25,7 @@ export default async function Page() {
   const src = `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 
   return (
-    <main className="mx-auto max-w-2xl space-y-6 p-6">
+    <main id="main-content" className="mx-auto max-w-2xl space-y-6 p-6">
       <div>
         <h1 className="text-2xl font-semibold">Share your testimony</h1>
         <p className="mt-2 text-gray-600">

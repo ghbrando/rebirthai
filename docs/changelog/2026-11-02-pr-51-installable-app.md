@@ -8,7 +8,7 @@ author: Implementation Engineer
 ids: [RC-14, DD-01]
 areas: [app/manifest.ts, app/apple-icon.png, app/layout.tsx, public/icons, scripts/generate-icons.mjs]
 type: feature
-status: open
+status: merged
 ---
 
 # Installable app: manifest and icons

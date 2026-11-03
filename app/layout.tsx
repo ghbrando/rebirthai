@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RebirthAI",
+  title: { default: "RebirthAI", template: "%s | RebirthAI" },
   description: "Tell your testimony with an AI coach and carry it on your contact card.",
 };
 
