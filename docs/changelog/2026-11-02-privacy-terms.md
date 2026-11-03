@@ -8,7 +8,7 @@ author: Implementation agent, from Issue #25 (draft for owner and legal review)
 ids: [RC-06, RC-12, RC-13, RC-03, RC-05]
 areas: [app/privacy, app/terms, components/legal, lib/legal.ts, app/page.tsx, app/(auth)/sign-in, app/u/[handle]]
 type: feature
-status: open
+status: merged
 ---
 
 # Privacy policy and terms of use (draft)

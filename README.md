@@ -19,6 +19,7 @@ Create `.env.local` with:
 | `SUPABASE_SERVICE_ROLE_KEY` | **server-only** (RC-07) |
 | `ANTHROPIC_API_KEY` | **server-only** (RC-07) |
 | `NEXT_PUBLIC_SITE_URL` | public origin, e.g. `http://localhost:3000` |
+| `NEXT_PUBLIC_FEEDBACK_URL` | optional; where the small "Send feedback" link on every signed-in screen goes (a form link or `mailto:`). Link hidden when unset. Read at build time. |
 | `REPORT_WEBHOOK_URL` | optional, **server-only**; an ntfy.sh topic URL or any webhook that takes a plain-text POST, notified when a page is reported (`docs/OPERATIONS.md`) |
 | `OPERATOR_CONTACT_EMAIL` | optional; shown to an author whose page was taken down so they can reach the operator |
 | `COACH_MODEL_INTERVIEW`, `COACH_MODEL_DRAFT`, `COACH_MODEL_SUGGEST` | optional; Claude model per coach step (`claude-opus-5-5` default; also `claude-sonnet-5-5`, `claude-haiku-5-5`). Change only after the coach truthfulness check (#10). |
@@ -52,6 +53,10 @@ screen works without it. `supabase stop` when done.
 WSL notes: use `localhost`, not `127.0.0.1` (Windows reaches WSL ports over IPv6 here). WSL
 shuts down, and the database with it, when no WSL process is attached, so keep one open while
 working: `wsl -d Ubuntu -- sleep infinity` in the background.
+
+### Smoke test
+
+With the local test environment above running (app on `DEMO_MODE=1`, seeded Maria), run `npm run smoke` (first time: `npx playwright install chromium`). It walks the demo path on a 390x844 phone viewport against `BASE_URL` (default `http://localhost:3000`) and saves screenshots to `test-results/`. Not part of CI (CI has no database).
 
 ## Run
 
