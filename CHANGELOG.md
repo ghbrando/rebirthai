@@ -11,6 +11,7 @@ How this file is maintained:
 ## [Unreleased]
 
 ### Changed
+- Implementation plan and roadmap now show the work merged through November 3, the private beta scope and Phase 8 ([record](docs/changelog/2026-11-04-plan-refresh.md))
 - Accessibility pass: visible focus rings, darker small text and input borders, labelled fields with announced errors, coach messages announced, skip link and page titles (#15, [record](docs/changelog/2026-11-02-pr-50-accessibility.md))
 - Beta copy pass: removed "Screen N" labels, one link format (`/@handle`) everywhere, plain publish status sentences, Heading/Subheading editor toolbar, "Ask the AI for help", "Download contact card" (#35, [record](docs/changelog/2026-11-02-beta-copy-pass.md))
 

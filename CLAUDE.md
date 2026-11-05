@@ -16,7 +16,7 @@ Every change passes these before a PR; CI (`lint-typecheck-test`) runs them on e
 
 ## Sources of truth
 - Behavior and IDs (US-, RC-, DD-, OQ-): `docs/sdd/RebirthAI_SDD.html`
-- Plan, phases and open decisions D-01–D-05: `docs/IMPLEMENTATION_PLAN.md`
+- Plan, phases and open decisions: `docs/IMPLEMENTATION_PLAN.md`
 - Structure and rules to preserve: `docs/ARCHITECTURE.md`
 - Domain, privacy and safety rules: `docs/POLICY.md`
 - Direction: `docs/ROADMAP.md`
@@ -33,7 +33,7 @@ Every change passes these before a PR; CI (`lint-typecheck-test`) runs them on e
   that touched it (`grep -l "<path or ID>" docs/changelog/*.md`); every PR adds its own record.
 
 ## Stop and ask the owner
-- Any open decision D-01–D-05 (notably D-04: the final domain is baked into every vCard and QR).
+- Any open decision in the plan, Section 6.1 (notably D-04: the final domain is baked into every vCard and QR).
 - Schema, RLS or storage-policy changes; anything exposing server-only keys (RC-07).
 - AI behavior beyond coaching the author's own words (RC-04, DD-04); faith framing (POLICY §6).
 - Destructive data operations, or a conflict between the SDD and the code.
