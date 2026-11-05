@@ -5,7 +5,7 @@
 | Project | RebirthAI — AI-guided testimony platform |
 | Repository | https://github.com/ghbrando/rebirthai |
 | Source design | `docs/sdd/RebirthAI_SDD.html` (SDD v0.1, text source of `docs/RebirthAI_SDD.pdf`) |
-| Plan version | v1.0 — October 26, 2026 |
+| Plan version | v1.1 — November 4, 2026 (v1.0 — October 26, 2026; status updated to match merged work) |
 | Author / owner | Brandon Magana |
 
 ---
@@ -24,13 +24,15 @@ plan therefore does three things:
 
 1. Records the completed phases with their evidence (commits), so every SDD story stays traceable.
 2. Identifies what is incomplete, deferred, or unverified against the SDD's pass/fail checks.
-3. Turns the remaining work into ordered, agent-ready GitHub Issues (phases 6–7).
+3. Turns the remaining work into ordered, agent-ready GitHub Issues (phases 6–8).
+
+**Direction since v1.0:** after the hackathon, the goal became a small private beta (`docs/BETA_PLAN.md`), which added Issues I-21 – I-31. Between November 2 and 3, 2026, most code work in Phase 6 and the beta bar was merged to `dev`. What remains is mainly verification on real devices and services, owner decisions and hosting setup.
 
 Status vocabulary used throughout:
 
 | Status | Meaning |
 |---|---|
-| **Done** | Implemented and merged to `main`; code-level evidence exists. |
+| **Done** | Implemented and merged (`main` for phases 0–5, `dev` for later work); code-level evidence exists. |
 | **Done — verification pending** | Implemented, but the SDD's pass/fail check (devices, timing, review) has not been run. |
 | **Partial** | Part of the requirement is implemented; the gap is named. |
 | **Not started** | No implementation yet. |
@@ -44,6 +46,7 @@ Status vocabulary used throughout:
 | Design refinements (SDD §6.3) | SDD | Coach one-question flow, accept/reject suggestions, contact step after publish, QR encodes full vCard, public page layout, preview reminder |
 | Architecture & data model (SDD §5.1–5.3, Figure 1) | SDD | Route handlers, Supabase tables, storage buckets |
 | MVP build prompt | `docs/BUILD_PROMPT.md` | How phases 0–5 were executed (agent ownership by path) |
+| Private beta plan | `docs/BETA_PLAN.md` | The bar for inviting real users; source of I-21 – I-25 |
 | Interactive UI/UX prototype | **Not yet produced** (SDD §6.2: "Prototype link: TBD") | Gap — see Section 6, D-01 |
 
 ### 1.3 Planning Assumptions & Scope Guardrails
@@ -72,15 +75,16 @@ Status vocabulary used throughout:
 Each phase produces a coherent, demonstrable increment.
 
 | Phase | Name | Demonstrable increment | SDD scope | Status |
-|---|---|---|---|---|---|
+|---|---|---|---|---|
 | 0 | Foundation | App boots; schema with RLS; screens 1–14 routed; `/@handle` rewrite | RC-01, RC-02, RC-07, DD-06 | Done |
 | 1 | Account & Profile | Sign in, create profile with unique handle, change handle with redirect | US-01, US-02; RC-01, RC-03, RC-12; screens 2, 3, 11 | Done — verification pending |
 | 2 | AI Coach & Draft | Guided streaming interview, resume, draft from the author's answers only | US-03, US-04, US-05; RC-04, RC-05, RC-08; DD-04, DD-07; screen 5 | Done — verification pending |
-| 3 | Editor & Media | Edit with autosave, accept/reject AI suggestions, inline photo/video | US-06, US-07; RC-06, RC-09, RC-11; screen 6 | Partial (RC-09 resumable uploads deferred) |
+| 3 | Editor & Media | Edit with autosave, accept/reject AI suggestions, inline photo/video | US-06, US-07; RC-06, RC-09, RC-11; screen 6 | Done — verification pending (RC-09 closed by I-13) |
 | 4 | Publish & Public Page | Preview, publish/unpublish/delete, public `/@handle` page, report, link preview | US-08, US-12–US-15; RC-03, RC-06, RC-11, RC-13; DD-02, DD-05; screens 7, 8, 13, 14 | Done — verification pending |
 | 5 | Contact Card & Share | vCard 3.0 download, QR, add-to-contact guide, copy link/share sheet | US-09, US-10, US-11; RC-10, RC-12; DD-03; screens 9, 10, 12 | Done — verification pending |
-| 6 | MVP Completion & Verification | Dashboard, PWA, resumable uploads, automated E2E, every SDD pass/fail check run | Gaps in US-03–US-13; RC-09, RC-11, RC-14; screen 4 | Not started |
-| 7 | Release Readiness | Governed branches, real Supabase + Vercel environments, domain, cost controls | RC-07, RC-08, OQ-06; Lab 2 trust model | In progress (governed branches done; rest needs human decisions) |
+| 6 | MVP Completion & Verification | Dashboard, PWA, resumable uploads, automated E2E, every SDD pass/fail check run | Gaps in US-03–US-13; RC-09, RC-11, RC-14; screen 4 | In progress (code work done; I-03, I-14, I-15 verification open) |
+| 7 | Release Readiness | Governed branches, real Supabase + Vercel environments, domain, cost controls, and the private beta bar | RC-07, RC-08, OQ-06; Lab 2 trust model; `docs/BETA_PLAN.md` | In progress (governed branches and most beta-bar code done; rest needs human decisions) |
+| 8 | Discovery & Community | An owner-approved design for the feed, related testimonies, and local Bible studies and churches | OQ-01, OQ-04, RISK-04; D-06, D-07 | Not started (after the beta) |
 
 ---
 
@@ -121,7 +125,7 @@ Each phase produces a coherent, demonstrable increment.
 - **Gap:** the five-session fabrication review (US-05) and the 2-second streaming check have not been run.
 - **Candidate Issues:** I-03, I-04.
 
-### Phase 3 — Editor & Media (Partial)
+### Phase 3 — Editor & Media (Done — verification pending)
 
 - **Goal:** the author edits the draft and places photos and video inline.
 - **SDD references:** US-06, US-07, RC-06, RC-09, RC-11; screen 6.
@@ -130,7 +134,8 @@ Each phase produces a coherent, demonstrable increment.
 - **Dependencies:** Phases 0–2.
 - **UI/UX artifacts:** screen 6 Editor.
 - **Evidence:** merge of `feat/editor-media`.
-- **Gap:** uploads are a single-shot XHR PUT with progress; **true resumable uploads (RC-09) were deferred** (noted in `lib/media/client.ts`). Display on iOS Safari / Android Chrome not verified.
+- **Evidence (update):** resumable uploads for large videos (RC-09) merged in PR #52 (I-13).
+- **Gap:** display on iOS Safari / Android Chrome not verified (I-14). Videos can still carry location data (I-30), and there is no per-user storage cap or cleanup of abandoned uploads (I-31).
 - **Candidate Issues:** I-05, I-06.
 
 ### Phase 4 — Publish & Public Page (Done — verification pending)
@@ -157,25 +162,39 @@ Each phase produces a coherent, demonstrable increment.
 - **Gap:** device import and QR scanning not tested; link-preview rendering in iMessage/WhatsApp not tested.
 - **Candidate Issues:** I-09.
 
-### Phase 6 — MVP Completion & Verification (Not started)
+### Phase 6 — MVP Completion & Verification (In progress)
 
 - **Goal:** close every functional gap and run every SDD pass/fail check, with evidence.
 - **SDD references:** screen 4; RC-09, RC-11, RC-14; pass/fail checks of US-03, US-05, US-07, US-09, US-10, US-11, US-13.
 - **Deliverables:** Dashboard (screen 4) replacing the placeholder; PWA manifest and icons (RC-14); resumable uploads (RC-09); a Playwright smoke test of the full demo path; the five-session coach fabrication review; an iOS/Android device test matrix; a performance and accessibility check of the public page.
 - **Phase acceptance criteria:** every SDD story is either verified with recorded evidence or has an explicit, owner-approved exception; `npm run typecheck`, `lint`, `build`, `test` and the E2E smoke test all pass.
-- **Dependencies:** Phases 0–5. I-12 (E2E) and the device/perf checks need a working Supabase environment (I-17).
+- **Evidence:** Dashboard PRs #39 and #44 (I-10); installable app PR #51 (I-11); smoke test PR #47 against the local test environment (I-12); resumable uploads PR #52 (I-13); accessibility code audit PR #50 (I-16).
+- **Gap:** coach fabrication review (I-03), device matrix (I-14) and performance budget (I-15) have not been run.
+- **Dependencies:** Phases 0–5. I-14 and I-15 need a deployed environment (I-17, I-19); I-03 needs a live AI key. I-12 runs locally with fictional data (PR #34), so it did not wait for I-17.
 - **UI/UX artifacts:** screen 4 Dashboard; SDD §6.3 refinements; prototype (if produced, D-01).
 - **Candidate Issues:** I-10 – I-16.
 
-### Phase 7 — Release Readiness (In progress — governed branches done; rest needs human decisions)
+### Phase 7 — Release Readiness (In progress — governed branches and most beta-bar code done; rest needs human decisions)
 
 - **Goal:** a governed, deployable MVP.
 - **SDD references:** RC-07, RC-08, OQ-06; Lab 2 least-privilege and promotion-gate model.
-- **Deliverables:** `dev` and `staging` branches with rulesets (agent may merge only into `dev`; `staging`/`main` human-only); a real Supabase project with the migration applied and auth providers configured; Vercel project with server-only secrets; final domain; Anthropic monthly spend limit.
-- **Phase acceptance criteria:** a signed-out phone opens a published testimony on the deployed domain; no secret is in the repo or client bundle; branch rules block agent promotion to `staging`/`main`.
+- **Deliverables:** `dev` and `staging` branches with rulesets (agent may merge only into `dev`; `staging`/`main` human-only); a real Supabase project with the migration applied and auth providers configured; Vercel project with server-only secrets; final domain; Anthropic monthly spend limit; the private beta bar (`docs/BETA_PLAN.md`): privacy policy and terms, account deletion, reports that reach the operator, a feedback link, plain-language copy and a clear publish screen.
+- **Phase acceptance criteria:** a signed-out phone opens a published testimony on the deployed domain; no secret is in the repo or client bundle; branch rules block agent promotion to `staging`/`main`; every item in the `docs/BETA_PLAN.md` bar is met before anyone is invited.
 - **Dependencies:** owner decisions D-02, D-03, D-04; I-17 before Phase 6's environment-dependent checks.
 - **UI/UX artifacts:** none.
-- **Candidate Issues:** I-17 – I-20.
+- **Evidence:** account deletion PR #40 (I-22); reports and takedown PR #41 (I-23); feedback link PR #48 (I-24); copy pass PR #43 (I-26); publish screen PR #46 (I-27); contact card address guard PR #42 (I-28); first-impression polish PR #45 (I-29); per-step coach models and cost logging PR #31 (part of I-20); draft privacy and terms pages PR #49 (part of I-21).
+- **Gap:** hosting (I-17, I-19), the spend limit (I-20), owner review of the policy text (I-21), video location data (I-30), and storage limits and cleanup (I-31).
+- **Candidate Issues:** I-17 – I-24, I-26 – I-31.
+
+### Phase 8 — Discovery & Community (Not started)
+
+- **Goal:** after writing a testimony, a person can browse others, see related testimonies, and find local Bible studies and churches to explore. This phase is the design, not the build.
+- **SDD references:** OQ-01, OQ-04, RISK-04; `docs/BETA_PLAN.md`.
+- **Deliverables:** an SDD v0.2 section with stories, constraints and decisions; an opt-in consent model; a listing-source recommendation for the owner; a privacy and security review.
+- **Phase acceptance criteria:** the owner approves the SDD v0.2 section and explicitly revises POLICY §2 and §12 before any build starts.
+- **Dependencies:** private beta running; owner decisions D-06 and D-07.
+- **UI/UX artifacts:** none yet; screens come out of the design.
+- **Candidate Issues:** I-25.
 
 ---
 
@@ -193,13 +212,11 @@ Each phase produces a coherent, demonstrable increment.
 
 ### 4.1 Implementation Sequence
 
-1. Phases 0–5 — done (built in parallel on Oct 24, 2026, integrated on `main`).
-2. **I-17 first** (I-18 governed branches is done), because most verification needs them and Lab 2's trust boundary must exist before agents work.
-3. In parallel, no environment needed: **I-10** Dashboard, **I-11** PWA manifest, **I-13** resumable uploads, **I-16** accessibility pass (code review part).
-4. Then, needing the environment: **I-12** E2E smoke test → **I-03** coach fabrication review → **I-14** device matrix → **I-15** performance check.
-5. Last: **I-19** deploy + domain, **I-20** cost controls.
-
-Parallel-safe groups: {I-10, I-11, I-13, I-16} touch separate paths. I-12 should land before the device matrix so regressions are caught automatically.
+1. Done: phases 0–5 (built in parallel on Oct 24, 2026), I-18, and the code work I-10, I-11, I-12, I-13, I-16, I-22, I-23, I-24, I-26 – I-29.
+2. **Any time, no hosting needed:** I-30 video location data and I-31 storage limits and cleanup. They touch separate concerns, but both change media handling, so run them one after the other.
+3. **Owner actions and decisions:** D-03 hosting accounts, then I-17 Supabase; D-04 final domain, then I-19 Vercel deploy; I-20 spend limit; owner review of I-21.
+4. **Then verification, once deployed:** I-03 coach fabrication review → I-14 device matrix → I-15 performance check. I-12's smoke test catches regressions along the way.
+5. **After the beta starts:** I-25 Discovery & Community design (D-06, D-07).
 
 ---
 
@@ -232,22 +249,28 @@ are created for traceability and closed with links to their merge commits.
 | I-07 | [#7](https://github.com/ghbrando/rebirthai/issues/7) | Preview, publish, unpublish and delete | 4 | US-08, US-12, DD-05, RISK-03 | Done (closed) |
 | I-08 | [#8](https://github.com/ghbrando/rebirthai/issues/8) | Public `/@handle` page: redirects, noindex, OG preview, report, save contact | 4 | US-13, US-14, US-15, RC-03, RC-06, RC-13 | Done (closed) |
 | I-09 | [#9](https://github.com/ghbrando/rebirthai/issues/9) | vCard 3.0, QR code, add-to-contact guide, share screen | 5 | US-09, US-10, US-11, RC-10, RC-12 | Done (closed) |
-| I-10 | [#11](https://github.com/ghbrando/rebirthai/issues/11) | Dashboard (screen 4): testimony status and continue actions | 6 | Screen 4, SDD §6.1 | Backlog — awaiting review |
-| I-11 | [#12](https://github.com/ghbrando/rebirthai/issues/12) | Installable PWA: manifest and icons | 6 | RC-14, DD-01 | Backlog — awaiting review |
-| I-12 | [#14](https://github.com/ghbrando/rebirthai/issues/14) | Playwright smoke test of the full demo path | 6 | US-01–US-13 (demo path) | Backlog — blocked by I-17 |
-| I-13 | [#13](https://github.com/ghbrando/rebirthai/issues/13) | Resumable media uploads for large videos | 6 | RC-09, RISK-06, US-07 | Backlog — awaiting review |
+| I-10 | [#11](https://github.com/ghbrando/rebirthai/issues/11) | Dashboard (screen 4): testimony status and continue actions | 6 | Screen 4, SDD §6.1 | Done (closed; PRs #39, #44) |
+| I-11 | [#12](https://github.com/ghbrando/rebirthai/issues/12) | Installable PWA: manifest and icons | 6 | RC-14, DD-01 | Done (closed; PR #51) |
+| I-12 | [#14](https://github.com/ghbrando/rebirthai/issues/14) | Playwright smoke test of the full demo path | 6 | US-01–US-13 (demo path) | Done (closed; PR #47, runs locally) |
+| I-13 | [#13](https://github.com/ghbrando/rebirthai/issues/13) | Resumable media uploads for large videos | 6 | RC-09, RISK-06, US-07 | Done (closed; PR #52) |
 | I-14 | [#16](https://github.com/ghbrando/rebirthai/issues/16) | Device verification matrix: iPhone + Android | 6 | US-07, US-09, US-10, US-11, US-13, OQ-05 | Backlog — blocked by I-17, I-19 |
 | I-15 | [#17](https://github.com/ghbrando/rebirthai/issues/17) | Public page performance budget: text in ≤2.5 s on 4G | 6 | US-13, RC-11 | Backlog — blocked by I-19 |
-| I-16 | [#15](https://github.com/ghbrando/rebirthai/issues/15) | Accessibility pass: WCAG 2.1 AA contrast, keyboard, alt text, video controls | 6 | RC-11 | Backlog — awaiting review |
+| I-16 | [#15](https://github.com/ghbrando/rebirthai/issues/15) | Accessibility pass: WCAG 2.1 AA contrast, keyboard, alt text, video controls | 6 | RC-11 | Done (closed; PR #50, code audit) |
 | I-17 | [#18](https://github.com/ghbrando/rebirthai/issues/18) | Supabase project: apply migration, configure magic link + Google, env vars | 7 | RC-01, RC-02, RC-07 | Backlog — awaiting review (human action) |
 | I-18 | [#1](https://github.com/ghbrando/rebirthai/issues/1) | Governed branches: `dev` / `staging`, rulesets for the agent account | 7 | Lab 2 trust model | Done (closed, Oct 26 2026) |
 | I-19 | [#19](https://github.com/ghbrando/rebirthai/issues/19) | Vercel deploy and final domain | 7 | RC-07, OQ-06, DD-02 | Backlog — blocked by D-04 |
-| I-20 | [#20](https://github.com/ghbrando/rebirthai/issues/20) | AI cost controls: Anthropic spend limit and rate-limit check | 7 | RC-08, RISK-05 | Backlog — awaiting review (human action) |
-| I-21 | [#25](https://github.com/ghbrando/rebirthai/issues/25) | Privacy policy and terms of use pages | 7 | POLICY §2, §4; RC-07 | Backlog — awaiting review |
-| I-22 | [#26](https://github.com/ghbrando/rebirthai/issues/26) | Delete my account and all my data | 7 | US-12, RC-03, RC-07 | Backlog — awaiting review |
-| I-23 | [#27](https://github.com/ghbrando/rebirthai/issues/27) | Reports reach the operator, who can take a page down | 7 | US-15, RISK-04 | Backlog — awaiting review |
-| I-24 | [#28](https://github.com/ghbrando/rebirthai/issues/28) | In-app feedback link for beta users | 7 | BETA_PLAN | Backlog — awaiting review |
+| I-20 | [#20](https://github.com/ghbrando/rebirthai/issues/20) | AI cost controls: Anthropic spend limit and rate-limit check | 7 | RC-08, RISK-05 | Partial (coach cost controls in PR #31; spend limit is a human action) |
+| I-21 | [#25](https://github.com/ghbrando/rebirthai/issues/25) | Privacy policy and terms of use pages | 7 | POLICY §2, §4; RC-07 | Partial (draft pages in PR #49; owner review open) |
+| I-22 | [#26](https://github.com/ghbrando/rebirthai/issues/26) | Delete my account and all my data | 7 | US-12, RC-03, RC-07 | Done (closed; PR #40) |
+| I-23 | [#27](https://github.com/ghbrando/rebirthai/issues/27) | Reports reach the operator, who can take a page down | 7 | US-15, RISK-04 | Done (closed; PR #41) |
+| I-24 | [#28](https://github.com/ghbrando/rebirthai/issues/28) | In-app feedback link for beta users | 7 | BETA_PLAN | Done (closed; PR #48) |
 | I-25 | [#29](https://github.com/ghbrando/rebirthai/issues/29) | Design Discovery & Community | 8 | OQ-01, OQ-04, D-06, D-07 | Backlog — awaiting review |
+| I-26 | [#35](https://github.com/ghbrando/rebirthai/issues/35) | Beta copy pass: remove design-document labels and use plain words | 7 | RC-03, RC-11 | Done (closed; PR #43) |
+| I-27 | [#36](https://github.com/ghbrando/rebirthai/issues/36) | Publish screen: clear 'who can see this', safe delete | 7 | US-09, US-12, US-13, RC-06 | Done (closed; PR #46) |
+| I-28 | [#37](https://github.com/ghbrando/rebirthai/issues/37) | Contact cards and QR codes must never point at a test address | 7 | RC-03, RC-10, RC-12, D-04 | Done (closed; PR #42) |
+| I-29 | [#38](https://github.com/ghbrando/rebirthai/issues/38) | First-impression polish: readable type, menu that fits a phone | 7 | RC-11 | Done (closed; PR #45) |
+| I-30 | [#53](https://github.com/ghbrando/rebirthai/issues/53) | Strip location metadata from videos | 7 | RC-06, RC-09 | Backlog — awaiting review |
+| I-31 | [#54](https://github.com/ghbrando/rebirthai/issues/54) | Per-user storage cap and orphan cleanup | 7 | RC-09, RISK-04, RISK-05 | Backlog — awaiting review |
 
 ---
 
@@ -266,6 +289,8 @@ are created for traceability and closed with links to their merge commits.
 | D-07 | Discovery: consent model for the feed and matching | Opt-in only; Unlisted never shown (BETA_PLAN principles) | I-25 |
 | D-08 | Who continues the project and who owns it after the hackathon | Owner (ghbrando) decides outside the code | Private beta |
 
+Decided: D-09 — new testimonies default to Unlisted (owner decision, PR #46).
+
 ### 6.2 Risks
 
 | ID | Risk | Mitigation in this plan |
@@ -275,7 +300,7 @@ are created for traceability and closed with links to their merge commits.
 | RISK-03 | Oversharing / naming third parties | Preview reminder (done), Unlisted visibility, one-click unpublish/delete |
 | RISK-04 | Abuse of public pages | Authenticated uploads, allow-lists, Report link; moderation post-MVP |
 | RISK-05 | AI cost spikes | Rate limit (done), prompt caching (done), spend limit (I-20) |
-| RISK-06 | Large uploads fail on mobile networks | Resumable uploads (I-13) |
+| RISK-06 | Large uploads fail on mobile networks | Resumable uploads (I-13, done in PR #52) |
 | RISK-07 | MVP was built faster than it was verified | Phase 6 runs every SDD pass/fail check before release |
 | RISK-08 | Domain baked into contact cards before it is final | No real vCards distributed until D-04 |
 | RISK-09 | `/demo` signs anyone in as the demo account (service-role key, no email step) when `DEMO_MODE=1` | Never set `DEMO_MODE` in a deployed environment (ARCHITECTURE.md rule 5); checked in I-19 |
@@ -292,23 +317,23 @@ Agents working any Issue in this plan must:
 - Never change the database schema or `lib/types.ts` silently: schema changes need a new migration and owner review.
 - Stay within the Issue's scope; anything in SDD §2.3 is out of bounds.
 - Merge only into `dev` after checks pass; never push to or approve `staging`/`main`.
-- Stop and escalate on: any open decision D-01–D-05, security or privacy exposure, destructive data operations, or a conflict between the SDD and the code.
+- Stop and escalate on: any open decision in Section 6.1, security or privacy exposure, destructive data operations, or a conflict between the SDD and the code.
 
 ---
 
 ## 7. Handoff to GitHub Project
 
-All Issues I-01–I-20 are added to the RebirthAI GitHub Project with these fields:
+All Issues I-01–I-31 are in the RebirthAI GitHub Project with these fields:
 
 | Field | Values |
 |---|---|
 | Status | Backlog → Ready → In Progress → Agent Review → Done in Dev → Staging Candidate → Released (Done phases: Released or Done) |
-| Phase | 0 Foundation · 1 Account & Profile · 2 AI Coach · 3 Editor & Media · 4 Publish & Public Page · 5 Contact & Share · 6 MVP Completion · 7 Release Readiness |
+| Phase | 0 Foundation · 1 Account & Profile · 2 AI Coach · 3 Editor & Media · 4 Publish & Public Page · 5 Contact & Share · 6 MVP Completion · 7 Release Readiness · 8 Discovery & Community |
 | Human Review | **Pending** (every AI-created Issue starts here) → **Reviewed** (only after the owner personally verifies it) |
 | Sequence | Number from Section 4.1; lowest eligible first |
-| Priority | High / Medium / Low |
+| Priority | P0 / P1 / P2 |
 
-Issues are generated from `docs/issues.json` by the reusable script `~/.claude/skills/project-setup/github/issues.py`. Every AI-created Issue enters at **Status = Backlog** and **Human Review = Pending**; built work enters closed at **Done in Dev**. Moving an Issue to **Ready** is the owner's authorization, done only after personally reviewing it and setting **Human Review = Reviewed**.
+I-01 – I-25 are generated from `docs/issues.json` by the reusable script `~/.claude/skills/project-setup/github/issues.py`; later Issues were drafted by agents directly during feature work and reviews. Every AI-created Issue enters at **Status = Backlog** and **Human Review = Pending**; built work enters closed at **Done in Dev**. Moving an Issue to **Ready** is the owner's authorization, done only after personally reviewing it and setting **Human Review = Reviewed**.
 
 Rule: an agent may start an Issue only when **Human Review = Reviewed** and **Status = Ready**.
 
@@ -316,11 +341,11 @@ Project: https://github.com/users/ghbrando/projects/2
 
 ### 7.1 Final Readiness Checklist
 
-- [ ] Every US-01–US-15 and RC-01–RC-14 appears in at least one Issue (Section 5.1).
-- [ ] Every Issue has context, traceability, acceptance criteria, design references, dependencies, verification, and out-of-scope notes.
-- [ ] All Issues are in the GitHub Project with Status, Phase, Human Review, Sequence, and Priority set.
+- [x] Every US-01–US-15 and RC-01–RC-14 appears in at least one Issue (checked by script, Nov 4, 2026).
+- [x] Every Issue has context, traceability, acceptance criteria, design references, dependencies, verification, and out-of-scope notes.
+- [x] All Issues are in the GitHub Project with Status, Phase, Human Review, Sequence, and Priority set.
 - [ ] Every Issue was personally reviewed and moved from Pending to Reviewed.
-- [ ] Completed-phase Issues are closed with links to their merge commits.
-- [ ] Open decisions D-01–D-05 are recorded and none are silently assumed by an Issue.
-- [ ] `docs/ARCHITECTURE.md`, `docs/POLICY.md`, and `docs/ROADMAP.md` exist and agree with this plan.
-- [ ] At least one Ready + Reviewed Issue with satisfied prerequisites exists for the first agent run (candidates: I-10, I-11, I-13, I-16).
+- [x] Completed Issues are closed with links to their PRs or commits.
+- [x] Open decisions D-01–D-08 are recorded and none are silently assumed by an Issue.
+- [x] `docs/ARCHITECTURE.md`, `docs/POLICY.md`, and `docs/ROADMAP.md` exist and agree with this plan.
+- [ ] At least one Ready + Reviewed Issue with satisfied prerequisites exists for the first agent run (candidates: I-30, I-31).
