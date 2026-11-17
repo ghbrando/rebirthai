@@ -3,12 +3,12 @@ pr: 34
 issues: []
 date: 2026-11-01
 branch: feature/local-test-env
-merge_commit: pending
+merge_commit: 5e91b83
 author: Lead (agent), UX review by ux-language-advocate
 ids: [RC-07]
 areas: [supabase/config.toml, scripts/seed-demo.mjs, app/(auth)/sign-in, README.md, CLAUDE.md]
 type: infra
-status: open
+status: merged
 ---
 
 # Local test environment with fictional data, and a demo sign-in loop fix

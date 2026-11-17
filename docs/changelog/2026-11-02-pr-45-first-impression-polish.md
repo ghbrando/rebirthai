@@ -3,7 +3,7 @@ pr: 45
 issues: [38]
 date: 2026-11-02
 branch: feature/38-polish
-merge_commit: pending
+merge_commit: dbe8605
 author: Implementation Engineer
 ids: [RC-11]
 areas: [app/layout.tsx, app/globals.css, app/(app)/layout.tsx, app/(app)/settings, app/page.tsx, components/coach/CoachChat.tsx]

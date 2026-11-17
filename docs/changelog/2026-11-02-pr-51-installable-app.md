@@ -3,7 +3,7 @@ pr: 51
 issues: [12]
 date: 2026-11-02
 branch: feature/12-pwa
-merge_commit: pending
+merge_commit: e38cec1
 author: Implementation Engineer
 ids: [RC-14, DD-01]
 areas: [app/manifest.ts, app/apple-icon.png, app/layout.tsx, public/icons, scripts/generate-icons.mjs]

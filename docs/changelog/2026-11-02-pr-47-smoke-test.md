@@ -3,7 +3,7 @@ pr: 47
 issues: [14]
 date: 2026-11-02
 branch: feature/14-smoke-test
-merge_commit: pending
+merge_commit: 705ec7f
 author: implementation engineer
 ids: [US-01, US-13]
 areas: [e2e, playwright.config.ts, package.json, README.md]

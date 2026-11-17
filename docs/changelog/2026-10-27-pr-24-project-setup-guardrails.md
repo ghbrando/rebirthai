@@ -3,12 +3,12 @@ pr: 24
 issues: []
 date: 2026-10-27
 branch: docs/project-setup
-merge_commit: pending
+merge_commit: 0cb90dd
 author: Lead agent
 ids: [RC-07, RC-04, DD-04]
 areas: [.claude/hooks, .claude/settings.json, .claude/agents, .github/workflows, CLAUDE.md, package.json, package-lock.json, .gitignore, docs/current_feature_plans]
 type: infra
-status: open
+status: merged
 ---
 
 # Guardrails, automatic PR checks and project instructions for agents

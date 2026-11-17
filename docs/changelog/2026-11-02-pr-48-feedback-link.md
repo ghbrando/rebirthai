@@ -3,7 +3,7 @@ pr: 48
 issues: [28]
 date: 2026-11-02
 branch: feature/28-feedback-link
-merge_commit: pending
+merge_commit: abdd372
 author: implementation engineer
 ids: []
 areas: [app/(app)/layout.tsx, lib/feedback.ts, README.md]

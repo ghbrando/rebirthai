@@ -3,7 +3,7 @@ pr: 40
 issues: [26]
 date: 2026-11-02
 branch: feature/26-delete-account
-merge_commit: pending
+merge_commit: 4e539d3
 author: Implementation agent, from owner-approved Issue #26
 ids: [RC-01, RC-02, RC-03, RC-06, RC-07, US-12]
 areas: [lib/account, app/api/account/delete, app/settings, components/profile, app/account-deleted, app/u/[handle], app/api/vcard/[handle], supabase/migrations/0002_retired_handles.sql, lib/types.ts, docs/POLICY.md, docs/ARCHITECTURE.md]

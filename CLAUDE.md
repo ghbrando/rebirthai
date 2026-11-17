@@ -28,9 +28,19 @@ Every change passes these before a PR; CI (`lint-typecheck-test`) runs them on e
 - Branches: `feature/<issue>-<slug>` from `dev` → PR into `dev`. Never push to or approve
   `staging` or `main`.
 - Reference the Issue and design IDs in commits and the PR.
-- Active work: `docs/current_feature_plans/`.
-- Change records: `docs/changelog/` (one per PR). Before changing an area, read the records
-  that touched it (`grep -l "<path or ID>" docs/changelog/*.md`); every PR adds its own record.
+- Roles: `.claude/agents/` (the Lead routes; specialists report to it). The Lead's workflow
+  skills (`feature-cycle`, `executive-question`, `executive-brief`) live in the owner's user
+  config; without them, follow this file and the agent files.
+- Active work: `docs/current_feature_plans/<issue>-<slug>.md`, written by the implementer; at PR
+  time it becomes `docs/changelog/YYYY-MM-DD-pr-N-<slug>.md` and the plan file is deleted.
+- Change records: `docs/changelog/` (one per PR, listed in its README index). Before changing an
+  area, read the records that touched it (`grep -l "<path or ID>" docs/changelog/*.md`).
+- Board fields (Status, Human Review, Phase, Sequence, Priority): GitHub Project 2,
+  `gh project item-list 2 --owner ghbrando --format json`.
+- The implementer opens the PR; the Lead merges it into `dev` once checks and QA pass, then sets
+  the record's `status`/`merge_commit`, comments on and closes the Issue, and moves it to Done in Dev.
+- Local test environment, dev server and browsers: only the Lead (or the one agent it names)
+  starts them, one at a time, and stops them before reporting done.
 
 ## Stop and ask the owner
 - Any open decision in the plan, Section 6.1 (notably D-04: the final domain is baked into every vCard and QR).

@@ -3,7 +3,7 @@ pr: 42
 issues: [37]
 date: 2026-11-02
 branch: feature/37-site-url-guard
-merge_commit: pending
+merge_commit: c024a81
 author: implementation engineer
 ids: [RC-03]
 areas: [lib/site-url.ts, lib/vcard/build.ts, app/u/[handle]/page.tsx]

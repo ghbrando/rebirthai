@@ -3,7 +3,7 @@ pr: 50
 issues: [15]
 date: 2026-11-02
 branch: feature/15-accessibility
-merge_commit: pending
+merge_commit: 3cf1688
 author: Implementation Engineer
 ids: [RC-11]
 areas: [app/globals.css, app/layout.tsx, "app/(app)/layout.tsx", components/coach, components/editor, components/profile, components/share, components/ui/button.tsx]
