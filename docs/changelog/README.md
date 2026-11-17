@@ -15,6 +15,7 @@ Release summaries live in `CHANGELOG.md` and link here.
 
 | Date | PR | Change | Issues |
 |---|---|---|---|
+| 2026-11-17 | #56 | [Agent roles in the repo, and setup gaps found by a fresh-session check](2026-11-17-pr-56-agent-roles.md) | — |
 | 2026-11-04 | #55 | [Plan and roadmap now match the work merged since October](2026-11-04-plan-refresh.md) | #53, #54 |
 | 2026-11-02 | #52 | [Resumable uploads for large videos](2026-11-02-pr-52-resumable-uploads.md) | #13 |
 | 2026-11-02 | #51 | [Installable app: manifest and icons](2026-11-02-pr-51-installable-app.md) | #12 |

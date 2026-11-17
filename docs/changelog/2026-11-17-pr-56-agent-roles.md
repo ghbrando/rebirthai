@@ -1,5 +1,5 @@
 ---
-pr: pending
+pr: 56
 issues: []
 date: 2026-11-17
 branch: docs/project-setup-agents
