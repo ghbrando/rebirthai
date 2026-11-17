@@ -3,7 +3,7 @@ pr: 43
 issues: [35]
 date: 2026-11-02
 branch: feature/35-copy-pass
-merge_commit: pending
+merge_commit: f3512d6
 author: Implementation Engineer
 ids: [RC-03, RC-11]
 areas: [app/(app)/publish, app/(app)/share, app/(app)/contact, app/(app)/preview, app/(app)/layout.tsx, components/editor, components/profile, components/share]

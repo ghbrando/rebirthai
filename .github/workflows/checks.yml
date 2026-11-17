@@ -46,3 +46,6 @@ jobs:
 
       - name: Unit tests
         run: npm test
+
+      - name: Agent guard regression cases
+        run: node .claude/hooks/guard.check.mjs

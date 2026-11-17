@@ -3,7 +3,7 @@ pr: 49
 issues: [25]
 date: 2026-11-02
 branch: feature/25-privacy-terms
-merge_commit: pending
+merge_commit: 132cba6
 author: Implementation agent, from Issue #25 (draft for owner and legal review)
 ids: [RC-06, RC-12, RC-13, RC-03, RC-05]
 areas: [app/privacy, app/terms, components/legal, lib/legal.ts, app/page.tsx, app/(auth)/sign-in, app/u/[handle]]

@@ -3,7 +3,7 @@ pr: 46
 issues: [36]
 date: 2026-11-02
 branch: feature/36-publish-clarity
-merge_commit: pending
+merge_commit: e328dbe
 author: Implementation Engineer
 ids: [US-12, US-13, US-09, RC-06]
 areas: [app/(app)/publish, components/profile/profile-form.tsx, components/share/contact-fields-form.tsx, lib/visibility.ts]

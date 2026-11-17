@@ -3,7 +3,7 @@ pr: 44
 issues: [11, 27]
 date: 2026-11-02
 branch: feature/dashboard-takedown-notice
-merge_commit: pending
+merge_commit: 039d92c
 author: implementation engineer
 ids: []
 areas: [app/(app)/dashboard/page.tsx, lib/dashboard/state.ts]

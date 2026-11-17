@@ -3,12 +3,12 @@ pr: 31
 issues: [10, 20]
 date: 2026-10-27
 branch: feature/ai-cost-controls
-merge_commit: pending
+merge_commit: 3523ca9
 author: Lead agent, from owner direction
 ids: [RC-08, RISK-05, RC-04, DD-04]
 areas: [lib/ai/usage.ts, lib/ai/client.ts, app/api/coach, README.md, docs/BETA_PLAN.md]
 type: feature
-status: open
+status: merged
 ---
 
 # AI cost controls: per-step coach models and cost logging

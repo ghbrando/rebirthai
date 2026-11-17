@@ -3,7 +3,7 @@ pr: 41
 issues: [27]
 date: 2026-11-02
 branch: feature/27-report-takedown
-merge_commit: pending
+merge_commit: 0c6abaf
 author: Implementation Engineer (agent)
 ids: [RC-13, RISK-04]
 areas: [app/api/report, app/api/publish, app/(app)/publish, lib/report-notify.ts, lib/takedown.ts, components/TakedownNotice.tsx, scripts/takedown.mjs, supabase/migrations/0003_takedown.sql, docs/OPERATIONS.md]

@@ -3,12 +3,12 @@ pr: 32
 issues: [10, 29]
 date: 2026-10-27
 branch: fix/review-findings
-merge_commit: pending
+merge_commit: 08e9777
 author: Lead agent, from QA, security and domain specialist reviews
 ids: [RC-04, RC-07, RC-08, RISK-04, OQ-04]
 areas: [.claude/hooks, .claude/settings.json, .gitignore, lib/ai/usage.ts, app/api/coach, docs/BETA_PLAN.md, docs/ROADMAP.md, docs/issues.json]
 type: fix
-status: open
+status: merged
 ---
 
 # Fixes from the specialist review of PRs #24, #30 and #31

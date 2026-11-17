@@ -3,12 +3,12 @@ pr: 23
 issues: []
 date: 2026-10-26
 branch: docs/change-records
-merge_commit: pending
+merge_commit: cd74d95
 author: Lead agent
 ids: []
 areas: [docs/changelog, CHANGELOG.md]
 type: docs
-status: open
+status: merged
 ---
 
 # Change records: one context record per change in docs/changelog/
