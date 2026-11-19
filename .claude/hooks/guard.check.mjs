@@ -40,3 +40,4 @@ for (const [c, expect] of cases) {
 const bogus = spawnSync("node", [".claude/hooks/guard.mjs"], { input: "not json", encoding: "utf8" });
 if (bogus.status !== 2) { bad++; console.log("WRONG: invalid input not blocked"); }
 console.log(bad ? `${bad} wrong` : `all ${cases.length + 1} cases correct`);
+process.exit(bad ? 1 : 0);
