@@ -12,6 +12,8 @@ name: Checks
 on:
   pull_request:
     branches: [dev, staging, main]
+    # edited/labeled: re-check when a GIF or the no-visible-change label is added.
+    types: [opened, synchronize, reopened, ready_for_review, edited, labeled, unlabeled]
 
 permissions:
   contents: read
@@ -28,12 +30,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          fetch-depth: 2
           persist-credentials: false
 
       - uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
+
+      # Owner rule: every visible change ships with a demo GIF in the PR description
+      # (pr-demo skill). If no screen changes, add the `no-visible-change` label.
+      - name: Demo GIF for visible changes
+        if: github.base_ref == 'dev'
+        env:
+          BODY: ${{ github.event.pull_request.body }}
+          LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
+          UI: '^(app|components)/.*[.](tsx|jsx|css)$'
+        run: |
+          ui=$(git diff --name-only HEAD^1 HEAD | grep -E "$UI" || true)
+          if [ -z "$ui" ]; then echo "No screen files changed."; exit 0; fi
+          if printf '%s' "$LABELS" | grep -q 'no-visible-change'; then echo "Labeled no-visible-change."; exit 0; fi
+          if printf '%s' "$BODY" | grep -qiE '[.]gif'; then echo "Demo GIF found."; exit 0; fi
+          echo "::error::Screen files changed but the PR description has no demo GIF. Record one with the pr-demo skill, or add the no-visible-change label if nothing on screen changes."
+          echo "$ui"; exit 1
 
       - name: Install
         run: npm ci
