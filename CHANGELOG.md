@@ -42,6 +42,7 @@ How this file is maintained:
 - Branch protection: work flows `feature/*` → `dev` → `staging` → `main`, and only the owner can approve promotions to `staging` and `main` (#1, [record](docs/changelog/2026-10-26-pr-21-lab3-planning.md))
 
 ### Security
+- Next.js patched to 16.4.6 (cookie and cache disclosure fixes) plus in-range dependency fixes (#60, [record](docs/changelog/2026-11-21-pr-60-security-patches.md))
 - Agent guardrail closes bypasses found in review (wrapped commands, `git -C`, `gh api` merges); secret-file rules cover every folder (#32, [record](docs/changelog/2026-10-27-pr-32-review-findings.md))
 - Documented that the one-click demo sign-in must never be enabled on a deployed site (ARCHITECTURE rule 5) (#21, [record](docs/changelog/2026-10-26-pr-21-lab3-planning.md))
 
