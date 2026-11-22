@@ -3,12 +3,12 @@ pr: 60
 issues: []
 date: 2026-11-21
 branch: fix/security-2026-11-21
-merge_commit: pending
+merge_commit: 68c3425
 author: lead-chief-of-staff (overnight run)
 ids: []
 areas: [package.json, package-lock.json]
 type: security
-status: open
+status: merged
 ---
 
 # Next.js security patch and in-range dependency fixes

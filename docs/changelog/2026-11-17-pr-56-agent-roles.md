@@ -3,12 +3,12 @@ pr: 56
 issues: []
 date: 2026-11-17
 branch: docs/project-setup-agents
-merge_commit: pending
+merge_commit: e7fd705
 author: Lead (agent)
 ids: [RC-07]
 areas: [.claude/agents, CLAUDE.md, .github/workflows/checks.yml, docs/changelog]
 type: infra
-status: open
+status: merged
 ---
 
 # Agent roles in the repo, and setup gaps found by a fresh-session check

@@ -10,7 +10,22 @@ How this file is maintained:
 
 ## [Unreleased]
 
+### Added
+
 ### Changed
+
+### Fixed
+
+### Security
+
+## [0.2.0] - 2026-11-22
+
+Private-beta readiness: dashboard, account deletion, report handling and takedown, publish clarity, privacy and terms, feedback link, installable app, accessibility, resumable video uploads, and a Next.js security patch.
+
+### Changed
+- Demo GIFs added for every visible change merged before the GIF rule (#39–#52), so each feature can be seen without running the app (#59, [record](docs/changelog/2026-11-19-pr-59-demo-gif-backfill.md))
+- The agent safety-guard tests now fail the automatic checks when a case is wrong (they could never fail before) (#58, [record](docs/changelog/2026-11-19-pr-58-guard-check-exit.md))
+- Pull requests that change a screen now need a demo GIF (or the `no-visible-change` label) to pass the automatic checks (#57, [record](docs/changelog/2026-11-19-pr-57-demo-gif-check.md))
 - Every agent role the project uses now lives in the repo, the safety guard is tested on every pull request, and the change-record index is complete (#56, [record](docs/changelog/2026-11-17-pr-56-agent-roles.md))
 - Implementation plan and roadmap now show the work merged through November 3, the private beta scope and Phase 8 ([record](docs/changelog/2026-11-04-plan-refresh.md))
 - Accessibility pass: visible focus rings, darker small text and input borders, labelled fields with announced errors, coach messages announced, skip link and page titles (#15, [record](docs/changelog/2026-11-02-pr-50-accessibility.md))
@@ -52,7 +67,6 @@ First working MVP, built in a hackathon sprint. Code-complete for SDD stories US
 SDD's pass/fail checks are not yet verified (see Issues #10–#17).
 
 ### Added
-- Local test environment with made-up people, so demos and reviews never use real accounts; fixes a sign-in loop in demo mode (#34, [record](docs/changelog/2026-11-01-local-test-env.md))
 - Sign in with an email link or Google, and create a profile with a unique handle, photo and bio (#3, [record](docs/changelog/2026-10-24-auth-profile.md))
 - Change your handle without breaking links: old links keep working forever (#3, [record](docs/changelog/2026-10-24-auth-profile.md))
 - AI coach that interviews you one question at a time through life before, the turning point and life after, and picks up where you left off (#4, [record](docs/changelog/2026-10-24-ai-coach.md))

@@ -15,6 +15,10 @@ Release summaries live in `CHANGELOG.md` and link here.
 
 | Date | PR | Change | Issues |
 |---|---|---|---|
+| 2026-11-21 | #60 | [Next.js security patch and in-range dependency fixes](2026-11-21-pr-60-security-patches.md) | — |
+| 2026-11-19 | #59 | [Demo GIFs for earlier visible changes (#39–#52)](2026-11-19-pr-59-demo-gif-backfill.md) | — |
+| 2026-11-19 | #58 | [Guard tests now fail CI when a case is wrong](2026-11-19-pr-58-guard-check-exit.md) | — |
+| 2026-11-19 | #57 | [Visible changes need a demo GIF to merge](2026-11-19-pr-57-demo-gif-check.md) | — |
 | 2026-11-17 | #56 | [Agent roles in the repo, and setup gaps found by a fresh-session check](2026-11-17-pr-56-agent-roles.md) | — |
 | 2026-11-04 | #55 | [Plan and roadmap now match the work merged since October](2026-11-04-plan-refresh.md) | #53, #54 |
 | 2026-11-02 | #52 | [Resumable uploads for large videos](2026-11-02-pr-52-resumable-uploads.md) | #13 |
