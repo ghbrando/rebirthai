@@ -21,7 +21,7 @@ Nightly security run. `npm audit` found 7 moderate issues before this change and
 
 ## What changed
 - `package-lock.json`: `shadcn` 4.23.1, `ts-morph` 28.0.0 and `@ts-morph/common` 0.29.1 (transitive, required by the shadcn patch), nested `minimatch` 11.0.9. `package.json` is unchanged.
-- Lockfile regenerated on Linux and resynced with `npm install --package-lock-only`: plain `npm audit fix` left it out of sync with the WebAssembly fallback packages, and `npm ci` would have failed in CI.
+- Lockfile regenerated on Linux with the CI toolchain (Node 24): running `npm audit fix` with other npm versions dropped WebAssembly fallback packages and broke `npm ci` in CI.
 
 ## Decisions and alternatives
 - `npm audit fix --force` was not used.
@@ -33,7 +33,7 @@ Nightly security run. `npm audit` found 7 moderate issues before this change and
 Dependency versions only. No schema, API or env changes.
 
 ## Verification
-Fresh `npm ci` on Linux (container) and on Windows, then lint, typecheck and unit tests all pass.
+Fresh `npm ci` on Linux (Node 24, as in CI) and on Windows, then lint, typecheck and unit tests all pass.
 
 ## Known limitations and follow-ups
 - Recheck fflate / `@vercel/og` in the next nightly run.
