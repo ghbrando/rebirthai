@@ -1,5 +1,5 @@
 ---
-pr: NN
+pr: 63
 issues: []
 date: 2026-11-26
 branch: fix/security-2026-11-26
